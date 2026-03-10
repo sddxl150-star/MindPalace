@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindPalace - Ranking</title>
+    <title>MindPalace - 大模型社区</title>
     <style>
         * {
             margin: 0;
@@ -25,7 +25,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             width: 100%;
             text-align: center;
             position: relative;
@@ -33,11 +33,11 @@
         }
 
         .title {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 300;
             letter-spacing: 0.3em;
             margin-bottom: 4rem;
-            background: linear-gradient(90deg, #ff6b6b, #feca57);
+            background: linear-gradient(90deg, #00d4ff, #ff6b9d, #feca57);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -45,47 +45,36 @@
             animation: fadeIn 1s ease-out 0.3s forwards;
         }
 
-        .cards-wrapper {
+        .community-grid {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 3rem;
-            margin-bottom: 4rem;
+            gap: 2rem;
             flex-wrap: wrap;
+            margin-bottom: 4rem;
         }
 
-        .card {
-            width: 320px;
-            padding: 2.5rem 2rem;
-            border-radius: 20px;
-            text-align: center;
+        .community-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+            color: #fff;
+            font-size: 2.5rem;
+            transition: all 0.3s ease;
             opacity: 0;
             transform: translateY(30px);
             animation: slideUp 0.8s ease-out forwards;
             position: relative;
             overflow: hidden;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            cursor: pointer;
         }
 
-        .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-left:hover {
-            border-color: rgba(255, 107, 107, 0.6);
-            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.2);
-        }
-
-        .card-right:hover {
-            border-color: rgba(0, 212, 255, 0.6);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
-        }
-
-        .card::before {
+        .community-button::before {
             content: '';
             position: absolute;
             top: 0;
@@ -93,65 +82,40 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
-            border-radius: 20px;
+            border-radius: 50%;
             z-index: -1;
         }
 
-        .card-left {
-            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 107, 107, 0.05));
-            border: 1px solid rgba(255, 107, 107, 0.3);
+        .community-button:hover {
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* 按钮颜色 */
+        .community-button:nth-child(1) {
+            color: #f1502f;
             animation-delay: 0.5s;
         }
 
-        .card-right {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
-            border: 1px solid rgba(0, 212, 255, 0.3);
+        .community-button:nth-child(2) {
+            color: #00d4ff;
+            animation-delay: 0.6s;
+        }
+
+        .community-button:nth-child(3) {
+            color: #ff6b9d;
             animation-delay: 0.7s;
         }
 
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
+        .community-button:nth-child(4) {
+            color: #1da1f2;
+            animation-delay: 0.8s;
         }
 
-        .card-left .card-icon {
-            color: #ff6b6b;
-            text-shadow: 0 0 30px rgba(255, 107, 107, 0.6);
-        }
-
-        .card-right .card-icon {
-            color: #00d4ff;
-            text-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
-        }
-
-        .card-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            letter-spacing: 0.1em;
-        }
-
-        .card-left .card-title {
-            color: #ff6b6b;
-        }
-
-        .card-right .card-title {
-            color: #00d4ff;
-        }
-
-        .card-desc {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #ccc;
-        }
-
-        .vs-divider {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #666;
-            letter-spacing: 0.2em;
-            opacity: 0;
-            animation: fadeIn 1s ease-out 0.9s forwards;
+        .community-button:nth-child(5) {
+            color: #0077b5;
+            animation-delay: 0.9s;
         }
 
         .subtitle {
@@ -191,9 +155,9 @@
         }
 
         .nav-link.active {
-            background: rgba(255, 107, 107, 0.2);
-            border-color: rgba(255, 107, 107, 0.4);
-            color: #ff6b6b;
+            background: rgba(254, 202, 87, 0.2);
+            border-color: rgba(254, 202, 87, 0.4);
+            color: #feca57;
         }
 
         @keyframes fadeIn {
@@ -278,25 +242,20 @@
             }
 
             .title {
-                font-size: 1.8rem;
+                font-size: 2rem;
                 letter-spacing: 0.2em;
                 margin-bottom: 2.5rem;
             }
 
-            .cards-wrapper {
-                flex-direction: column;
+            .community-grid {
                 gap: 1.5rem;
                 margin-bottom: 2.5rem;
             }
 
-            .card {
-                width: 100%;
-                max-width: 320px;
-                padding: 2rem 1.5rem;
-            }
-
-            .vs-divider {
-                display: none;
+            .community-button {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
             }
 
             .subtitle {
@@ -321,25 +280,43 @@
     <div class="particles" id="particles"></div>
     
     <div class="container">
-        <h1 class="title">RANKING</h1>
+        <h1 class="title">大模型社区</h1>
         
-        <div class="cards-wrapper">
-            <a href="https://openrouter.ai/rankings" target="_blank" class="card card-left">
-                <div class="card-icon">📊</div>
-                <h2 class="card-title">OpenRouter</h2>
-                <p class="card-desc">全球500w开发者调用量排名<br>看实用热度</p>
+        <div class="community-grid">
+            <a href="https://github.com" target="_blank" class="community-button">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
             </a>
             
-            <div class="vs-divider">VS</div>
+            <a href="https://www.modelscope.cn/models" target="_blank" class="community-button">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+            </a>
             
-            <a href="https://arena.ai/leaderboard" target="_blank" class="card card-right">
-                <div class="card-icon">🏆</div>
-                <h2 class="card-title">Arena</h2>
-                <p class="card-desc">百万用户盲测投票<br>看真实体验好坏</p>
+            <a href="https://huggingface.co/models" target="_blank" class="community-button">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+            </a>
+            
+            <a href="https://x.com/Alibaba_Qwen?spm=a2ty_o01.29997180.0.0.857f5171FvpM5J" target="_blank" class="community-button">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                </svg>
+            </a>
+            
+            <a href="https://discord.com/channels/1138691447068049478/1138691447068049481" target="_blank" class="community-button">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0767.0767 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.085-2.1569-2.4175 0-1.3325.9555-2.4185 2.157-2.4185 1.2108 0 2.1758 1.095 2.1568 2.4185 0 1.3325-.955 2.4175-2.1569 2.4175zm7.9748 0c-1.1835 0-2.1579-1.085-2.1579-2.4175 0-1.3325.9554-2.4185 2.158-2.4185 1.2108 0 2.1758 1.095 2.1568 2.4185 0 1.3325-.946 2.4175-2.1569 2.4175Z"/>
+                </svg>
             </a>
         </div>
         
-        <p class="subtitle">实用热度 vs 真实体验</p>
+        <p class="subtitle">加入社区，共同探索大模型的无限可能</p>
         
         <div class="nav-links">
             <a href="index.html" class="nav-link">首页</a>
@@ -347,8 +324,8 @@
             <a href="companies.html" class="nav-link">公司</a>
             <a href="agentdev.html" class="nav-link">开发</a>
             <a href="projects.html" class="nav-link">项目</a>
-            <a href="ranking.html" class="nav-link active">排名</a>
-            <a href="community.html" class="nav-link">社区</a>
+            <a href="ranking.html" class="nav-link">排名</a>
+            <a href="community.html" class="nav-link active">社区</a>
         </div>
     </div>
 
