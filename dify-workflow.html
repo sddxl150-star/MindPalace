@@ -261,51 +261,8 @@
         
         <div class="workflow-section">
             <h2 class="section-title">1. 使用 Vibe Coding 编写 Dify 工作流 yml 文件</h2>
-            <div class="code-block">
-                <pre>name: 语义测试工作流
-version: 1.0.0
-description: 基于 Vibe Coding 的语义测试工作流
-
-inputs:
-  - name: user_query
-    type: text
-    required: true
-    description: 用户查询文本
-
-nodes:
-  - id: semantic_analysis
-    type: llm
-    name: 语义分析
-    inputs:
-      prompt: "分析以下文本的语义意图：{{inputs.user_query}}\n\n请输出：\n1. 意图类型\n2. 关键实体\n3. 情感倾向"
-      model: gpt-3.5-turbo
-    outputs:
-      - name: analysis_result
-
-  - id: knowledge_retrieval
-    type: knowledge
-    name: 知识库检索
-    inputs:
-      query: {{inputs.user_query}}
-      knowledge_base: 企业知识库
-    outputs:
-      - name: retrieved_docs
-
-  - id: response_generation
-    type: llm
-    name: 响应生成
-    inputs:
-      prompt: "基于语义分析和知识库检索结果，生成回答：\n\n语义分析：{{nodes.semantic_analysis.outputs.analysis_result}}\n知识库检索：{{nodes.knowledge_retrieval.outputs.retrieved_docs}}\n\n用户查询：{{inputs.user_query}}"
-      model: gpt-4
-    outputs:
-      - name: final_response
-
-outputs:
-  - name: answer
-    type: text
-    value: {{nodes.response_generation.outputs.final_response}}</pre>
-            </div>
-            <p class="workflow-description">使用 Vibe Coding 方式编写的 Dify 工作流 YAML 配置，包含语义分析、知识库检索和响应生成三个节点。</p>
+            <img src="images/dify-yml-editor.png" alt="使用Vibe Coding编写Dify工作流yml文件" class="workflow-image">
+            <p class="workflow-description">使用 Vibe Coding 方式在 Dify 平台中编写和配置工作流 yml 文件，展示工作流的可视化编排界面。</p>
         </div>
         
         <div class="workflow-section">
