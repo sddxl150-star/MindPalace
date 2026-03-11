@@ -310,71 +310,7 @@ outputs:
         
         <div class="workflow-section">
             <h2 class="section-title">2. IDE 工具中的 Dify 工作流代码界面</h2>
-            <div class="code-block">
-                <pre>// Dify 工作流代码界面示例
-
-// 工作流配置
-const workflowConfig = {
-  name: "语义测试工作流",
-  version: "1.0.0",
-  description: "基于 Vibe Coding 的语义测试工作流",
-  inputs: [
-    {
-      name: "user_query",
-      type: "text",
-      required: true,
-      description: "用户查询文本"
-    }
-  ],
-  nodes: [
-    {
-      id: "semantic_analysis",
-      type: "llm",
-      name: "语义分析",
-      inputs: {
-        prompt: "分析以下文本的语义意图：{{inputs.user_query}}\n\n请输出：\n1. 意图类型\n2. 关键实体\n3. 情感倾向",
-        model: "gpt-3.5-turbo"
-      },
-      outputs: [
-        {
-          name: "analysis_result"
-        }
-      ]
-    },
-    // 其他节点配置...
-  ],
-  outputs: [
-    {
-      name: "answer",
-      type: "text",
-      value: "{{nodes.response_generation.outputs.final_response}}"
-    }
-  ]
-};
-
-// 工作流执行函数
-async function executeWorkflow(inputs) {
-  // 执行语义分析
-  const semanticResult = await executeNode('semantic_analysis', inputs);
-  
-  // 执行知识库检索
-  const knowledgeResult = await executeNode('knowledge_retrieval', {
-    ...inputs,
-    semantic_analysis: semanticResult
-  });
-  
-  // 执行响应生成
-  const responseResult = await executeNode('response_generation', {
-    ...inputs,
-    semantic_analysis: semanticResult,
-    knowledge_retrieval: knowledgeResult
-  });
-  
-  return {
-    answer: responseResult.final_response
-  };
-}</pre>
-            </div>
+            <img src="images/dify-ide-workflow.png" alt="IDE工具中的Dify工作流代码界面" class="workflow-image">
             <p class="workflow-description">在 IDE 工具中打开的 Dify 工作流代码界面，展示了工作流的配置结构和执行逻辑。</p>
         </div>
         
