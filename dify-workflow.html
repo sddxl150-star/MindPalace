@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindPalace - Ranking</title>
+    <title>MindPalace - Dify 工作流</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +20,7 @@
             background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             color: #fff;
-            overflow: hidden;
+            overflow-x: hidden;
             padding: 2rem;
         }
 
@@ -35,9 +35,9 @@
         .title {
             font-size: 2.5rem;
             font-weight: 300;
-            letter-spacing: 0.3em;
-            margin-bottom: 4rem;
-            background: linear-gradient(90deg, #ff6b6b, #feca57);
+            letter-spacing: 0.2em;
+            margin-bottom: 3rem;
+            background: linear-gradient(90deg, #00d4ff, #ff6b9d, #feca57);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -45,122 +45,61 @@
             animation: fadeIn 1s ease-out 0.3s forwards;
         }
 
-        .cards-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 3rem;
+        .workflow-section {
             margin-bottom: 4rem;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            width: 320px;
-            padding: 2.5rem 2rem;
-            border-radius: 20px;
-            text-align: center;
             opacity: 0;
             transform: translateY(30px);
             animation: slideUp 0.8s ease-out forwards;
-            position: relative;
-            overflow: hidden;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            cursor: pointer;
         }
 
-        .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        .workflow-section:nth-child(2) {
+            animation-delay: 0.6s;
         }
 
-        .card-left:hover {
-            border-color: rgba(255, 107, 107, 0.6);
-            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.2);
+        .workflow-section:nth-child(3) {
+            animation-delay: 0.9s;
         }
 
-        .card-right:hover {
-            border-color: rgba(0, 212, 255, 0.6);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
-            border-radius: 20px;
-            z-index: -1;
-        }
-
-        .card-left {
-            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 107, 107, 0.05));
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            animation-delay: 0.5s;
-        }
-
-        .card-right {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            animation-delay: 0.7s;
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-left .card-icon {
-            color: #ff6b6b;
-            text-shadow: 0 0 30px rgba(255, 107, 107, 0.6);
-        }
-
-        .card-right .card-icon {
-            color: #00d4ff;
-            text-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
-        }
-
-        .card-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            letter-spacing: 0.1em;
-        }
-
-        .card-left .card-title {
-            color: #ff6b6b;
-        }
-
-        .card-right .card-title {
-            color: #00d4ff;
-        }
-
-        .card-desc {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #ccc;
-        }
-
-        .vs-divider {
+        .section-title {
             font-size: 1.5rem;
-            font-weight: 700;
-            color: #666;
-            letter-spacing: 0.2em;
-            opacity: 0;
-            animation: fadeIn 1s ease-out 0.9s forwards;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: #feca57;
         }
 
-        .subtitle {
-            font-size: 1.2rem;
+        .workflow-image {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .workflow-description {
+            font-size: 1rem;
             color: #888;
-            letter-spacing: 0.1em;
-            margin-top: 2rem;
-            opacity: 0;
-            animation: fadeIn 1s ease-out 1.2s forwards;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .code-block {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #00d4ff;
         }
 
         .nav-links {
@@ -169,7 +108,8 @@
             justify-content: center;
             margin-top: 3rem;
             opacity: 0;
-            animation: fadeIn 1s ease-out 1.5s forwards;
+            animation: fadeIn 1s ease-out 1.2s forwards;
+            flex-wrap: wrap;
         }
 
         .nav-link {
@@ -191,9 +131,9 @@
         }
 
         .nav-link.active {
-            background: rgba(255, 107, 107, 0.2);
-            border-color: rgba(255, 107, 107, 0.4);
-            color: #ff6b6b;
+            background: rgba(254, 202, 87, 0.2);
+            border-color: rgba(254, 202, 87, 0.4);
+            color: #feca57;
         }
 
         @keyframes fadeIn {
@@ -267,7 +207,6 @@
 
         @media (max-width: 768px) {
             body {
-                overflow-y: auto;
                 padding: 1.5rem;
                 min-height: 100vh;
                 height: auto;
@@ -278,30 +217,27 @@
             }
 
             .title {
-                font-size: 1.8rem;
-                letter-spacing: 0.2em;
+                font-size: 2rem;
+                letter-spacing: 0.1em;
+                margin-bottom: 2rem;
+            }
+
+            .workflow-section {
                 margin-bottom: 2.5rem;
             }
 
-            .cards-wrapper {
-                flex-direction: column;
-                gap: 1.5rem;
-                margin-bottom: 2.5rem;
+            .section-title {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
             }
 
-            .card {
-                width: 100%;
-                max-width: 320px;
-                padding: 2rem 1.5rem;
+            .code-block {
+                padding: 1rem;
+                font-size: 0.8rem;
             }
 
-            .vs-divider {
-                display: none;
-            }
-
-            .subtitle {
-                font-size: 1rem;
-                margin-top: 1.5rem;
+            .workflow-description {
+                font-size: 0.9rem;
             }
 
             .nav-links {
@@ -321,25 +257,126 @@
     <div class="particles" id="particles"></div>
     
     <div class="container">
-        <h1 class="title">RANKING</h1>
+        <h1 class="title">Dify 工作流</h1>
         
-        <div class="cards-wrapper">
-            <a href="https://openrouter.ai/rankings" target="_blank" class="card card-left">
-                <div class="card-icon">📊</div>
-                <h2 class="card-title">OpenRouter</h2>
-                <p class="card-desc">全球500w开发者调用量排名<br>看实用热度</p>
-            </a>
-            
-            <div class="vs-divider">VS</div>
-            
-            <a href="https://arena.ai/leaderboard" target="_blank" class="card card-right">
-                <div class="card-icon">🏆</div>
-                <h2 class="card-title">Arena</h2>
-                <p class="card-desc">百万用户盲测投票<br>看真实体验好坏</p>
-            </a>
+        <div class="workflow-section">
+            <h2 class="section-title">1. 使用 Vibe Coding 编写 Dify 工作流 YAML</h2>
+            <div class="code-block">
+                <pre>name: 语义测试工作流
+version: 1.0.0
+description: 基于 Vibe Coding 的语义测试工作流
+
+inputs:
+  - name: user_query
+    type: text
+    required: true
+    description: 用户查询文本
+
+nodes:
+  - id: semantic_analysis
+    type: llm
+    name: 语义分析
+    inputs:
+      prompt: "分析以下文本的语义意图：{{inputs.user_query}}\n\n请输出：\n1. 意图类型\n2. 关键实体\n3. 情感倾向"
+      model: gpt-3.5-turbo
+    outputs:
+      - name: analysis_result
+
+  - id: knowledge_retrieval
+    type: knowledge
+    name: 知识库检索
+    inputs:
+      query: {{inputs.user_query}}
+      knowledge_base: 企业知识库
+    outputs:
+      - name: retrieved_docs
+
+  - id: response_generation
+    type: llm
+    name: 响应生成
+    inputs:
+      prompt: "基于语义分析和知识库检索结果，生成回答：\n\n语义分析：{{nodes.semantic_analysis.outputs.analysis_result}}\n知识库检索：{{nodes.knowledge_retrieval.outputs.retrieved_docs}}\n\n用户查询：{{inputs.user_query}}"
+      model: gpt-4
+    outputs:
+      - name: final_response
+
+outputs:
+  - name: answer
+    type: text
+    value: {{nodes.response_generation.outputs.final_response}}</pre>
+            </div>
+            <p class="workflow-description">使用 Vibe Coding 方式编写的 Dify 工作流 YAML 配置，包含语义分析、知识库检索和响应生成三个节点。</p>
         </div>
         
-        <p class="subtitle">实用热度 vs 真实体验</p>
+        <div class="workflow-section">
+            <h2 class="section-title">2. IDE 工具中的 Dify 工作流代码界面</h2>
+            <div class="code-block">
+                <pre>// Dify 工作流代码界面示例
+
+// 工作流配置
+const workflowConfig = {
+  name: "语义测试工作流",
+  version: "1.0.0",
+  description: "基于 Vibe Coding 的语义测试工作流",
+  inputs: [
+    {
+      name: "user_query",
+      type: "text",
+      required: true,
+      description: "用户查询文本"
+    }
+  ],
+  nodes: [
+    {
+      id: "semantic_analysis",
+      type: "llm",
+      name: "语义分析",
+      inputs: {
+        prompt: "分析以下文本的语义意图：{{inputs.user_query}}\n\n请输出：\n1. 意图类型\n2. 关键实体\n3. 情感倾向",
+        model: "gpt-3.5-turbo"
+      },
+      outputs: [
+        {
+          name: "analysis_result"
+        }
+      ]
+    },
+    // 其他节点配置...
+  ],
+  outputs: [
+    {
+      name: "answer",
+      type: "text",
+      value: "{{nodes.response_generation.outputs.final_response}}"
+    }
+  ]
+};
+
+// 工作流执行函数
+async function executeWorkflow(inputs) {
+  // 执行语义分析
+  const semanticResult = await executeNode('semantic_analysis', inputs);
+  
+  // 执行知识库检索
+  const knowledgeResult = await executeNode('knowledge_retrieval', {
+    ...inputs,
+    semantic_analysis: semanticResult
+  });
+  
+  // 执行响应生成
+  const responseResult = await executeNode('response_generation', {
+    ...inputs,
+    semantic_analysis: semanticResult,
+    knowledge_retrieval: knowledgeResult
+  });
+  
+  return {
+    answer: responseResult.final_response
+  };
+}</pre>
+            </div>
+            <p class="workflow-description">在 IDE 工具中打开的 Dify 工作流代码界面，展示了工作流的配置结构和执行逻辑。</p>
+        </div>
         
         <div class="nav-links">
             <a href="index.html" class="nav-link">首页</a>
@@ -347,9 +384,9 @@
             <a href="companies.html" class="nav-link">公司</a>
             <a href="agentdev.html" class="nav-link">开发</a>
             <a href="projects.html" class="nav-link">项目</a>
-            <a href="ranking.html" class="nav-link active">排名</a>
+            <a href="ranking.html" class="nav-link">排名</a>
             <a href="community.html" class="nav-link">社区</a>
-            <a href="dify-workflow.html" class="nav-link">Dify 工作流</a>
+            <a href="dify-workflow.html" class="nav-link active">Dify 工作流</a>
         </div>
     </div>
 
