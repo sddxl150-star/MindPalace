@@ -61,13 +61,67 @@
             margin-bottom: 1rem;
         }
 
+        .source {
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: #888;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.5s forwards;
+        }
+
+        .quote-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 3rem 4rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.8s forwards;
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .quote-english {
+            font-size: 1.4rem;
+            font-weight: 400;
+            line-height: 1.8;
+            color: #e8e8e8;
+            font-style: italic;
+            letter-spacing: 0.02em;
+        }
+
+        .quote-english::before {
+            content: '"';
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.15);
+            position: absolute;
+            margin-left: -1.5rem;
+            margin-top: -0.5rem;
+            font-family: Georgia, serif;
+        }
+
+        .quote-chinese {
+            font-size: 1.3rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: #a0a0a0;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2.1s forwards;
+            letter-spacing: 0.1em;
+        }
+
         .nav-links {
             display: flex;
             gap: 1rem;
             justify-content: center;
             margin-top: 2rem;
             opacity: 0;
-            animation: fadeIn 1s ease-out 2s forwards;
+            animation: fadeIn 1s ease-out 2.4s forwards;
         }
 
         .nav-link {
@@ -194,6 +248,18 @@
                 padding: 0.6rem 1rem;
                 font-size: 0.85rem;
             }
+
+            .quote-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .quote-english {
+                font-size: 1.1rem;
+            }
+            
+            .quote-chinese {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -204,6 +270,14 @@
         <h1 class="title">MindPalace</h1>
         <p class="subtitle">AI知识学习笔记</p>
         <p class="date" id="currentDate"></p>
+        
+        <p class="source">Simonides of Ceos，5th c. BC</p>
+        
+        <div class="quote-card">
+            <p class="quote-english">Turn your mind into a palace. Nothing just disappears.</p>
+        </div>
+        
+        <p class="quote-chinese">（化心为殿，万念不湮）</p>
         
         <div class="nav-links">
             <a href="index.html" class="nav-link active">首页</a>
