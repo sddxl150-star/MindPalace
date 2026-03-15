@@ -77,10 +77,15 @@
             font-size: 3rem;
             transition: bottom 0.1s ease-out;
             z-index: 10;
+            transform: scaleX(-1);
         }
 
         .dinosaur.jumping {
             animation: jump 0.5s ease-out;
+        }
+
+        .dinosaur.running {
+            animation: run 0.3s ease-in-out infinite;
         }
 
         @keyframes jump {
@@ -89,6 +94,15 @@
             }
             50% {
                 bottom: 200px;
+            }
+        }
+
+        @keyframes run {
+            0%, 100% {
+                transform: scaleX(-1) translateY(0);
+            }
+            50% {
+                transform: scaleX(-1) translateY(-3px);
             }
         }
 
@@ -223,7 +237,7 @@
             <div class="game-over" id="gameOver">游戏结束！</div>
         </div>
         
-        <p class="instructions">按空格键让恐龙跳跃，躲避障碍物！</p>
+        <p class="instructions">按空格可以开始游戏，按空格键让恐龙跳跃，躲避障碍物！</p>
         <button class="restart-btn" id="restartBtn" onclick="restartGame()">重新开始</button>
         
         <div class="nav-links">
@@ -253,10 +267,15 @@
         let obstacles = [];
         let gameInterval;
         let obstacleInterval;
+        let gameStarted = false;
 
         document.addEventListener('keydown', (event) => {
             if (event.code === 'Space') {
                 event.preventDefault();
+                if (!gameStarted) {
+                    startGame();
+                    gameStarted = true;
+                }
                 jump();
             }
         });
@@ -264,10 +283,14 @@
         function jump() {
             if (!isJumping && gameRunning) {
                 isJumping = true;
+                dinosaur.classList.remove('running');
                 dinosaur.classList.add('jumping');
                 setTimeout(() => {
                     dinosaur.classList.remove('jumping');
                     isJumping = false;
+                    if (gameRunning) {
+                        dinosaur.classList.add('running');
+                    }
                 }, 500);
             }
         }
@@ -307,6 +330,7 @@
 
         function endGame() {
             gameRunning = false;
+            dinosaur.classList.remove('running');
             gameOverElement.style.display = 'block';
             restartBtn.style.display = 'block';
             
@@ -326,14 +350,17 @@
                 obstacle.remove();
             });
             obstacles = [];
+            
+            dinosaur.classList.add('running');
         }
 
         function startGame() {
-            obstacleInterval = setInterval(createObstacle, 2000);
-            gameInterval = setInterval(checkCollision, 100);
+            if (gameRunning) {
+                dinosaur.classList.add('running');
+                obstacleInterval = setInterval(createObstacle, 2000);
+                gameInterval = setInterval(checkCollision, 100);
+            }
         }
-
-        startGame();
     </script>
 </body>
 </html>
