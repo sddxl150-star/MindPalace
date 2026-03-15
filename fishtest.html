@@ -36,13 +36,75 @@
             font-size: 2.5rem;
             font-weight: 300;
             letter-spacing: 0.2em;
-            margin-bottom: 3rem;
+            margin-bottom: 1rem;
             background: linear-gradient(90deg, #00d4ff, #ff6b9d, #feca57);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             opacity: 0;
             animation: fadeIn 1s ease-out 0.3s forwards;
+        }
+
+        .sub-nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+
+        .sub-nav-btn {
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sub-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        .sub-nav-btn.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.5);
+            color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .content-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-section {
+            transition: all 0.5s ease;
+        }
+
+        .content-section.hidden {
+            display: none;
+        }
+
+        .content-section.llm-section {
+            transform: translateX(100%);
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .content-section.llm-section.show {
+            transform: translateX(0);
+            opacity: 1;
+            position: relative;
         }
 
         .workflow-section {
@@ -52,6 +114,14 @@
             animation: slideUp 0.8s ease-out forwards;
         }
 
+        .workflow-section:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        .workflow-section:nth-child(3) {
+            animation-delay: 0.9s;
+        }
+
         .section-title {
             font-size: 1.5rem;
             font-weight: 400;
@@ -59,10 +129,19 @@
             color: #feca57;
         }
 
+        .workflow-image {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+
         .workflow-description {
             font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.8;
+            color: #888;
+            line-height: 1.6;
             max-width: 800px;
             margin: 0 auto;
         }
@@ -194,9 +273,38 @@
     <div class="container">
         <h1 class="title">FishTest</h1>
         
-        <div class="workflow-section">
-            <h2 class="section-title">目标</h2>
-            <p class="workflow-description">全流程跑通 demo，初步理解本体+AI 搭建的流程</p>
+        <div class="sub-nav">
+            <a href="#" class="sub-nav-btn active" onclick="showStep1(event)">Step 1 语义测试</a>
+            <a href="#" class="sub-nav-btn" onclick="showGoal(event)">目标</a>
+        </div>
+        
+        <div class="content-wrapper">
+            <div id="step1-content" class="content-section">
+                <div class="workflow-section">
+                    <h2 class="section-title">1. 使用 Vibe Coding 编写 Dify 工作流 yml 文件</h2>
+                    <img src="images/dify-yml-editor.jpg" alt="使用Vibe Coding编写Dify工作流yml文件" class="workflow-image">
+                    <p class="workflow-description">使用 Vibe Coding 方式在 Dify 平台中编写和配置工作流 yml 文件，展示工作流的可视化编排界面。</p>
+                </div>
+                
+                <div class="workflow-section">
+                    <h2 class="section-title">2. IDE 工具中的 Dify 工作流代码界面</h2>
+                    <img src="images/dify-workflow.png" alt="IDE工具中的Dify工作流代码界面" class="workflow-image">
+                    <p class="workflow-description">在 IDE 工具中打开的 Dify 工作流代码界面，展示了工作流的配置结构和执行逻辑。</p>
+                </div>
+                
+                <div class="workflow-section">
+                    <h2 class="section-title">3. 上传素材，记录结果</h2>
+                    <img src="images/20260312-011613CS.jpg" alt="上传素材，记录结果" class="workflow-image">
+                    <p class="workflow-description">上传素材文件并记录工作流执行结果，展示完整的测试和验证过程。</p>
+                </div>
+            </div>
+            
+            <div id="goal-content" class="content-section llm-section">
+                <div class="workflow-section">
+                    <h2 class="section-title">目标</h2>
+                    <p class="workflow-description">全流程跑通 demo，初步理解本体+AI 搭建的流程</p>
+                </div>
+            </div>
         </div>
         
         <div class="nav-links">
@@ -227,6 +335,42 @@
                 particle.style.animationDuration = (10 + Math.random() * 10) + 's';
                 container.appendChild(particle);
             }
+        }
+
+        function showStep1(event) {
+            event.preventDefault();
+            const step1Content = document.getElementById('step1-content');
+            const goalContent = document.getElementById('goal-content');
+            const buttons = document.querySelectorAll('.sub-nav-btn');
+            
+            goalContent.classList.remove('show');
+            goalContent.classList.add('hidden');
+            
+            setTimeout(() => {
+                step1Content.classList.remove('hidden');
+                step1Content.classList.add('show');
+            }, 50);
+            
+            buttons[0].classList.add('active');
+            buttons[1].classList.remove('active');
+        }
+
+        function showGoal(event) {
+            event.preventDefault();
+            const step1Content = document.getElementById('step1-content');
+            const goalContent = document.getElementById('goal-content');
+            const buttons = document.querySelectorAll('.sub-nav-btn');
+            
+            step1Content.classList.remove('show');
+            step1Content.classList.add('hidden');
+            
+            setTimeout(() => {
+                goalContent.classList.remove('hidden');
+                goalContent.classList.add('show');
+            }, 50);
+            
+            buttons[1].classList.add('active');
+            buttons[0].classList.remove('active');
         }
 
         createParticles();
