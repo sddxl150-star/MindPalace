@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindPalace - 离线页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .error-icon {
+            font-size: 8rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .error-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: #e94560;
+        }
+
+        .error-message {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .game-container {
+            position: relative;
+            width: 800px;
+            height: 300px;
+            margin: 2rem auto;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .ground {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(to bottom, #4a4a4a 0%, #3a3a3a 100%);
+            border-top: 2px solid #5a5a5a;
+        }
+
+        .dinosaur {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            font-size: 3rem;
+            transition: bottom 0.1s ease-out;
+            z-index: 10;
+        }
+
+        .dinosaur.jumping {
+            animation: jump 0.5s ease-out;
+        }
+
+        @keyframes jump {
+            0%, 100% {
+                bottom: 50px;
+            }
+            50% {
+                bottom: 200px;
+            }
+        }
+
+        .obstacle {
+            position: absolute;
+            bottom: 50px;
+            font-size: 2rem;
+            animation: moveLeft 3s linear infinite;
+        }
+
+        @keyframes moveLeft {
+            from {
+                left: 800px;
+            }
+            to {
+                left: -50px;
+            }
+        }
+
+        .score {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: #feca57;
+            font-weight: bold;
+        }
+
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: #e94560;
+            display: none;
+            z-index: 20;
+        }
+
+        .instructions {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .restart-btn {
+            margin-top: 1rem;
+            padding: 10px 30px;
+            background: rgba(233, 69, 96, 0.2);
+            border: 2px solid #e94560;
+            border-radius: 25px;
+            color: #e94560;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .restart-btn:hover {
+            background: rgba(233, 69, 96, 0.4);
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                width: 100%;
+                max-width: 400px;
+                height: 200px;
+            }
+
+            .dinosaur {
+                font-size: 2rem;
+                left: 30px;
+            }
+
+            .obstacle {
+                font-size: 1.5rem;
+            }
+
+            .error-title {
+                font-size: 1.8rem;
+            }
+
+            .error-message {
+                font-size: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-icon">🌐</div>
+        <h1 class="error-title">无法连接到网络</h1>
+        <p class="error-message">看起来您的网络连接已断开。请检查您的网络设置，然后刷新页面重试。</p>
+        
+        <div class="game-container" id="gameContainer">
+            <div class="score">分数: <span id="score">0</span></div>
+            <div class="dinosaur" id="dinosaur">🦖</div>
+            <div class="ground"></div>
+            <div class="game-over" id="gameOver">游戏结束！</div>
+        </div>
+        
+        <p class="instructions">按空格键让恐龙跳跃，躲避障碍物！</p>
+        <button class="restart-btn" id="restartBtn" onclick="restartGame()">重新开始</button>
+        
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="quote.html" class="nav-link">引言</a>
+            <a href="companies.html" class="nav-link">公司</a>
+            <a href="agentdev.html" class="nav-link">开发</a>
+            <a href="projects.html" class="nav-link">项目</a>
+            <a href="ranking.html" class="nav-link">排名</a>
+            <a href="community.html" class="nav-link">社区</a>
+            <a href="dify-workflow.html" class="nav-link">本体构建 - Step 1 语义测试</a>
+            <a href="ontology-ai.html" class="nav-link">本体+AI</a>
+            <a href="fishtest.html" class="nav-link">FishTest</a>
+        </div>
+    </div>
+
+    <script>
+        const dinosaur = document.getElementById('dinosaur');
+        const gameContainer = document.getElementById('gameContainer');
+        const scoreElement = document.getElementById('score');
+        const gameOverElement = document.getElementById('gameOver');
+        const restartBtn = document.getElementById('restartBtn');
+        
+        let isJumping = false;
+        let score = 0;
+        let gameRunning = true;
+        let obstacles = [];
+        let gameInterval;
+        let obstacleInterval;
+
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                event.preventDefault();
+                jump();
+            }
+        });
+
+        function jump() {
+            if (!isJumping && gameRunning) {
+                isJumping = true;
+                dinosaur.classList.add('jumping');
+                setTimeout(() => {
+                    dinosaur.classList.remove('jumping');
+                    isJumping = false;
+                }, 500);
+            }
+        }
+
+        function createObstacle() {
+            if (!gameRunning) return;
+            
+            const obstacle = document.createElement('div');
+            obstacle.className = 'obstacle';
+            obstacle.innerHTML = '🌵';
+            obstacle.style.animationDuration = (3 + Math.random() * 2) + 's';
+            gameContainer.appendChild(obstacle);
+            obstacles.push(obstacle);
+            
+            obstacle.addEventListener('animationend', () => {
+                obstacle.remove();
+                obstacles = obstacles.filter(obs => obs !== obstacle);
+                score += 10;
+                scoreElement.textContent = score;
+            });
+        }
+
+        function checkCollision() {
+            const dinoRect = dinosaur.getBoundingClientRect();
+            
+            for (let obstacle of obstacles) {
+                const obsRect = obstacle.getBoundingClientRect();
+                
+                if (dinoRect.right > obsRect.left + 20 &&
+                    dinoRect.left < obsRect.right - 20 &&
+                    dinoRect.bottom > obsRect.top + 10) {
+                    endGame();
+                    return;
+                }
+            }
+        }
+
+        function endGame() {
+            gameRunning = false;
+            gameOverElement.style.display = 'block';
+            restartBtn.style.display = 'block';
+            
+            obstacles.forEach(obstacle => {
+                obstacle.style.animationPlayState = 'paused';
+            });
+        }
+
+        function restartGame() {
+            gameRunning = true;
+            score = 0;
+            scoreElement.textContent = score;
+            gameOverElement.style.display = 'none';
+            restartBtn.style.display = 'none';
+            
+            obstacles.forEach(obstacle => {
+                obstacle.remove();
+            });
+            obstacles = [];
+        }
+
+        function startGame() {
+            obstacleInterval = setInterval(createObstacle, 2000);
+            gameInterval = setInterval(checkCollision, 100);
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
