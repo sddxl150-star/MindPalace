@@ -153,6 +153,27 @@
             color: #feca57;
             font-weight: bold;
         }
+        
+        .article-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .article-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+            transform: translateY(-1px);
+        }
+        
+        .article-link::after {
+            content: '🔗';
+            margin-left: 5px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
 
         .nav-links {
             display: flex;
@@ -330,43 +351,43 @@
                         <tr>
                             <td><span class="article-number">1</span></td>
                             <td>2016年</td>
-                            <td>AI 计算时代开启</td>
+                            <td><a href="https://blogs.nvidia.com/blog/" target="_blank" class="article-link">AI 计算时代开启</a></td>
                             <td>阐述GPU计算在AI时代的战略意义</td>
                         </tr>
                         <tr>
                             <td><span class="article-number">2</span></td>
                             <td>2017年</td>
-                            <td>深度学习革命</td>
+                            <td><a href="https://blogs.nvidia.com/blog/" target="_blank" class="article-link">深度学习革命</a></td>
                             <td>分析深度学习对各行业的影响</td>
                         </tr>
                         <tr>
                             <td><span class="article-number">3</span></td>
                             <td>2018年</td>
-                            <td>RTX 与实时光线追踪</td>
+                            <td><a href="https://blogs.nvidia.com/blog/rtx-real-time-ray-tracing/" target="_blank" class="article-link">RTX 与实时光线追踪</a></td>
                             <td>介绍实时光线追踪技术的突破</td>
                         </tr>
                         <tr>
                             <td><span class="article-number">4</span></td>
                             <td>2019年</td>
-                            <td>数据中心即计算单元</td>
+                            <td><a href="https://blogs.nvidia.com/blog/" target="_blank" class="article-link">数据中心即计算单元</a></td>
                             <td>重新定义数据中心的计算架构</td>
                         </tr>
                         <tr>
                             <td><span class="article-number">5</span></td>
                             <td>2020年</td>
-                            <td>ARM 收购与计算未来</td>
+                            <td><a href="https://blogs.nvidia.com/blog/" target="_blank" class="article-link">ARM 收购与计算未来</a></td>
                             <td>探讨ARM架构在计算领域的未来</td>
                         </tr>
                         <tr>
                             <td><span class="article-number">6</span></td>
                             <td>2022年</td>
-                            <td>Hopper 架构与AI工厂</td>
+                            <td><a href="https://blogs.nvidia.com/blog/2022/03/22/ai-factories-hopper-h100-nvidia-ceo-jensen-huang/" target="_blank" class="article-link">Hopper 架构与AI工厂</a></td>
                             <td>发布Hopper架构，定义AI工厂概念</td>
                         </tr>
                         <tr>
                             <td><span class="article-number">7</span></td>
                             <td>2026年3月</td>
-                            <td>《AI is a five layer cake》</td>
+                            <td><a href="https://blogs.nvidia.com/blog/ai-5-layer-cake/" target="_blank" class="article-link">《AI is a five layer cake》</a></td>
                             <td>定义AI"五层架构"，预判AI基础设施仍需数万亿美元投入</td>
                         </tr>
                     </tbody>
