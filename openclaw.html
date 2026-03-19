@@ -57,7 +57,7 @@
         }
 
         .table-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto 3rem;
             opacity: 0;
             animation: fadeIn 1s ease-out 0.6s forwards;
@@ -66,53 +66,81 @@
         .openclaw-table {
             width: 100%;
             border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
+            background: rgba(30, 30, 50, 0.8);
+            border: 1px solid rgba(100, 149, 237, 0.3);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
 
         .openclaw-table th,
         .openclaw-table td {
-            padding: 1.2rem;
+            padding: 1.5rem;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(100, 149, 237, 0.2);
         }
 
         .openclaw-table th {
-            background: rgba(233, 69, 96, 0.1);
-            color: #e94560;
+            background: linear-gradient(135deg, rgba(100, 149, 237, 0.2), rgba(139, 69, 19, 0.1));
+            color: #6495ed;
             font-weight: 600;
             font-size: 1.1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .openclaw-table tr {
+            transition: all 0.3s ease;
         }
 
         .openclaw-table tr:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(100, 149, 237, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .openclaw-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .openclaw-table td {
-            color: #ccc;
+            color: #e0e0e0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .openclaw-table tr:first-child td {
+            color: #4ade80;
+        }
+
+        .openclaw-table tr:nth-child(2) td {
+            color: #fbbf24;
         }
 
         .openclaw-link {
-            color: #667eea;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
             position: relative;
         }
 
+        .openclaw-table tr:first-child .openclaw-link {
+            color: #4ade80;
+        }
+
+        .openclaw-table tr:nth-child(2) .openclaw-link {
+            color: #fbbf24;
+        }
+
         .openclaw-link:hover {
-            color: #764ba2;
             text-decoration: underline;
             transform: translateY(-1px);
+            filter: brightness(1.2);
         }
 
         .openclaw-link::after {
             content: '🔗';
-            margin-left: 5px;
+            margin-left: 8px;
             font-size: 12px;
-            opacity: 0.7;
+            opacity: 0.8;
         }
 
         .nav-links {
