@@ -148,35 +148,35 @@
 
         .nav-links {
             display: flex;
-            flex-wrap: wrap;
+            gap: 1rem;
             justify-content: center;
-            gap: 15px;
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.5s forwards;
         }
 
         .nav-link {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            color: #888;
+            text-decoration: none;
             font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
         }
 
         .nav-link:hover {
-            background: rgba(100, 149, 237, 0.2);
-            border-color: rgba(100, 149, 237, 0.5);
-            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
         }
 
         .nav-link.active {
-            background: rgba(100, 149, 237, 0.3);
-            border-color: rgba(100, 149, 237, 0.6);
-            color: #ffffff;
+            background: rgba(233, 69, 96, 0.2);
+            border-color: rgba(233, 69, 96, 0.4);
+            color: #e94560;
         }
 
         @keyframes fadeIn {
