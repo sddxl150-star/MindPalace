@@ -21,7 +21,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 2rem;
         }
@@ -42,21 +42,177 @@
             font-size: 1.1rem;
             color: #a0a0a0;
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
             letter-spacing: 0.05em;
         }
 
-        .section {
+        .flow-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 4rem;
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
+            position: relative;
         }
 
-        .section:nth-child(2) { animation-delay: 0.3s; }
-        .section:nth-child(3) { animation-delay: 0.6s; }
-        .section:nth-child(4) { animation-delay: 0.9s; }
+        .traditional-flow,
+        .ai-flow {
+            flex: 1;
+            padding: 2rem;
+        }
 
-        .section-title {
+        .flow-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .flow-block {
+            background: rgba(40, 40, 45, 0.85);
+            border: 1px solid rgba(80, 80, 90, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .flow-block:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .traditional-flow .flow-block {
+            border-left: 4px solid #a0a0a0;
+        }
+
+        .ai-flow .flow-block {
+            border-left: 4px solid #00d4ff;
+        }
+
+        .block-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #e0e0e0;
+        }
+
+        .traditional-flow .block-title {
+            color: #a0a0a0;
+        }
+
+        .ai-flow .block-title {
+            background: linear-gradient(45deg, #00d4ff, #7b68ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .block-content {
+            color: #b0b0b0;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .block-content ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .block-content li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .block-content li::before {
+            content: '•';
+            color: #00d4ff;
+            position: absolute;
+            left: -1rem;
+        }
+
+        .traditional-flow .block-content li::before {
+            color: #a0a0a0;
+        }
+
+        .arrow {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(to bottom, rgba(160, 160, 160, 0.6), rgba(160, 160, 160, 0.2));
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .traditional-arrow {
+            height: 100px;
+            top: 80px;
+        }
+
+        .traditional-arrow2 {
+            height: 100px;
+            top: 320px;
+        }
+
+        .ai-arrow {
+            height: 100px;
+            top: 80px;
+        }
+
+        .ai-arrow2 {
+            height: 100px;
+            top: 320px;
+        }
+
+        .ai-arrow3 {
+            height: 100px;
+            top: 560px;
+        }
+
+        .connecting-arrow {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, rgba(0, 212, 255, 0.6), rgba(123, 104, 238, 0.6));
+            top: 700px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .connecting-arrow::before {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid rgba(0, 212, 255, 0.6);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        .connecting-text {
+            position: absolute;
+            top: 670px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(40, 40, 45, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #00d4ff;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .fish-icon {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .advantages-section {
+            margin-top: 6rem;
+        }
+
+        .advantages-title {
             font-size: 1.6rem;
             font-weight: 600;
             margin-bottom: 2rem;
@@ -66,7 +222,7 @@
             align-items: center;
         }
 
-        .section-title::before {
+        .advantages-title::before {
             content: '';
             width: 8px;
             height: 24px;
@@ -75,107 +231,45 @@
             border-radius: 4px;
         }
 
-        .flow-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
+        .advantages-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
         }
 
-        .flow-card {
-            flex: 1;
-            min-width: 300px;
+        .advantage-card {
             background: rgba(40, 40, 45, 0.85);
             border: 1px solid rgba(80, 80, 90, 0.4);
             border-radius: 12px;
             padding: 2rem;
-            margin: 1rem;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
         }
 
-        .flow-card:hover {
+        .advantage-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
         }
 
-        .flow-card-title {
+        .advantage-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .advantage-title {
             font-size: 1.2rem;
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             color: #e0e0e0;
-            display: flex;
-            align-items: center;
         }
 
-        .flow-card-title::before {
-            content: '';
-            width: 4px;
-            height: 20px;
-            background: linear-gradient(180deg, #00d4ff, #7b68ee);
-            margin-right: 0.8rem;
-            border-radius: 2px;
-        }
-
-        .flow-steps {
-            list-style: none;
-        }
-
-        .flow-step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1.2rem;
-            padding: 1rem;
-            background: rgba(50, 50, 55, 0.5);
-            border-radius: 8px;
-            border-left: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .flow-step:hover {
-            background: rgba(60, 60, 65, 0.6);
-            border-left-color: #00d4ff;
-        }
-
-        .step-number {
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, #00d4ff, #7b68ee);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-right: 1rem;
-            flex-shrink: 0;
-        }
-
-        .step-content {
-            flex: 1;
-        }
-
-        .step-title {
-            font-weight: 600;
-            color: #e0e0e0;
-            margin-bottom: 0.3rem;
-        }
-
-        .step-desc {
-            color: #a0a0a0;
-            font-size: 0.95rem;
+        .advantage-content {
+            color: #b0b0b0;
             line-height: 1.6;
         }
 
-        .comparison-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .comparison-card {
+        .integration-section {
+            margin-top: 4rem;
             background: rgba(40, 40, 45, 0.85);
             border: 1px solid rgba(80, 80, 90, 0.4);
             border-radius: 12px;
@@ -183,74 +277,24 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
-        .comparison-card-title {
+        .integration-title {
             font-size: 1.4rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(80, 80, 90, 0.3);
-        }
-
-        .before-card .comparison-card-title {
-            color: #a0a0a0;
-        }
-
-        .after-card .comparison-card-title {
-            background: linear-gradient(45deg, #00d4ff, #7b68ee);
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .integration-flow {
-            background: rgba(40, 40, 45, 0.85);
-            border: 1px solid rgba(80, 80, 90, 0.4);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        .integration-content {
+            color: #b0b0b0;
+            line-height: 1.8;
         }
 
-        .integration-steps {
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .integration-step {
-            flex: 1;
-            min-width: 250px;
-            text-align: center;
-            padding: 1.5rem;
-            background: rgba(50, 50, 55, 0.5);
-            border-radius: 12px;
-            border: 1px solid rgba(80, 80, 90, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .integration-step:hover {
-            transform: translateY(-4px);
-            background: rgba(60, 60, 65, 0.6);
-        }
-
-        .integration-step-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .integration-step-title {
-            font-size: 1.1rem;
+        .highlight {
+            color: #fbbf24;
             font-weight: 600;
-            margin-bottom: 0.8rem;
-            color: #e0e0e0;
-        }
-
-        .integration-step-desc {
-            color: #a0a0a0;
-            font-size: 0.95rem;
-            line-height: 1.6;
         }
 
         .nav-links {
@@ -285,32 +329,24 @@
             color: #e94560;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 968px) {
-            .comparison-section {
-                grid-template-columns: 1fr;
-            }
-
-            .title {
-                font-size: 1.8rem;
-            }
-
-            .flow-container {
+        @media (max-width: 1200px) {
+            .flow-diagram {
                 flex-direction: column;
+                gap: 4rem;
             }
 
-            .flow-card {
+            .traditional-flow,
+            .ai-flow {
                 width: 100%;
+            }
+
+            .connecting-arrow,
+            .connecting-text {
+                display: none;
+            }
+
+            .advantages-container {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -324,7 +360,11 @@
             }
 
             .title {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
+            }
+
+            .flow-block {
+                padding: 1rem;
             }
 
             .nav-links {
@@ -345,251 +385,126 @@
         <h1 class="title">AI+海洋牧场</h1>
         <p class="subtitle">工厂养殖石斑鱼 · 病害防控与精准喂养智能化解决方案</p>
 
-        <!-- 传统养殖流程 -->
-        <div class="section">
-            <h2 class="section-title">传统养殖流程</h2>
-            <div class="flow-container">
-                <div class="flow-card">
-                    <h3 class="flow-card-title">病害防控流程</h3>
-                    <ul class="flow-steps">
-                        <li class="flow-step">
-                            <span class="step-number">1</span>
-                            <div class="step-content">
-                                <div class="step-title">人工巡检</div>
-                                <div class="step-desc">养殖人员定期到养殖场观察鱼群状态，凭经验判断是否有病害</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">2</span>
-                            <div class="step-content">
-                                <div class="step-title">经验判断</div>
-                                <div class="step-desc">发现异常后，根据经验判断病害类型和严重程度</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">3</span>
-                            <div class="step-content">
-                                <div class="step-title">用药处理</div>
-                                <div class="step-desc">基于经验使用药物，缺乏数据支撑，容易造成药物滥用</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">4</span>
-                            <div class="step-content">
-                                <div class="step-title">效果观察</div>
-                                <div class="step-desc">观察药物效果，调整用药方案，反应周期长</div>
-                            </div>
-                        </li>
-                    </ul>
+        <!-- 流程图 -->
+        <div class="flow-diagram">
+            <!-- 传统养殖流程 -->
+            <div class="traditional-flow">
+                <h2 class="block-title" style="text-align: center; margin-bottom: 2rem; color: #a0a0a0;">传统养殖流程</h2>
+                <div class="flow-column">
+                    <div class="flow-block">
+                        <h3 class="block-title">预先控制 / 设定程序</h3>
+                        <div class="block-content">
+                            <p>根据经验设定投喂时间表和投饵量，无法根据实际情况动态调整</p>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow traditional-arrow"></div>
+                    
+                    <div class="flow-block">
+                        <h3 class="block-title">投喂 / 用药</h3>
+                        <div class="block-content">
+                            <p>按照预设计划进行人工投喂和药物使用，缺乏数据支撑</p>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow traditional-arrow2"></div>
+                    
+                    <div class="flow-block">
+                        <h3 class="block-title">问题与不足</h3>
+                        <div class="block-content">
+                            <ul>
+                                <li>反应滞后，发现问题时往往已造成损失</li>
+                                <li>过度用药和投饵，造成水体污染</li>
+                                <li>人工成本高，管理效率低</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="flow-card">
-                    <h3 class="flow-card-title">精准喂养流程</h3>
-                    <ul class="flow-steps">
-                        <li class="flow-step">
-                            <span class="step-number">1</span>
-                            <div class="step-content">
-                                <div class="step-title">预设时间表</div>
-                                <div class="step-desc">根据经验设定每日投喂次数和时间点</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">2</span>
-                            <div class="step-content">
-                                <div class="step-title">固定投饵量</div>
-                                <div class="step-desc">按照预设的投饵量进行喂养，无法根据实际情况调整</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">3</span>
-                            <div class="step-content">
-                                <div class="step-title">人工操作</div>
-                                <div class="step-desc">养殖人员手动操作投饵设备，劳动强度大</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">4</span>
-                            <div class="step-content">
-                                <div class="step-title">效果评估</div>
-                                <div class="step-desc">通过观察鱼群生长情况，调整投饵计划，周期长</div>
-                            </div>
-                        </li>
-                    </ul>
+            </div>
+
+            <!-- AI智能养殖流程 -->
+            <div class="ai-flow">
+                <h2 class="block-title" style="text-align: center; margin-bottom: 2rem;">AI智能养殖流程</h2>
+                <div class="flow-column">
+                    <div class="flow-block">
+                        <div class="fish-icon">🐟🐟</div>
+                        <h3 class="block-title">实时采集事实数据</h3>
+                        <div class="block-content">
+                            <p>通过摄像头和传感器实时监测鱼群行为特征、水质参数和环境数据</p>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow ai-arrow"></div>
+                    
+                    <div class="flow-block">
+                        <h3 class="block-title">专家经验构建事理逻辑</h3>
+                        <div class="block-content">
+                            <p>基于专家经验构建AI模型，破解鱼的行为语义，理解鱼群的真实需求</p>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow ai-arrow2"></div>
+                    
+                    <div class="flow-block">
+                        <h3 class="block-title">精准投喂 / 及时防控</h3>
+                        <div class="block-content">
+                            <ul>
+                                <li>根据鱼的实际需要精准投喂</li>
+                                <li>降低饲料成本，减少浪费</li>
+                                <li>及时发现和防控病害</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow ai-arrow3"></div>
+                    
+                    <div class="flow-block">
+                        <h3 class="block-title">动态调控</h3>
+                        <div class="block-content">
+                            <p>分钟级实时监测鱼群行为特征，智能分析鱼只的实际摄食需求。系统自主决策"吃什么、吃多少、什么时候吃"，实现真正意义上的精准喂养，大幅降低饲料浪费。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 连接箭头 -->
+            <div class="connecting-text">无缝嵌入 · 资源利旧</div>
+            <div class="connecting-arrow"></div>
+        </div>
+
+        <!-- 优势说明 -->
+        <div class="advantages-section">
+            <h2 class="advantages-title">AI智能养殖优势</h2>
+            <div class="advantages-container">
+                <div class="advantage-card">
+                    <div class="advantage-icon">⚡</div>
+                    <h3 class="advantage-title">动态调控</h3>
+                    <div class="advantage-content">
+                        分钟级实时监测鱼群行为特征，智能分析鱼只的实际摄食需求。系统自主决策"吃什么、吃多少、什么时候吃"，实现真正意义上的精准喂养，大幅降低饲料浪费。同时及时发现病害，做到早期防控。
+                    </div>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon">🌍</div>
+                    <h3 class="advantage-title">普惠性</h3>
+                    <div class="advantage-content">
+                        整套AI养殖系统采用标准化设计，操作界面简洁直观。无需专业AI背景，普通养殖人员经过简单培训即可上手，真正做到技术普惠，人人可用。
+                    </div>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon">☁️</div>
+                    <h3 class="advantage-title">无限资源</h3>
+                    <div class="advantage-content">
+                        基于云端AI架构，算力资源弹性扩展，不受本地硬件限制。无论是监测千尾还是万尾鱼群，系统都能保持高效稳定的分析处理能力。
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- AI智能养殖流程 -->
-        <div class="section">
-            <h2 class="section-title">AI智能养殖流程</h2>
-            <div class="flow-container">
-                <div class="flow-card">
-                    <h3 class="flow-card-title">智能监测系统</h3>
-                    <ul class="flow-steps">
-                        <li class="flow-step">
-                            <span class="step-number">1</span>
-                            <div class="step-content">
-                                <div class="step-title">实时数据采集</div>
-                                <div class="step-desc">摄像头、传感器实时监测鱼群行为、水质参数、环境数据</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">2</span>
-                            <div class="step-content">
-                                <div class="step-title">AI分析处理</div>
-                                <div class="step-desc">AI算法分析鱼群行为特征、摄食状态、健康状况</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">3</span>
-                            <div class="step-content">
-                                <div class="step-title">智能决策</div>
-                                <div class="step-desc">基于分析结果，自动生成精准的喂养和病害防控方案</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">4</span>
-                            <div class="step-content">
-                                <div class="step-title">自动执行</div>
-                                <div class="step-desc">系统自动控制投饵设备、增氧设备等执行决策方案</div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="flow-card">
-                    <h3 class="flow-card-title">智能管理平台</h3>
-                    <ul class="flow-steps">
-                        <li class="flow-step">
-                            <span class="step-number">1</span>
-                            <div class="step-content">
-                                <div class="step-title">数据可视化</div>
-                                <div class="step-desc">实时展示养殖数据、鱼群状态、设备运行情况</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">2</span>
-                            <div class="step-content">
-                                <div class="step-title">预警系统</div>
-                                <div class="step-desc">AI预测分析，提前预警病害风险和异常情况</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">3</span>
-                            <div class="step-content">
-                                <div class="step-title">远程控制</div>
-                                <div class="step-desc">通过手机、电脑远程监控和控制养殖系统</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">4</span>
-                            <div class="step-content">
-                                <div class="step-title">智能学习</div>
-                                <div class="step-desc">系统持续学习优化，提升决策准确性和养殖效率</div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- 对比分析 -->
-        <div class="section">
-            <h2 class="section-title">对比分析</h2>
-            <div class="comparison-section">
-                <div class="comparison-card before-card">
-                    <h3 class="comparison-card-title">传统养殖</h3>
-                    <ul class="flow-steps">
-                        <li class="flow-step">
-                            <span class="step-number">✗</span>
-                            <div class="step-content">
-                                <div class="step-title">人工依赖</div>
-                                <div class="step-desc">严重依赖养殖人员经验，人为误差大</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">✗</span>
-                            <div class="step-content">
-                                <div class="step-title">反应滞后</div>
-                                <div class="step-desc">病害发现和处理滞后，容易造成损失</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">✗</span>
-                            <div class="step-content">
-                                <div class="step-title">饲料浪费</div>
-                                <div class="step-desc">固定投饵量，无法根据实际需求调整</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">✗</span>
-                            <div class="step-content">
-                                <div class="step-title">效率低下</div>
-                                <div class="step-desc">人工操作，劳动强度大，管理效率低</div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="comparison-card after-card">
-                    <h3 class="comparison-card-title">AI智能养殖</h3>
-                    <ul class="flow-steps">
-                        <li class="flow-step">
-                            <span class="step-number">✓</span>
-                            <div class="step-content">
-                                <div class="step-title">智能监测</div>
-                                <div class="step-desc">24小时实时监测，及时发现异常</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">✓</span>
-                            <div class="step-content">
-                                <div class="step-title">精准决策</div>
-                                <div class="step-desc">基于数据和AI分析，决策更科学</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">✓</span>
-                            <div class="step-content">
-                                <div class="step-title">节约成本</div>
-                                <div class="step-desc">精准喂养，减少饲料浪费和药物使用</div>
-                            </div>
-                        </li>
-                        <li class="flow-step">
-                            <span class="step-number">✓</span>
-                            <div class="step-content">
-                                <div class="step-title">高效管理</div>
-                                <div class="step-desc">自动化操作，远程监控，管理效率高</div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- 资源利旧流程 -->
-        <div class="section">
-            <h2 class="section-title">资源利旧流程</h2>
-            <div class="integration-flow">
-                <div class="integration-steps">
-                    <div class="integration-step">
-                        <div class="integration-step-icon">🔍</div>
-                        <h3 class="integration-step-title">现状评估</h3>
-                        <p class="integration-step-desc">评估现有养殖设备和控制系统的功能和状态</p>
-                    </div>
-                    <div class="integration-step">
-                        <div class="integration-step-icon">🔌</div>
-                        <h3 class="integration-step-title">接口对接</h3>
-                        <p class="integration-step-desc">通过标准接口与现有设备和控制系统对接</p>
-                    </div>
-                    <div class="integration-step">
-                        <div class="integration-step-icon">🤖</div>
-                        <h3 class="integration-step-title">AI系统部署</h3>
-                        <p class="integration-step-desc">部署AI智能分析系统，整合现有数据</p>
-                    </div>
-                    <div class="integration-step">
-                        <div class="integration-step-icon">🚀</div>
-                        <h3 class="integration-step-title">系统运行</h3>
-                        <p class="integration-step-desc">AI系统与现有设备协同工作，实现智能化升级</p>
-                    </div>
-                </div>
+        <!-- 资源利旧说明 -->
+        <div class="integration-section">
+            <h3 class="integration-title">无缝嵌入 · 资源利旧</h3>
+            <div class="integration-content">
+                AI智能系统采用<span class="highlight">嵌入式架构设计</span>，可直接对接现有养殖场的预设控制系统，无需推倒重建。通过标准接口与原有投饵设备、水质监测传感器等硬件兼容，在保留既有投资的基础上实现智能化升级，<span class="highlight">大幅降低系统改造成本</span>，让传统养殖场零负担迈入AI时代。
             </div>
         </div>
 
