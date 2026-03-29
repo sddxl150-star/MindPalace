@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI+海洋牧场 - MindPalace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #00d4ff, #7b68ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.05em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #a0a0a0;
+            text-align: center;
+            margin-bottom: 3rem;
+            letter-spacing: 0.05em;
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: rgba(40, 40, 45, 0.85);
+            border: 1px solid rgba(80, 80, 90, 0.4);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(80, 80, 90, 0.3);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        .before-card .card-title {
+            color: #a0a0a0;
+        }
+
+        .after-card .card-title {
+            background: linear-gradient(45deg, #00d4ff, #7b68ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .scenario {
+            margin-bottom: 2rem;
+        }
+
+        .scenario-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .scenario-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: rgba(160, 160, 160, 0.5);
+            margin-right: 0.8rem;
+            border-radius: 2px;
+        }
+
+        .after-card .scenario-title::before {
+            background: linear-gradient(180deg, #00d4ff, #7b68ee);
+        }
+
+        .scenario-content {
+            color: #b0b0b0;
+            line-height: 1.8;
+            padding-left: 1.2rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.2rem;
+            padding: 1rem;
+            background: rgba(50, 50, 55, 0.5);
+            border-radius: 8px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(60, 60, 65, 0.6);
+            border-left-color: #00d4ff;
+        }
+
+        .feature-number {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #00d4ff, #7b68ee);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .feature-content {
+            flex: 1;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-bottom: 0.3rem;
+        }
+
+        .feature-desc {
+            color: #a0a0a0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .integration-section {
+            background: rgba(40, 40, 45, 0.85);
+            border: 1px solid rgba(80, 80, 90, 0.4);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .integration-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .integration-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        .integration-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .integration-content {
+            color: #b0b0b0;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .highlight {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .nav-link {
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .nav-link.active {
+            background: rgba(233, 69, 96, 0.2);
+            border-color: rgba(233, 69, 96, 0.4);
+            color: #e94560;
+        }
+
+        @media (max-width: 968px) {
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+
+            .title {
+                font-size: 1.8rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-link {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">AI+海洋牧场</h1>
+        <p class="subtitle">工厂养殖石斑鱼 · 病害防控与精准喂养智能化解决方案</p>
+
+        <div class="comparison-container">
+            <!-- 左边：AI加入前 -->
+            <div class="card before-card">
+                <div class="card-header">
+                    <span class="card-icon">⚙️</span>
+                    <h2 class="card-title">传统养殖模式</h2>
+                </div>
+
+                <div class="scenario">
+                    <div class="scenario-title">病害防控</div>
+                    <div class="scenario-content">
+                        依赖人工定期巡检，发现病害时往往已经扩散。通过经验判断用药，缺乏数据支撑，容易造成药物滥用或治疗不及时。
+                    </div>
+                </div>
+
+                <div class="scenario">
+                    <div class="scenario-title">精准喂养</div>
+                    <div class="scenario-content">
+                        基于固定时间表和预设投饵量进行喂养。需要预先设定每日投喂次数和每次投喂量，无法根据鱼的实际状态动态调整，容易造成饲料浪费或营养不足。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右边：AI加入后 -->
+            <div class="card after-card">
+                <div class="card-header">
+                    <span class="card-icon">🤖</span>
+                    <h2 class="card-title">AI智能养殖模式</h2>
+                </div>
+
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <span class="feature-number">1</span>
+                        <div class="feature-content">
+                            <div class="feature-title">动态精准喂养</div>
+                            <div class="feature-desc">
+                                分钟级实时监测鱼群行为特征，智能分析鱼只的实际摄食需求。系统自主决策"吃什么、吃多少、什么时候吃"，实现真正意义上的精准喂养，大幅降低饲料浪费。
+                            </div>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-number">2</span>
+                        <div class="feature-content">
+                            <div class="feature-title">普惠性系统</div>
+                            <div class="feature-desc">
+                                整套AI养殖系统采用标准化设计，操作界面简洁直观。无需专业AI背景，普通养殖人员经过简单培训即可上手，真正做到技术普惠，人人可用。
+                            </div>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-number">3</span>
+                        <div class="feature-content">
+                            <div class="feature-title">无限算力支撑</div>
+                            <div class="feature-desc">
+                                基于云端AI架构，算力资源弹性扩展，不受本地硬件限制。无论是监测千尾还是万尾鱼群，系统都能保持高效稳定的分析处理能力。
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 资源利旧说明 -->
+        <div class="integration-section">
+            <div class="integration-header">
+                <span class="integration-icon">🔗</span>
+                <h2 class="integration-title">无缝嵌入 · 资源利旧</h2>
+            </div>
+            <div class="integration-content">
+                AI智能系统采用<span class="highlight">嵌入式架构设计</span>，可直接对接现有养殖场的预设控制系统，无需推倒重建。通过标准接口与原有投饵设备、水质监测传感器等硬件兼容，在保留既有投资的基础上实现智能化升级，<span class="highlight">大幅降低系统改造成本</span>，让传统养殖场零负担迈入AI时代。
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="companies.html" class="nav-link">公司</a>
+            <a href="agentdev.html" class="nav-link">开发</a>
+            <a href="projects.html" class="nav-link">项目</a>
+            <a href="ranking.html" class="nav-link">排名</a>
+            <a href="community.html" class="nav-link">社区</a>
+            <a href="dify-workflow.html" class="nav-link">本体构建</a>
+            <a href="ontology-ai.html" class="nav-link">本体+AI</a>
+            <a href="fishtest.html" class="nav-link">FishTest</a>
+            <a href="papers.html" class="nav-link">经典论文</a>
+            <a href="openclaw.html" class="nav-link">Openclaw</a>
+            <a href="ocean-ranch.html" class="nav-link active">AI+海洋牧场</a>
+        </div>
+    </div>
+</body>
+</html>
