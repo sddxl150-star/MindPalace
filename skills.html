@@ -170,10 +170,72 @@
             }
 
             .resource-card h3 {
-                font-size: 1.1rem;
-            }
+            font-size: 1.1rem;
         }
-    </style>
+
+        .article-section {
+            text-align: left;
+            line-height: 1.8;
+        }
+
+        .article-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #feca57;
+        }
+
+        .article-meta {
+            color: #888;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .article-content {
+            background: rgba(40, 40, 45, 0.85);
+            border: 1px solid rgba(80, 80, 90, 0.4);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .article-content h2 {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            margin: 2rem 0 1rem;
+        }
+
+        .article-content h3 {
+            font-size: 1.3rem;
+            color: #ff6b9d;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+
+        .article-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+            color: #ddd;
+        }
+
+        .translation {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid #00d4ff;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0 2rem;
+            color: #ccc;
+            font-style: italic;
+        }
+    }
+</style>
 </head>
 <body>
     <div class="container">
@@ -190,6 +252,61 @@
                 <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills" target="_blank">👉 https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills</a>
                 <p class="date">发布时间：2025年10月16日</p>
                 <p class="description">内容：Anthropic 工程团队首次系统阐述 Skills 的设计理念、技术架构与开发指南</p>
+            </div>
+        </div>
+
+        <div class="section article-section">
+            <h2 class="section-title">📖 官方博客文章原文</h2>
+
+            <div class="article-content">
+                <h2 class="article-title">Equipping agents for the real world with Agent Skills</h2>
+                <div class="article-meta">Published Oct 16, 2025</div>
+
+                <p>Claude is powerful, but real work requires procedural knowledge and organizational context. Introducing Agent Skills, a new way to build specialized agents using files and folders.</p>
+                <div class="translation">Claude非常强大，但实际工作需要程序性知识和组织上下文。介绍Agent Skills——一种使用文件和文件夹构建专业智能体的新方式。</div>
+
+                <p>As model capabilities improve, we can now build general-purpose agents that interact with full-fledged computing environments. Claude Code, for example, can accomplish complex tasks across domains using local code execution and filesystems. But as these agents become more powerful, we need more composable, scalable, and portable ways to equip them with domain-specific expertise.</p>
+                <div class="translation">随着模型能力的提升，我们现在可以构建能够与完整计算环境交互的通用智能体。例如，Claude Code可以使用本地代码执行和文件系统完成跨领域的复杂任务。但随着这些智能体变得更加强大，我们需要更具可组合性、可扩展性和可移植性的方式，让它们具备领域特定的专业知识。</div>
+
+                <p>This led us to create Agent Skills: organized folders of instructions, scripts, and resources that agents can discover and load dynamically to perform better at specific tasks. Skills extend Claude’s capabilities by packaging your expertise into composable resources for Claude, transforming general-purpose agents into specialized agents that fit your needs.</p>
+                <div class="translation">这促使我们创建了Agent Skills：由指令、脚本和资源组成的有组织文件夹，智能体可以动态发现和加载这些内容，以更好地完成特定任务。Skills通过将您的专业知识打包成Claude可使用的可组合资源，扩展了Claude的能力，将通用智能体转变为符合您需求的专业智能体。</div>
+
+                <h2>The anatomy of a skill</h2>
+                <p>To see Skills in action, let’s walk through a real example: one of the skills that powers Claude’s recently launched document editing abilities. Claude already knows a lot about understanding PDFs, but is limited in its ability to manipulate them directly (e.g. to fill out a form). This PDF skill lets us give Claude these new abilities.</p>
+                <div class="translation">要了解Skills的实际运作，让我们看一个真实示例：为Claude最近推出的文档编辑功能提供支持的其中一个Skill。Claude已经很了解如何理解PDF，但直接操作PDF的能力有限（例如填写表单）。这个PDF Skill让我们能够赋予Claude这些新能力。</div>
+
+                <p>At its simplest, a skill is a directory that contains a SKILL.md file. This file must start with YAML frontmatter that contains some required metadata: name and description. At startup, the agent pre-loads the name and description of every installed skill into its system prompt.</p>
+                <div class="translation">最简单来说，一个Skill就是一个包含SKILL.md文件的目录。该文件必须以包含必需元数据的YAML前导内容开头：name和description。启动时，智能体会将每个已安装Skill的name和description预加载到其系统提示中。</div>
+
+                <p>This metadata is the first level of progressive disclosure: it provides just enough information for Claude to know when each skill should be used without loading all of it into context. The actual body of this file is the second level of detail. If Claude thinks the skill is relevant to the current task, it will load the skill by reading its full SKILL.md into context.</p>
+                <div class="translation">这个元数据是渐进式披露的第一层：它提供足够的信息让Claude知道何时该使用哪个Skill，而不需要将所有内容都加载到上下文中。文件的实际主体是第二层细节。如果Claude认为该Skill与当前任务相关，它会通过读取完整的SKILL.md将其加载到上下文中。</div>
+
+                <h2>Developing and evaluating skills</h2>
+                <p>Here are some helpful guidelines for getting started with authoring and testing skills:</p>
+                <div class="translation">以下是一些有助于开始创作和测试Skills的指南：</div>
+
+                <ul>
+                    <li><strong>Start with evaluation:</strong> Identify specific gaps in your agents’ capabilities by running them on representative tasks and observing where they struggle or require additional context. Then build skills incrementally to address these shortcomings.</li>
+                    <li><strong>Structure for scale:</strong> When the SKILL.md file becomes unwieldy, split its content into separate files and reference them. If certain contexts are mutually exclusive or rarely used together, keeping the paths separate will reduce the token usage. Finally, code can serve as both executable tools and as documentation. It should be clear whether Claude should run scripts directly or read them into context as reference.</li>
+                    <li><strong>Think from Claude’s perspective:</strong> Monitor how Claude uses your skill in real scenarios and iterate based on observations: watch for unexpected trajectories or overreliance on certain contexts. Pay special attention to the name and description of your skill. Claude will use these when deciding whether to trigger the skill in response to its current task.</li>
+                    <li><strong>Iterate with Claude:</strong> As you work on a task with Claude, ask Claude to capture its successful approaches and common mistakes into reusable context and code within a skill. If it goes off track when using a skill to complete a task, ask it to self-reflect on what went wrong. This process will help you discover what context Claude actually needs, instead of trying to anticipate it upfront.</li>
+                </ul>
+                <div class="translation">
+                    <strong>从评估开始：</strong>通过让智能体执行代表性任务并观察它们在何处挣扎或需要额外上下文，来识别智能体能力中的具体差距。然后逐步构建Skills来解决这些不足。<br><br>
+                    <strong>为扩展而架构：</strong>当SKILL.md文件变得难以管理时，将其内容拆分为单独的文件并引用它们。如果某些上下文互斥或很少一起使用，保持路径分离将减少token使用。最后，代码既可以作为可执行工具，也可以作为文档。应该明确Claude应该直接运行脚本还是将其作为参考读取到上下文中。<br><br>
+                    <strong>从Claude的角度思考：</strong>监控Claude在实际场景中如何使用您的Skill，并根据观察进行迭代：留意意外的轨迹或对某些上下文的过度依赖。特别注意您Skill的name和description。Claude会在决定是否响应当前任务触发Skill时使用这些。<br><br>
+                    <strong>与Claude一起迭代：</strong>当您与Claude一起处理任务时，要求Claude将其成功方法和常见错误记录到Skill内可重用的上下文和代码中。如果在使用Skill完成任务时偏离了轨道，要求它自我反思出了什么问题。这个过程将帮助您发现Claude实际需要什么上下文，而不是试图预先预判。
+                </div>
+
+                <h2>The future of Skills</h2>
+                <p>Agent Skills are supported today across Claude.ai, Claude Code, the Claude Agent SDK, and the Claude Developer Platform.</p>
+                <div class="translation">Agent Skills目前已在Claude.ai、Claude Code、Claude Agent SDK和Claude开发者平台上得到支持。</div>
+
+                <p>In the coming weeks, we’ll continue to add features that support the full lifecycle of creating, editing, discovering, sharing, and using Skills. We’re especially excited about the opportunity for Skills to help organizations and individuals share their context and workflows with Claude. We’ll also explore how Skills can complement Model Context Protocol (MCP) servers by teaching agents more complex workflows that involve external tools and software.</p>
+                <div class="translation">在接下来的几周，我们将继续添加支持创建、编辑、发现、共享和使用Skills完整生命周期的功能。我们特别兴奋的是，Skills有机会帮助组织和个人与Claude分享他们的上下文和工作流程。我们还将探索Skills如何通过教授智能体涉及外部工具和软件的更复杂工作流程，来补充模型上下文协议（MCP）服务器。</div>
+
+                <p>Skills are a simple concept with a correspondingly simple format. This simplicity makes it easier for organizations, developers, and end users to build customized agents and give them new capabilities.</p>
+                <div class="translation">Skills是一个简单的概念，具有相应简单的格式。这种简单性让组织、开发者和终端用户更容易构建定制化的智能体并赋予它们新的能力。</div>
             </div>
         </div>
 
