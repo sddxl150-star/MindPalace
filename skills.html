@@ -381,7 +381,7 @@
 
                 <div class="translatable-section"><p>Agents with a filesystem and code execution tools don't need to read the entirety of a skill into their context window when working on a particular task. This means that the amount of context that can be bundled into a skill is effectively unbounded.</p><div class="translation">具有文件系统和代码执行工具的代理在处理特定任务时不需要将整个技能读入其上下文窗口。这意味着可以捆绑到技能中的上下文数量实际上是无限的。</div></div>
 
-                <h3>Skills and the context window</h3><div class="translation">技能与上下文窗口</div></div>
+                <div class="translatable-section"><h3>Skills and the context window</h3><div class="translation">技能与上下文窗口</div></div>
 
                 <div class="translatable-section"><p>The following diagram shows how the context window changes when a skill is triggered by a user's message.</p><div class="translation">下图显示了当用户消息触发技能时，上下文窗口如何变化。</div></div>
 
@@ -390,17 +390,19 @@
 
                 <div class="translatable-section"><p>The sequence of operations shown:</p><div class="translation">所示的操作序列：</div></div>
 
-                <ol>
-                    <li>To start, the context window has the core system prompt and the metadata for each of the installed skills, along with the user's initial message;</li>
-                    <li>Claude triggers the PDF skill by invoking a Bash tool to read the contents of <code>pdf/SKILL.md</code>;</li>
-                    <li>Claude chooses to read the <code>forms.md</code> file bundled with the skill;</li>
-                    <li>Finally, Claude proceeds with the user's task now that it has loaded relevant instructions from the PDF skill.</li>
-                </ol>
-                <div class="translation">
-                    1. 开始时，上下文窗口包含核心系统提示和每个已安装技能的元数据，以及用户的初始消息；<br>
-                    2. Claude通过调用Bash工具读取<code>pdf/SKILL.md</code>的内容来触发PDF技能；<br>
-                    3. Claude选择读取与技能捆绑在一起的<code>forms.md</code>文件；<br>
-                    4. 最后，Claude在从PDF技能加载了相关指令后继续执行用户的任务。
+                <div class="translatable-section">
+                    <ol>
+                        <li>To start, the context window has the core system prompt and the metadata for each of the installed skills, along with the user's initial message;</li>
+                        <li>Claude triggers the PDF skill by invoking a Bash tool to read the contents of <code>pdf/SKILL.md</code>;</li>
+                        <li>Claude chooses to read the <code>forms.md</code> file bundled with the skill;</li>
+                        <li>Finally, Claude proceeds with the user's task now that it has loaded relevant instructions from the PDF skill.</li>
+                    </ol>
+                    <div class="translation">
+                        1. 开始时，上下文窗口包含核心系统提示和每个已安装技能的元数据，以及用户的初始消息；<br>
+                        2. Claude通过调用Bash工具读取<code>pdf/SKILL.md</code>的内容来触发PDF技能；<br>
+                        3. Claude选择读取与技能捆绑在一起的<code>forms.md</code>文件；<br>
+                        4. 最后，Claude在从PDF技能加载了相关指令后继续执行用户的任务。
+                    </div>
                 </div>
 
                 <div class="translatable-section"><h3>Skills and code execution</h3><div class="translation">技能与代码执行</div></div>
@@ -418,17 +420,19 @@
 
                 <div class="translatable-section"><p>Here are some helpful guidelines for getting started with authoring and testing skills:</p><div class="translation">以下是一些有助于开始创作和测试技能的指南：</div></div>
 
-                <ul>
-                    <li><strong>Start with evaluation:</strong> Identify specific gaps in your agents' capabilities by running them on representative tasks and observing where they struggle or require additional context. Then build skills incrementally to address these shortcomings.</li>
-                    <li><strong>Structure for scale:</strong> When the <code>SKILL.md</code> file becomes unwieldy, split its content into separate files and reference them. If certain contexts are mutually exclusive or rarely used together, keeping the paths separate will reduce the token usage. Finally, code can serve as both executable tools and as documentation. It should be clear whether Claude should run scripts directly or read them into context as reference.</li>
-                    <li><strong>Think from Claude's perspective:</strong> Monitor how Claude uses your skill in real scenarios and iterate based on observations: watch for unexpected trajectories or overreliance on certain contexts. Pay special attention to the <code>name</code> and <code>description</code> of your skill. Claude will use these when deciding whether to trigger the skill in response to its current task.</li>
-                    <li><strong>Iterate with Claude:</strong> As you work on a task with Claude, ask Claude to capture its successful approaches and common mistakes into reusable context and code within a skill. If it goes off track when using a skill to complete a task, ask it to self-reflect on what went wrong. This process will help you discover what context Claude actually needs, instead of trying to anticipate it upfront.</li>
-                </ul>
-                <div class="translation">
-                    <strong>从评估开始：</strong>通过在代表性任务上运行代理并观察它们在哪里遇到困难或需要额外上下文，确定代理能力的具体差距。然后逐步构建技能来解决这些缺点。<br><br>
-                    <strong>为规模而构建：</strong>当<code>SKILL.md</code>文件变得难以管理时，将其内容拆分为单独的文件并引用它们。如果某些上下文是互斥的或很少一起使用，保持路径分开将减少令牌使用。最后，代码可以同时作为可执行工具和文档。应该清楚Claude是应该直接运行脚本还是将其作为参考读入上下文。<br><br>
-                    <strong>从Claude的角度思考：</strong>监控Claude在实际场景中如何使用您的技能，并根据观察进行迭代：注意意外的轨迹或对某些上下文的过度依赖。特别注意技能的<code>name</code>和<code>description</code>。Claude在决定是否响应当前任务触发技能时会使用这些信息。<br><br>
-                    <strong>与Claude一起迭代：</strong>当您与Claude一起处理任务时，让Claude将其成功方法和常见错误捕获到技能中的可重用上下文和代码中。如果它在使用技能完成任务时偏离轨道，请让它自我反思哪里出错了。这个过程将帮助您发现Claude实际需要什么上下文，而不是提前尝试预测。
+                <div class="translatable-section">
+                    <ul>
+                        <li><strong>Start with evaluation:</strong> Identify specific gaps in your agents' capabilities by running them on representative tasks and observing where they struggle or require additional context. Then build skills incrementally to address these shortcomings.</li>
+                        <li><strong>Structure for scale:</strong> When the <code>SKILL.md</code> file becomes unwieldy, split its content into separate files and reference them. If certain contexts are mutually exclusive or rarely used together, keeping the paths separate will reduce the token usage. Finally, code can serve as both executable tools and as documentation. It should be clear whether Claude should run scripts directly or read them into context as reference.</li>
+                        <li><strong>Think from Claude's perspective:</strong> Monitor how Claude uses your skill in real scenarios and iterate based on observations: watch for unexpected trajectories or overreliance on certain contexts. Pay special attention to the <code>name</code> and <code>description</code> of your skill. Claude will use these when deciding whether to trigger the skill in response to its current task.</li>
+                        <li><strong>Iterate with Claude:</strong> As you work on a task with Claude, ask Claude to capture its successful approaches and common mistakes into reusable context and code within a skill. If it goes off track when using a skill to complete a task, ask it to self-reflect on what went wrong. This process will help you discover what context Claude actually needs, instead of trying to anticipate it upfront.</li>
+                    </ul>
+                    <div class="translation">
+                        <strong>从评估开始：</strong>通过在代表性任务上运行代理并观察它们在哪里遇到困难或需要额外上下文，确定代理能力的具体差距。然后逐步构建技能来解决这些缺点。<br><br>
+                        <strong>为规模而构建：</strong>当<code>SKILL.md</code>文件变得难以管理时，将其内容拆分为单独的文件并引用它们。如果某些上下文是互斥的或很少一起使用，保持路径分开将减少令牌使用。最后，代码可以同时作为可执行工具和文档。应该清楚Claude是应该直接运行脚本还是将其作为参考读入上下文。<br><br>
+                        <strong>从Claude的角度思考：</strong>监控Claude在实际场景中如何使用您的技能，并根据观察进行迭代：注意意外的轨迹或对某些上下文的过度依赖。特别注意技能的<code>name</code>和<code>description</code>。Claude在决定是否响应当前任务触发技能时会使用这些信息。<br><br>
+                        <strong>与Claude一起迭代：</strong>当您与Claude一起处理任务时，让Claude将其成功方法和常见错误捕获到技能中的可重用上下文和代码中。如果它在使用技能完成任务时偏离轨道，请让它自我反思哪里出错了。这个过程将帮助您发现Claude实际需要什么上下文，而不是提前尝试预测。
+                    </div>
                 </div>
 
                 <div class="translatable-section"><h3>Security considerations when using Skills</h3><div class="translation">使用技能时的安全考虑</div></div>
