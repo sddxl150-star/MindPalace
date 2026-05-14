@@ -178,7 +178,7 @@
         }
 
         .translatable-section::after {
-            content: '点击查看翻译';
+            content: attr(data-hint);
             position: absolute;
             right: 10px;
             top: 10px;
@@ -459,18 +459,40 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('.translatable-section');
-            
-            sections.forEach(section => {
-                section.addEventListener('click', function() {
-                    const translation = this.querySelector('.translation');
-                    if (translation) {
-                        translation.classList.toggle('visible');
+        (function() {
+            function setupTranslationToggle() {
+                const sections = document.querySelectorAll('.translatable-section');
+                console.log('Found translatable sections:', sections.length);
+                
+                sections.forEach((section, index) => {
+                    // 设置初始提示文字
+                    if (!section.getAttribute('data-hint')) {
+                        section.setAttribute('data-hint', '点击查看翻译');
                     }
+                    
+                    section.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const translation = this.querySelector('.translation');
+                        if (translation) {
+                            const isVisible = translation.classList.toggle('visible');
+                            console.log(`Section ${index}: translation ${isVisible ? 'shown' : 'hidden'}`);
+                            
+                            // 更新提示文字
+                            this.setAttribute('data-hint', isVisible ? '点击隐藏翻译' : '点击查看翻译');
+                        }
+                    });
                 });
-            });
-        });
+            }
+            
+            // 确保DOM加载完成
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupTranslationToggle);
+            } else {
+                setupTranslationToggle();
+            }
+        })();
     </script>
 </body>
 </html>
