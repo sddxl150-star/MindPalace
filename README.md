@@ -17,54 +17,55 @@ MindPalace 是一个综合性的知识导航网站，涵盖人工智能、大模
 
 ### 核心板块
 
-| 页面 | 文件名 | 功能描述 |
-|------|--------|----------|
-| 首页 | index.html | 网站主页，导航中心 |
-| AI基础 | ai-basics.html | AI基础知识导航与技术概念时间轴 |
-| 经典论文 | papers.html | AI领域经典论文汇总 |
-| 项目展示 | projects.html | AI相关开源项目展示 |
-| 大模型公司 | companies.html | 主要大模型公司介绍 |
-| 大模型社区 | community.html | 大模型社区资源汇总 |
+| 页面 | 文件名 | 功能描述 | 公网链接 |
+|------|--------|----------|----------|
+| 首页 | index.html | 网站主页，导航中心 | [访问](https://sddxl150-star.github.io/MindPalace/index.html) |
+| AI基础 | ai-basics.html | AI基础知识导航与技术概念时间轴 | [访问](https://sddxl150-star.github.io/MindPalace/ai-basics.html) |
+| 经典论文 | papers.html | AI领域经典论文汇总 | [访问](https://sddxl150-star.github.io/MindPalace/papers.html) |
+| 项目展示 | projects.html | AI相关开源项目展示 | [访问](https://sddxl150-star.github.io/MindPalace/projects.html) |
+| 大模型公司 | companies.html | 主要大模型公司介绍 | [访问](https://sddxl150-star.github.io/MindPalace/companies.html) |
+| 大模型社区 | community.html | 大模型社区资源汇总 | [访问](https://sddxl150-star.github.io/MindPalace/community.html) |
 
 ### Agent 开发
 
-| 页面 | 文件名 | 功能描述 |
-|------|--------|----------|
-| Agent开发 | agentdev.html | Agent开发问答和学习资料 |
-| Agent Skills | skills.html | Anthropic Claude Agent Skills 文档 |
+| 页面 | 文件名 | 功能描述 | 公网链接 |
+|------|--------|----------|----------|
+| Agent开发 | agentdev.html | Agent开发问答和学习资料 | [访问](https://sddxl150-star.github.io/MindPalace/agentdev.html) |
+| Agent Skills | skills.html | Anthropic Claude Agent Skills 文档 | [访问](https://sddxl150-star.github.io/MindPalace/skills.html) |
+| Claude Code架构 | claude-code-architecture.html | Claude Code泄露框架技术架构解析 | [访问](https://sddxl150-star.github.io/MindPalace/claude-code-architecture.html) |
 
 ### 本体与语义
 
-| 页面 | 文件名 | 功能描述 |
-|------|--------|----------|
-| 本体构建 Step 1 | dify-workflow.html | 语义测试和本体构建教程 |
-| 本体+AI | ontology-ai.html | 本体与AI结合应用 |
-| 农业本体 | ontology.html | 农业领域本体论 |
+| 页面 | 文件名 | 功能描述 | 公网链接 |
+|------|--------|----------|----------|
+| 本体构建 Step 1 | dify-workflow.html | 语义测试和本体构建教程 | [访问](https://sddxl150-star.github.io/MindPalace/dify-workflow.html) |
+| 本体+AI | ontology-ai.html | 本体与AI结合应用 | [访问](https://sddxl150-star.github.io/MindPalace/ontology-ai.html) |
+| 农业本体 | ontology.html | 农业领域本体论 | [访问](https://sddxl150-star.github.io/MindPalace/ontology.html) |
 
 ### 行业应用
 
-| 页面 | 文件名 | 功能描述 |
-|------|--------|----------|
-| AI+海洋牧场 | ocean-ranch.html | AI在海洋牧场中的应用 |
-| 流程图 | ocean-ranch-flow.html | 海洋牧场项目流程图 |
-| 农业期刊 | agriculture.html | 全球农业顶刊与顶会大全 |
-| USDA & Palantir | usda-palantir.html | USDA与Palantir合作新闻 |
-| 农业模型算法 | agriculture-models.html | GitHub开源农业AI模型精选 |
+| 页面 | 文件名 | 功能描述 | 公网链接 |
+|------|--------|----------|----------|
+| AI+海洋牧场 | ocean-ranch.html | AI在海洋牧场中的应用 | [访问](https://sddxl150-star.github.io/MindPalace/ocean-ranch.html) |
+| 流程图 | ocean-ranch-flow.html | 海洋牧场项目流程图 | [访问](https://sddxl150-star.github.io/MindPalace/ocean-ranch-flow.html) |
+| 农业期刊 | agriculture.html | 全球农业顶刊与顶会大全 | [访问](https://sddxl150-star.github.io/MindPalace/agriculture.html) |
+| USDA & Palantir | usda-palantir.html | USDA与Palantir合作新闻 | [访问](https://sddxl150-star.github.io/MindPalace/usda-palantir.html) |
+| 农业模型算法 | agriculture-models.html | GitHub开源农业AI模型精选 | [访问](https://sddxl150-star.github.io/MindPalace/agriculture-models.html) |
 
 ### 专题研究
 
-| 页面 | 文件名 | 功能描述 |
-|------|--------|----------|
-| Palantir专题 | palantir.html | Palantir公司专题介绍 |
-| Openclaw探索 | openclaw.html | Openclaw项目探索 |
-| FishTest | fishtest.html | FishTest相关测试 |
+| 页面 | 文件名 | 功能描述 | 公网链接 |
+|------|--------|----------|----------|
+| Palantir专题 | palantir.html | Palantir公司专题介绍 | [访问](https://sddxl150-star.github.io/MindPalace/palantir.html) |
+| Openclaw探索 | openclaw.html | Openclaw项目探索 | [访问](https://sddxl150-star.github.io/MindPalace/openclaw.html) |
+| FishTest | fishtest.html | FishTest相关测试 | [访问](https://sddxl150-star.github.io/MindPalace/fishtest.html) |
 
 ### 系统管理
 
-| 页面 | 文件名 | 功能描述 |
-|------|--------|----------|
-| 评论管理 | admin.html | 用户评论审核和管理后台 |
-| 离线页面 | offline.html | 离线状态提示页面 |
+| 页面 | 文件名 | 功能描述 | 公网链接 |
+|------|--------|----------|----------|
+| 评论管理 | admin.html | 用户评论审核和管理后台 | [访问](https://sddxl150-star.github.io/MindPalace/admin.html) |
+| 离线页面 | offline.html | 离线状态提示页面 | [访问](https://sddxl150-star.github.io/MindPalace/offline.html) |
 
 ---
 
