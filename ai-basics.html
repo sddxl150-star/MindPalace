@@ -521,14 +521,14 @@
         <div class="timeline-container">
             <div class="timeline-line"></div>
 
-            <!-- Timeline Item 1: LLM -->
+            <!-- Timeline Item 1: LLM (2017) -->
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
                     <span class="timeline-number">01</span>
                     <h2 class="timeline-title">LLM 大语言模型</h2>
                     <p class="timeline-subtitle">Large Language Model · 基石技术</p>
-                    <p class="timeline-date">📅 概念提出：2017年 · <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="concept-link">Transformer论文</a></p>
+                    <p class="timeline-date">📅 2017年 · <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="concept-link">Transformer论文发表</a></p>
                     <p class="timeline-description">
                         AI 技术栈的最底层基础。通过海量文本数据训练，具备强大的语言理解和生成能力。能够进行对话、写作、翻译、推理等多种任务。
                     </p>
@@ -552,14 +552,14 @@
                 </div>
             </div>
 
-            <!-- Timeline Item 2: RAG -->
+            <!-- Timeline Item 2: RAG (2020) -->
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
                     <span class="timeline-number">02</span>
                     <h2 class="timeline-title">RAG 检索增强生成</h2>
                     <p class="timeline-subtitle">Retrieval-Augmented Generation · 知识增强</p>
-                    <p class="timeline-date">📅 概念提出：2020年 · <a href="https://arxiv.org/abs/2005.11401" target="_blank" class="concept-link">原始论文</a></p>
+                    <p class="timeline-date">📅 2020年 · <a href="https://arxiv.org/abs/2005.11401" target="_blank" class="concept-link">Meta发表原始论文</a></p>
                     <p class="timeline-description">
                         解决大模型"幻觉"问题和知识时效性的关键技术。在生成回答前，先从外部知识库中检索相关信息，再结合这些信息生成更准确、更有依据的回答。
                     </p>
@@ -582,75 +582,14 @@
                 </div>
             </div>
 
-            <!-- Timeline Item 3: MCP -->
+            <!-- Timeline Item 3: Agent (2022) -->
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
                     <span class="timeline-number">03</span>
-                    <h2 class="timeline-title">MCP 模型上下文协议</h2>
-                    <p class="timeline-subtitle">Model Context Protocol · 标准化接口</p>
-                    <p class="timeline-date">📅 概念提出：2024年 · <a href="https://www.anthropic.com/index/mcp" target="_blank" class="concept-link">Anthropic官方文档</a></p>
-                    <p class="timeline-description">
-                        <a href="https://www.anthropic.com/" target="_blank" class="concept-link">Anthropic</a> 提出的开放协议，用于 AI 应用与外部工具、数据源之间的标准化通信。让 LLM 能够安全、统一地访问外部资源（文件系统、数据库、API 等）。
-                    </p>
-                    <p class="timeline-description">
-                        <strong>核心价值：</strong>类似 AI 领域的 USB 接口，一次开发，到处使用。解决 AI 应用生态碎片化问题。
-                    </p>
-                    <div class="timeline-keywords">
-                        <span class="keyword-tag"><a href="https://www.anthropic.com/" target="_blank" style="color: inherit; text-decoration: none;">Anthropic</a></span>
-                        <span class="keyword-tag">Tool Use</span>
-                        <span class="keyword-tag">Function Calling</span>
-                        <span class="keyword-tag">Server</span>
-                        <span class="keyword-tag">Client</span>
-                        <span class="keyword-tag">Resources</span>
-                        <span class="keyword-tag">Prompts</span>
-                    </div>
-                    <div class="timeline-links">
-                        <a href="https://www.anthropic.com/index/mcp" target="_blank" class="timeline-link">📖 官方文档</a>
-                        <a href="https://github.com/anthropics/mcp-server" target="_blank" class="timeline-link">🖥️ MCP Server</a>
-                        <a href="https://github.com/langchain-ai/langchain" target="_blank" class="timeline-link">🔗 LangChain MCP</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Timeline Item 4: Skill -->
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <span class="timeline-number">04</span>
-                    <h2 class="timeline-title">Skill 技能包</h2>
-                    <p class="timeline-subtitle">AI 能力封装 · 可复用组件</p>
-                    <p class="timeline-date">📅 概念提出：2024年 · <a href="https://docs.anthropic.com/claude/docs/skills" target="_blank" class="concept-link">Claude Skills官方文档</a></p>
-                    <p class="timeline-description">
-                        将特定的任务能力或专业知识打包成可复用的模块。一个 Skill 包含 <a href="https://www.promptingguide.ai/" target="_blank" class="concept-link">Prompt 模板</a>、工具配置、最佳实践等，让 AI 快速获得特定领域的专业能力。
-                    </p>
-                    <p class="timeline-description">
-                        <strong>类比：</strong>就像手机 App，每个 Skill 是一个功能模块。用户可以按需安装、组合使用不同的 Skills。
-                    </p>
-                    <div class="timeline-keywords">
-                        <span class="keyword-tag"><a href="https://www.promptingguide.ai/" target="_blank" style="color: inherit; text-decoration: none;">Prompt Template</a></span>
-                        <span class="keyword-tag">Tool Configuration</span>
-                        <span class="keyword-tag">Best Practices</span>
-                        <span class="keyword-tag"><a href="https://github.com/anthropics/claude-skills" target="_blank" style="color: inherit; text-decoration: none;">Claude Skills</a></span>
-                        <span class="keyword-tag">可复用性</span>
-                        <span class="keyword-tag">模块化</span>
-                    </div>
-                    <div class="timeline-links">
-                        <a href="https://docs.anthropic.com/claude/docs/skills" target="_blank" class="timeline-link">📖 官方文档</a>
-                        <a href="https://github.com/anthropics/claude-skills" target="_blank" class="timeline-link">💼 Skills仓库</a>
-                        <a href="https://github.com/langchain-ai/langchain" target="_blank" class="timeline-link">🔗 LangChain Tools</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Timeline Item 5: Agent -->
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <span class="timeline-number">05</span>
                     <h2 class="timeline-title">Agent 智能体</h2>
                     <p class="timeline-subtitle">Autonomous Agent · 自主决策系统</p>
-                    <p class="timeline-date">📅 概念提出：2022年 · <a href="https://arxiv.org/abs/2210.03629" target="_blank" class="concept-link">ReAct论文</a></p>
+                    <p class="timeline-date">📅 2022年 · <a href="https://arxiv.org/abs/2210.03629" target="_blank" class="concept-link">ReAct论文发表</a></p>
                     <p class="timeline-description">
                         能够自主感知环境、制定计划、执行任务、反思优化的 AI 系统。不同于简单的问答机器人，Agent 具备目标导向、多步推理、工具调用等高级能力。
                     </p>
@@ -674,14 +613,75 @@
                 </div>
             </div>
 
-            <!-- Timeline Item 6: OpenClaw -->
+            <!-- Timeline Item 4: MCP (2024) -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-number">04</span>
+                    <h2 class="timeline-title">MCP 模型上下文协议</h2>
+                    <p class="timeline-subtitle">Model Context Protocol · 标准化接口</p>
+                    <p class="timeline-date">📅 2024年 · <a href="https://www.anthropic.com/index/mcp" target="_blank" class="concept-link">Anthropic发布</a></p>
+                    <p class="timeline-description">
+                        <a href="https://www.anthropic.com/" target="_blank" class="concept-link">Anthropic</a> 提出的开放协议，用于 AI 应用与外部工具、数据源之间的标准化通信。让 LLM 能够安全、统一地访问外部资源（文件系统、数据库、API 等）。
+                    </p>
+                    <p class="timeline-description">
+                        <strong>核心价值：</strong>类似 AI 领域的 USB 接口，一次开发，到处使用。解决 AI 应用生态碎片化问题。
+                    </p>
+                    <div class="timeline-keywords">
+                        <span class="keyword-tag"><a href="https://www.anthropic.com/" target="_blank" style="color: inherit; text-decoration: none;">Anthropic</a></span>
+                        <span class="keyword-tag">Tool Use</span>
+                        <span class="keyword-tag">Function Calling</span>
+                        <span class="keyword-tag">Server</span>
+                        <span class="keyword-tag">Client</span>
+                        <span class="keyword-tag">Resources</span>
+                        <span class="keyword-tag">Prompts</span>
+                    </div>
+                    <div class="timeline-links">
+                        <a href="https://www.anthropic.com/index/mcp" target="_blank" class="timeline-link">📖 官方文档</a>
+                        <a href="https://github.com/anthropics/mcp-server" target="_blank" class="timeline-link">🖥️ MCP Server</a>
+                        <a href="https://github.com/langchain-ai/langchain" target="_blank" class="timeline-link">🔗 LangChain MCP</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 5: Skill (2024) -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-number">05</span>
+                    <h2 class="timeline-title">Skill 技能包</h2>
+                    <p class="timeline-subtitle">AI 能力封装 · 可复用组件</p>
+                    <p class="timeline-date">📅 2024年 · <a href="https://docs.anthropic.com/claude/docs/skills" target="_blank" class="concept-link">Claude Skills发布</a></p>
+                    <p class="timeline-description">
+                        将特定的任务能力或专业知识打包成可复用的模块。一个 Skill 包含 <a href="https://www.promptingguide.ai/" target="_blank" class="concept-link">Prompt 模板</a>、工具配置、最佳实践等，让 AI 快速获得特定领域的专业能力。
+                    </p>
+                    <p class="timeline-description">
+                        <strong>类比：</strong>就像手机 App，每个 Skill 是一个功能模块。用户可以按需安装、组合使用不同的 Skills。
+                    </p>
+                    <div class="timeline-keywords">
+                        <span class="keyword-tag"><a href="https://www.promptingguide.ai/" target="_blank" style="color: inherit; text-decoration: none;">Prompt Template</a></span>
+                        <span class="keyword-tag">Tool Configuration</span>
+                        <span class="keyword-tag">Best Practices</span>
+                        <span class="keyword-tag"><a href="https://github.com/anthropics/claude-skills" target="_blank" style="color: inherit; text-decoration: none;">Claude Skills</a></span>
+                        <span class="keyword-tag">可复用性</span>
+                        <span class="keyword-tag">模块化</span>
+                    </div>
+                    <div class="timeline-links">
+                        <a href="https://docs.anthropic.com/claude/docs/skills" target="_blank" class="timeline-link">📖 官方文档</a>
+                        <a href="https://github.com/anthropics/claude-skills" target="_blank" class="timeline-link">💼 Skills仓库</a>
+                        <a href="https://github.com/langchain-ai/langchain" target="_blank" class="timeline-link">🔗 LangChain Tools</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 6: OpenClaw (2024) -->
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
                     <span class="timeline-number">06</span>
                     <h2 class="timeline-title">OpenClaw / 应用框架</h2>
                     <p class="timeline-subtitle">Application Framework · 终端产品形态</p>
-                    <p class="timeline-date">📅 概念提出：2024年 · <a href="https://github.com/anthropics" target="_blank" class="concept-link">Anthropic生态项目</a></p>
+                    <p class="timeline-date">📅 2024年 · <a href="https://github.com/anthropics" target="_blank" class="concept-link">Anthropic生态项目</a></p>
                     <p class="timeline-description">
                         整合上述所有技术的完整应用平台或框架。将 <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="concept-link">LLM</a> + <a href="https://arxiv.org/abs/2005.11401" target="_blank" class="concept-link">RAG</a> + <a href="https://www.anthropic.com/index/mcp" target="_blank" class="concept-link">MCP</a> + <a href="https://docs.anthropic.com/claude/docs/skills" target="_blank" class="concept-link">Skill</a> + <a href="https://arxiv.org/abs/2210.03629" target="_blank" class="concept-link">Agent</a> 融合在一起，提供开箱即用的 AI 助手体验。
                     </p>
