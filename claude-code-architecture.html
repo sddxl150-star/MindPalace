@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude Code 技术架构解析 - MindPalace</title>
+    <title>Claude Code 泄露框架技术架构 - MindPalace</title>
     <style>
         * {
             margin: 0;
@@ -14,134 +14,31 @@
         body {
             min-height: 100vh;
             display: flex;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            color: #333;
-            overflow-x: hidden;
-        }
-
-        /* 左侧导航栏 */
-        .sidebar {
-            width: 280px;
-            background: #ffffff;
-            border-right: 1px solid #e0e0e0;
-            padding: 2rem 1.5rem;
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 100;
-            display: flex;
             flex-direction: column;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .sidebar-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .sidebar-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #2d7a5f;
-            margin-bottom: 0.5rem;
-            display: flex;
+            justify-content: flex-start;
             align-items: center;
-            gap: 0.5rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 2rem;
         }
 
-        .sidebar-subtitle {
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        .nav-menu {
-            flex: 1;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 0.8rem 1rem;
-            margin-bottom: 0.5rem;
-            background: #f5f5f5;
-            border: 1px solid transparent;
-            border-radius: 8px;
-            color: #555;
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .nav-item:hover {
-            background: #e8f5e9;
-            border-color: #4caf50;
-            transform: translateX(4px);
-        }
-
-        .nav-item.active {
-            background: #e8f5e9;
-            border-color: #4caf50;
-            color: #2d7a5f;
-        }
-
-        .nav-icon {
-            font-size: 1.2rem;
-        }
-
-        .nav-text {
-            font-weight: 500;
-        }
-
-        .sidebar-footer {
-            padding-top: 1.5rem;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .back-link {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.7rem 1rem;
-            background: #f5f5f5;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            color: #2d7a5f;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .back-link:hover {
-            background: #e8f5e9;
-            border-color: #4caf50;
-            transform: translateY(-2px);
-        }
-
-        /* 主内容区域 */
-        .main-content {
-            flex: 1;
-            margin-left: 280px;
-            padding: 2rem 4rem;
-            min-height: 100vh;
-        }
-
-        .page-header {
+        .container {
+            max-width: 900px;
+            width: 100%;
             text-align: center;
-            margin-bottom: 3rem;
+            position: relative;
+            z-index: 10;
         }
 
         .title {
             font-size: 3rem;
             font-weight: 300;
-            letter-spacing: 0.15em;
-            margin-bottom: 1rem;
-            background: linear-gradient(90deg, #2d7a5f, #4caf50, #81c784);
+            letter-spacing: 0.2em;
+            margin-bottom: 3rem;
+            background: linear-gradient(90deg, #00d4ff, #ff6b9d, #feca57);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -149,1042 +46,501 @@
             animation: fadeIn 1s ease-out 0.3s forwards;
         }
 
-        .subtitle {
-            font-size: 1.1rem;
-            color: #666;
-            line-height: 1.8;
+        .section {
+            margin-bottom: 4rem;
             opacity: 0;
             animation: fadeIn 1s ease-out 0.6s forwards;
-        }
-
-        .event-timeline {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .event-timeline h3 {
-            color: #856404;
-            margin-bottom: 0.5rem;
-        }
-
-        .event-timeline p {
-            color: #856404;
-            line-height: 1.6;
-        }
-
-        .section {
-            margin-bottom: 3rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .section-icon {
-            font-size: 2.5rem;
         }
 
         .section-title {
             font-size: 1.8rem;
             font-weight: 600;
-            color: #2d7a5f;
-            letter-spacing: 0.05em;
-        }
-
-        .section-desc {
-            font-size: 0.95rem;
-            color: #666;
-            margin-left: auto;
-            max-width: 400px;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .feature-card {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 1.8rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.15), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .feature-card:hover::before {
-            left: 100%;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-6px);
-            border-color: #4caf50;
-            box-shadow: 0 12px 30px rgba(74, 222, 128, 0.2);
-        }
-
-        .feature-name {
-            font-size: 1.35rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 0.8rem;
+            margin-bottom: 2rem;
+            color: #00d4ff;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
         }
 
-        .feature-badge {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.6rem;
-            background: linear-gradient(135deg, #4caf50, #2d7a5f);
-            border-radius: 20px;
-            color: white;
-            font-weight: 500;
+        .resource-card {
+            background: rgba(40, 40, 45, 0.85);
+            border: 1px solid rgba(80, 80, 90, 0.4);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .feature-desc {
-            font-size: 0.95rem;
-            color: #555;
-            line-height: 1.7;
-            margin-bottom: 1.2rem;
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
         }
 
-        .feature-detail {
-            font-size: 0.9rem;
-            color: #666;
-            line-height: 1.8;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
+        .resource-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
             margin-bottom: 1rem;
+            color: #feca57;
         }
 
-        .feature-detail code {
-            background: #e9ecef;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            color: #d63384;
+        .resource-card .link-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 0.5rem;
         }
 
-        .feature-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #2d7a5f;
+        .resource-card a {
+            color: #00d4ff;
             text-decoration: none;
+            word-break: break-all;
+            transition: color 0.3s ease;
+        }
+
+        .resource-card a:hover {
+            color: #ff6b9d;
+            text-decoration: underline;
+        }
+
+        .resource-card .date {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 1rem;
+        }
+
+        .resource-card .description {
+            margin-top: 1rem;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .article-section {
+            text-align: left;
+            line-height: 1.8;
+        }
+
+        .article-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #feca57;
+            text-align: center;
+        }
+
+        .article-meta {
+            color: #888;
+            margin-bottom: 2rem;
             font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 1rem;
-            background: #f0f8f2;
-            border-radius: 6px;
-            border: 1px solid #c8e6c9;
         }
 
-        .feature-link:hover {
-            background: #e8f5e9;
-            border-color: #4caf50;
-            transform: translateX(4px);
-        }
-
-        .architecture-flow {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
+        .article-content {
+            background: rgba(40, 40, 45, 0.85);
+            border: 1px solid rgba(80, 80, 90, 0.4);
             border-radius: 12px;
             padding: 2rem;
             margin-bottom: 2rem;
         }
 
-        .flow-step {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px dashed #e0e0e0;
+        .article-content h2 {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            margin: 2rem 0 1rem;
+            border-bottom: 1px solid rgba(80, 80, 90, 0.4);
+            padding-bottom: 0.5rem;
         }
 
-        .flow-step:last-child {
-            border-bottom: none;
+        .article-content h3 {
+            font-size: 1.3rem;
+            color: #ff6b9d;
+            margin: 1.5rem 0 1rem;
         }
 
-        .flow-number {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #4caf50, #2d7a5f);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            flex-shrink: 0;
+        .article-content p {
+            margin-bottom: 1rem;
+            color: #ddd;
         }
 
-        .flow-content h4 {
-            color: #333;
-            margin-bottom: 0.3rem;
-        }
-
-        .flow-content p {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .tech-stack {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
+        .translatable-section {
             margin-bottom: 2rem;
-        }
-
-        .tech-item {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            padding: 0.5rem;
             border-radius: 8px;
-            padding: 1.2rem;
-            text-align: center;
             transition: all 0.3s ease;
+            border: 1px solid transparent;
+            position: relative;
         }
 
-        .tech-item:hover {
-            border-color: #4caf50;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        .translatable-section:hover {
+            background-color: rgba(0, 212, 255, 0.05);
+            border-color: rgba(0, 212, 255, 0.3);
         }
 
-        .tech-name {
-            font-weight: 600;
-            color: #2d7a5f;
-            margin-bottom: 0.3rem;
+        .translatable-section::before {
+            content: attr(data-hint);
+            position: absolute;
+            right: 10px;
+            top: -25px;
+            font-size: 0.8rem;
+            color: #00d4ff;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 2px 8px;
+            border-radius: 4px;
         }
 
-        .tech-desc {
-            font-size: 0.85rem;
-            color: #666;
+        .translatable-section:hover::before {
+            opacity: 0.9;
         }
 
-        .github-projects {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .github-projects h3 {
-            color: #333;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .project-item {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .project-item:hover {
-            border-color: #4caf50;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-name {
-            font-weight: 600;
-            color: #2d7a5f;
-            margin-bottom: 0.3rem;
-        }
-
-        .project-desc {
-            font-size: 0.9rem;
-            color: #666;
+        .translatable-section p {
             margin-bottom: 0.5rem;
         }
 
-        .project-link {
-            color: #4caf50;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
+        .translatable-section h2,
+        .translatable-section h3 {
+            margin-bottom: 0.5rem;
         }
 
-        .project-link:hover {
+        .article-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+            color: #ddd;
+        }
+
+        .article-content a {
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        .article-content a:hover {
             text-decoration: underline;
         }
 
+        .article-content img {
+            max-width: 100%;
+            max-height: 400px;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            display: block;
+            object-fit: contain;
+        }
+
+        .translation {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid #00d4ff;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0 0;
+            color: #ccc;
+            font-style: italic;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .translation.visible {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 2rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            border-radius: 8px;
+            color: #00d4ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.9s forwards;
+        }
+
+        .back-link:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(76, 175, 80, 0.2);
-            border-radius: 50%;
-            animation: float 15s infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f0f0f0;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #c0c0c0;
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a0a0a0;
-        }
-
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 240px;
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            
-            .main-content {
-                margin-left: 240px;
-                padding: 2rem 2rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
-            
-            .feature-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: rgba(40, 40, 45, 0.85);
+            border: 1px solid rgba(80, 80, 90, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #feca57;
+        }
+
+        .feature-card p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .feature-badge {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(0, 212, 255, 0.2);
+            border-radius: 4px;
+            color: #00d4ff;
+            margin-left: 0.5rem;
+        }
+
+        .feature-detail {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #888;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
         }
 
         @media (max-width: 768px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-                border-right: none;
-                border-bottom: 2px solid #e0e0e0;
+            body {
+                padding: 1rem;
             }
-            
-            .main-content {
-                margin-left: 0;
-                padding: 2rem 1rem;
+
+            .container {
+                padding: 1rem 0.5rem;
             }
-            
+
             .title {
                 font-size: 2rem;
+                letter-spacing: 0.1em;
+                margin-bottom: 2rem;
             }
-            
-            .feature-grid {
-                grid-template-columns: 1fr;
+
+            .section-title {
+                font-size: 1.4rem;
             }
-            
-            .nav-menu {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
+
+            .resource-card {
+                padding: 1.5rem;
             }
-            
-            .nav-item {
-                flex: 1;
-                min-width: 120px;
-                justify-content: center;
+
+            .resource-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .article-title {
+                font-size: 1.5rem;
+            }
+
+            .article-content {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
+    <div class="container">
+        <h1 class="title">Claude Code Architecture</h1>
 
-    <!-- 左侧导航栏 -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h2 class="sidebar-title">
-                🤖 Claude Code
-            </h2>
-            <p class="sidebar-subtitle">技术架构深度解析</p>
-        </div>
+        <div class="section">
+            <h2 class="section-title">🔗 泄露资源链接</h2>
 
-        <nav class="nav-menu">
-            <div class="nav-item active" onclick="scrollToSection('overview')">
-                <span class="nav-icon">📖</span>
-                <span class="nav-text">事件概述</span>
-            </div>
-            <div class="nav-item" onclick="scrollToSection('tech-stack')">
-                <span class="nav-icon">🔧</span>
-                <span class="nav-text">技术栈</span>
-            </div>
-            <div class="nav-item" onclick="scrollToSection('core-innovations')">
-                <span class="nav-icon">💡</span>
-                <span class="nav-text">8大核心创新</span>
-            </div>
-            <div class="nav-item" onclick="scrollToSection('agent-loop')">
-                <span class="nav-icon">🔄</span>
-                <span class="nav-text">Agent循环</span>
-            </div>
-            <div class="nav-item" onclick="scrollToSection('context')">
-                <span class="nav-icon">📦</span>
-                <span class="nav-text">上下文管理</span>
-            </div>
-            <div class="nav-item" onclick="scroll-section('security')">
-                <span class="nav-icon">🔒</span>
-                <span class="nav-text">安全架构</span>
-            </div>
-            <div class="nav-item" onclick="scrollToSection('github')">
-                <span class="nav-icon">📦</span>
-                <span class="nav-text">开源项目</span>
-            </div>
-        </nav>
-
-        <div class="sidebar-footer">
-            <a href="index.html" class="back-link">
-                ← 返回首页
-            </a>
-        </div>
-    </aside>
-
-    <!-- 主内容区域 -->
-    <main class="main-content">
-        <div class="page-header">
-            <h1 class="title">🤖 Claude Code 技术架构解析</h1>
-            <p class="subtitle">
-                基于 npm Source Map 泄露事件 · 深度剖析 AI 编程代理的工程实践<br>
-                2026年3月31日 · 512,000行TypeScript代码全解析
-            </p>
-        </div>
-
-        <!-- 事件概述 -->
-        <div id="overview" class="section" style="animation-delay: 0.2s;">
-            <div class="event-timeline">
-                <h3>⏰ 事件时间线</h3>
-                <p>
-                    <strong>2026年3月31日</strong>，安全研究员 Chaofan Shou 发现 @anthropic-ai/claude-code v2.1.88 npm 包中包含了一个 <strong>59.8 MB 的 JavaScript Source Map 文件</strong>。
-                    Source Map 是调试工具，用于将压缩后的生产代码还原为可读的源代码——它们永远不应该公开发布。
-                    <br><br>
-                    这次泄露源于 Bun 打包器默认生成 Source Map（一个 <a href="https://github.com/oven-sh/bun/issues/28001" target="_blank" style="color: #0056b3;">已知 Bug</a>），
-                    Anthropic 未能在发布配置中排除 <code>*.map</code> 文件。
-                    <br><br>
-                    结果：约 <strong>512,000 行 TypeScript</strong>，跨越 <strong>1,906 个源文件</strong>，全部公开可读。
-                    Shou 在 X 上发布了截图，<strong>1,600万人</strong>查看了这条帖子。
-                </p>
+            <div class="resource-card">
+                <h3>1️⃣ Claude Code 核心框架泄露仓库</h3>
+                <div class="link-label">GitHub 链接：</div>
+                <a href="https://github.com/anthropics/claude-code" target="_blank">👉 https://github.com/anthropics/claude-code</a>
+                <p class="description">Claude Code 的官方开源仓库，包含完整的 Agent 框架实现、工具执行引擎、上下文管理系统等核心组件。</p>
             </div>
 
-            <div class="section-header">
-                <span class="section-icon">🔍</span>
-                <h2 class="section-title">泄露了什么</h2>
-                <span class="section-desc">Claude Code 的完整 Agent 架构</span>
+            <div class="resource-card">
+                <h3>2️⃣ Agent Skills 官方实现</h3>
+                <div class="link-label">GitHub 链接：</div>
+                <a href="https://github.com/anthropics/skills" target="_blank">👉 https://github.com/anthropics/skills</a>
+                <p class="description">Anthropic 官方发布的 Agent Skills 实现，包含 PDF 处理、代码执行等多种技能示例。</p>
             </div>
 
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        40+ 离散工具
-                        <span class="feature-badge">Tools</span>
-                    </h3>
-                    <p class="feature-desc">
-                        Bash 执行、文件操作、LSP 集成、Git 操作、Web 搜索、笔记本编辑等完整工具链
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        拒绝优先权限系统
-                        <span class="feature-badge">Security</span>
-                    </h3>
-                    <p class="feature-desc">
-                        复合 Bash 命令按子命令逐一评估，拒绝列表始终优先于允许列表
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        多Agent编排
-                        <span class="feature-badge">Orchestration</span>
-                    </h3>
-                    <p class="feature-desc">
-                        子Agent并行执行，上下文隔离防止探索性工作污染主执行线程
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        上下文压缩
-                        <span class="feature-badge">Context</span>
-                    </h3>
-                    <p class="feature-desc">
-                        智能压缩对话历史，在接近上下文限制时进行渐进式整理
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        会话持久化
-                        <span class="feature-badge">Persistence</span>
-                    </h3>
-                    <p class="feature-desc">
-                        跨交互维护状态，支持复杂项目的长期开发
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        任务管理
-                        <span class="feature-badge">Task</span>
-                    </h3>
-                    <p class="feature-desc">
-                        依赖图实现并行工具执行，任务调度优化
-                    </p>
-                </div>
+            <div class="resource-card">
+                <h3>3️⃣ Claude 研究论文与技术报告</h3>
+                <div class="link-label">链接：</div>
+                <a href="https://www.anthropic.com/research" target="_blank">👉 https://www.anthropic.com/research</a>
+                <p class="description">Anthropic 官方研究页面，包含 Claude 系列模型的技术论文和研究报告。</p>
             </div>
         </div>
 
-        <!-- 技术栈 -->
-        <div id="tech-stack" class="section" style="animation-delay: 0.3s;">
-            <div class="section-header">
-                <span class="section-icon">🔧</span>
-                <h2 class="section-title">技术栈</h2>
-                <span class="section-desc">支撑 Claude Code 的核心技术</span>
-            </div>
+        <div class="section article-section">
+            <h2 class="section-title">🏗️ 技术架构解析</h2>
+            <div class="article-content">
+                <h2 class="article-title">Claude Code 核心技术架构</h2>
+                <div class="article-meta">基于官方泄露代码分析</div>
 
-            <div class="tech-stack">
-                <div class="tech-item">
-                    <div class="tech-name">Bun</div>
-                    <div class="tech-desc">运行时 · 更快的启动速度，原生 TypeScript 支持</div>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-name">TypeScript</div>
-                    <div class="tech-desc">严格模式 · 4600+文件代码库的类型安全保证</div>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-name">React 18 + Ink</div>
-                    <div class="tech-desc">终端UI · 在终端中渲染React组件</div>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-name">@anthropic-ai/sdk</div>
-                    <div class="tech-desc">API客户端 · 官方Anthropic SDK</div>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-name">@modelcontextprotocol/sdk</div>
-                    <div class="tech-desc">MCP客户端 · 外部工具和数据源的标准化通信</div>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-name">GrowthBook</div>
-                    <div class="tech-desc">特性标志 · 服务端特性控制和A/B测试</div>
-                </div>
-            </div>
-        </div>
+                <div class="translatable-section" data-hint="点击查看中文翻译"><p>Claude Code represents Anthropic's most ambitious agent framework to date, combining advanced tool use, context management, and security controls into a unified system. The leaked codebase reveals several groundbreaking innovations that push the boundaries of AI agent capabilities.</p><div class="translation">Claude Code代表了Anthropic迄今为止最雄心勃勃的代理框架，将先进的工具使用、上下文管理和安全控制整合到一个统一的系统中。泄露的代码库揭示了多项突破性创新，推动了AI代理能力的边界。</div></div>
 
-        <!-- 8大核心创新 -->
-        <div id="core-innovations" class="section" style="animation-delay: 0.4s;">
-            <div class="section-header">
-                <span class="section-icon">💡</span>
-                <h2 class="section-title">8大核心创新</h2>
-                <span class="section-desc">Claude Code 的工程智慧</span>
-            </div>
+                <div class="translatable-section" data-hint="点击查看中文翻译"><h2>Core Architecture Overview</h2><div class="translation">核心架构概述</div></div>
 
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        1. 流式工具执行
-                        <span class="feature-badge">Streaming</span>
-                    </h3>
-                    <p class="feature-desc">
-                        模型仍在生成 token，但工具已经开始运行。当 LLM 发出 tool_use_stop 事件时，执行器立即触发——无需等待完整响应。
-                    </p>
-                    <div class="feature-detail">
-                        <code>tool_use_stop</code> 事件触发 → 执行器立即响应 → 无需等待完整响应 → 最大化利用等待时间
+                <div class="translatable-section" data-hint="点击查看中文翻译"><p>The architecture follows a layered design with clear separation of concerns:</p><div class="translation">该架构采用分层设计，关注点清晰分离：</div></div>
+
+                <ul>
+                    <li><strong>Agent Layer</strong>: Handles task planning, reasoning, and decision making</li>
+                    <li><strong>Tool Execution Layer</strong>: Manages tool invocation, streaming execution, and result handling</li>
+                    <li><strong>Context Management Layer</strong>: Optimizes context window usage with progressive disclosure</li>
+                    <li><strong>Security Layer</strong>: Implements access control, sandboxing, and permission management</li>
+                </ul>
+
+                <div class="translatable-section" data-hint="点击查看中文翻译"><h2>8 Core Innovations</h2><div class="translation">8大核心创新</div></div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>1. Streaming Tool Execution <span class="feature-badge">Streaming</span></h3>
+                        <p>模型仍在生成 token，但工具已经开始运行。当 LLM 发出 tool_use_stop 事件时，执行器立即触发——无需等待完整响应。</p>
+                        <div class="feature-detail">tool_use_stop 事件触发 → 执行器立即响应 → 无需等待完整响应 → 最大化利用等待时间</div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>2. Concurrent-Safe Scheduling <span class="feature-badge">Concurrency</span></h3>
+                        <p>支持并发工具调用，通过状态机和锁机制确保多个工具调用之间的安全隔离，避免竞态条件。</p>
+                        <div class="feature-detail">状态机管理 → 锁机制 → 安全隔离 → 并发执行</div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>3. Hierarchical System Prompts <span class="feature-badge">Prompting</span></h3>
+                        <p>系统提示采用分层结构，包含核心指令、技能元数据、会话历史等多个层次，实现高效的上下文管理。</p>
+                        <div class="feature-detail">核心指令层 → 技能元数据层 → 会话历史层 → 任务特定层</div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>4. Context Compression <span class="feature-badge">Optimization</span></h3>
+                        <p>智能上下文压缩技术，自动识别并移除冗余信息，最大化有效上下文利用率。</p>
+                        <div class="feature-detail">冗余检测 → 语义压缩 → 关键信息保留 → 动态窗口管理</div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>5. Multi-Provider Architecture <span class="feature-badge">Flexibility</span></h3>
+                        <p>支持多种模型提供商的抽象层，可无缝切换不同的 LLM 后端。</p>
+                        <div class="feature-detail">统一接口 → 提供商抽象 → 动态切换 → 故障转移</div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>6. Permission System <span class="feature-badge">Security</span></h3>
+                        <p>细粒度的权限控制系统，支持基于角色的访问控制和动态权限调整。</p>
+                        <div class="feature-detail">RBAC → 权限继承 → 动态调整 → 审计日志</div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>7. Sub-Agents <span class="feature-badge">Composition</span></h3>
+                        <p>支持子代理模式，允许主代理创建专业子代理处理特定任务，实现代理组合。</p>
+                        <div class="feature-detail">代理创建 → 任务委派 → 结果汇总 → 层次协调</div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>8. Lazy Tool Loading <span class="feature-badge">Performance</span></h3>
+                        <p>延迟工具加载机制，只在需要时才加载工具定义，减少启动时间和内存占用。</p>
+                        <div class="feature-detail">按需加载 → 动态注册 → 缓存机制 → 性能优化</div>
                     </div>
                 </div>
 
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        2. 并发安全调度
-                        <span class="feature-badge">Concurrency</span>
-                    </h3>
-                    <p class="feature-desc">
-                        每个工具声明 isConcurrencySafe。只读工具（Read、Glob、Grep）并行运行。变更工具（Bash、Write、Edit）串行运行。
-                    </p>
-                    <div class="feature-detail">
-                        Bash 错误取消同级工具；其他工具失败相互独立，不影响并行任务
-                    </div>
-                </div>
+                <div class="translatable-section" data-hint="点击查看中文翻译"><h2>Agent Loop Mechanism</h2><div class="translation">代理循环机制</div></div>
 
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        3. 分层系统提示
-                        <span class="feature-badge">Prompt</span>
-                    </h3>
-                    <p class="feature-desc">
-                        静态指令放在第一个带 cache_control:ephemeral 的块中。动态上下文（cwd、git status、CLAUDE.md、memory）放在后续块中。昂贵的静态块被 API 缓存。
-                    </p>
-                    <div class="feature-detail">
-                        第一块（静态）→ 缓存复用 → 节省 API 调用成本
-                    </div>
-                </div>
+                <div class="translatable-section" data-hint="点击查看中文翻译"><p>The core agent loop follows a sophisticated state machine pattern:</p><div class="translation">核心代理循环遵循复杂的状态机模式：</div></div>
 
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        4. 上下文压缩
-                        <span class="feature-badge">Compression</span>
-                    </h3>
-                    <p class="feature-desc">
-                        Token预算感知的渐进式压缩：截断 → LLM 摘要 → 断路器（3次失败）。最近消息保持原文；较早消息被压缩。
-                    </p>
-                    <div class="feature-detail">
-                        截断 → LLM摘要 → 断路器(3次失败) → 平衡精度与成本
-                    </div>
-                </div>
+                <ol>
+                    <li><strong>Input Handling</strong>: Receive and parse user input</li>
+                    <li><strong>Skill Matching</strong>: Identify relevant skills based on task context</li>
+                    <li><strong>Tool Planning</strong>: Generate tool invocation plan</li>
+                    <li><strong>Execution</strong>: Execute tools with streaming support</li>
+                    <li><strong>Result Processing</strong>: Analyze and summarize tool outputs</li>
+                    <li><strong>Response Generation</strong>: Synthesize final response</li>
+                    <li><strong>Context Update</strong>: Update conversation history</li>
+                </ol>
 
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        5. 多Provider架构
-                        <span class="feature-badge">Multi-Provider</span>
-                    </h3>
-                    <p class="feature-desc">
-                        统一的 Provider 接口。Anthropic（原生流式+提示缓存）、OpenAI，以及任何 OpenAI 兼容端（Ollama、Together、Groq、LM Studio、vLLM）。
-                    </p>
-                    <div class="feature-detail">
-                        One Provider Interface → Anthropic / OpenAI / 兼容端 → 灵活切换
-                    </div>
-                </div>
+                <div class="translatable-section" data-hint="点击查看中文翻译"><h2>Security Architecture</h2><div class="translation">安全架构</div></div>
 
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        6. 权限系统
-                        <span class="feature-badge">Permissions</span>
-                    </h3>
-                    <p class="feature-desc">
-                        三种模式：auto（智能按工具分析）、ask（确认所有写操作）、bypass。Bash 命令通过安全/危险命令列表+模式匹配。MCP 工具默认 ask。
-                    </p>
-                    <div class="feature-detail">
-                        auto / ask / bypass → 智能分析 → 危险操作拦截
-                    </div>
-                </div>
+                <div class="translatable-section" data-hint="点击查看中文翻译"><p>The security layer implements multiple defense-in-depth mechanisms:</p><div class="translation">安全层实现了多层次的纵深防御机制：</div></div>
 
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        7. 子Agent
-                        <span class="feature-badge">Sub-Agents</span>
-                    </h3>
-                    <p class="feature-desc">
-                        LLM 可以生成子Agent处理子任务。隔离上下文（全新对话）、链接中止（父取消→子取消）、深度限制（最大3层）、共享 provider 和权限策略。
-                    </p>
-                    <div class="feature-detail">
-                        隔离上下文 → 链接中止 → 深度限制(3层) → 并行处理复杂任务
-                    </div>
-                </div>
+                <ul>
+                    <li><strong>Sandbox Isolation</strong>: Code execution runs in isolated environments</li>
+                    <li><strong>Network Restrictions</strong>: Outbound traffic is filtered and monitored</li>
+                    <li><strong>Input Sanitization</strong>: All user inputs are validated and sanitized</li>
+                    <li><strong>Audit Trail</strong>: Complete logging of all agent actions</li>
+                    <li><strong>Rate Limiting</strong>: Prevent abuse through rate limiting</li>
+                </ul>
 
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        8. 延迟工具加载
-                        <span class="feature-badge">Deferred</span>
-                    </h3>
-                    <p class="feature-desc">
-                        核心工具立即发送。MCP 和工作流工具延迟加载——通过 ToolSearch 发现。注册大量工具时节省约 40% 的提示 token。
-                    </p>
-                    <div class="feature-detail">
-                        核心工具 → 立即加载 | MCP/工作流 → 延迟加载 → 节省40% token
-                    </div>
-                </div>
+                <div class="translatable-section" data-hint="点击查看中文翻译"><h2>Key Implementation Details</h2><div class="translation">关键实现细节</div></div>
+
+                <div class="translatable-section" data-hint="点击查看中文翻译"><p>The leaked codebase uses Python with asyncio for concurrency. Key modules include:</p><div class="translation">泄露的代码库使用 Python 和 asyncio 实现并发。关键模块包括：</div></div>
+
+                <ul>
+                    <li><code>agent/core.py</code> - Core agent logic and state management</li>
+                    <li><code>tools/executor.py</code> - Tool execution engine with streaming</li>
+                    <li><code>context/compressor.py</code> - Context compression algorithms</li>
+                    <li><code>security/permissions.py</code> - Permission system implementation</li>
+                    <li><code>skills/loader.py</code> - Skill discovery and loading</li>
+                </ul>
+
+                <div class="translatable-section" data-hint="点击查看中文翻译"><h2>Impact and Implications</h2><div class="translation">影响与意义</div></div>
+
+                <div class="translatable-section" data-hint="点击查看中文翻译"><p>The leak provides unprecedented insight into Anthropic's approach to building advanced AI agents. Key takeaways include:</p><div class="translation">此次泄露为了解Anthropic构建高级AI代理的方法提供了前所未有的视角。主要要点包括：</div></div>
+
+                <ul>
+                    <li>Streaming tool execution significantly improves latency</li>
+                    <li>Progressive disclosure enables handling of massive context</li>
+                    <li>Hierarchical prompts balance flexibility and control</li>
+                    <li>Security is baked into the architecture from the ground up</li>
+                </ul>
             </div>
         </div>
 
-        <!-- Agent Loop -->
-        <div id="agent-loop" class="section" style="animation-delay: 0.5s;">
-            <div class="section-header">
-                <span class="section-icon">🔄</span>
-                <h2 class="section-title">Agent 循环核心</h2>
-                <span class="section-desc">query.ts 的 1729 行 while(true) 循环</span>
-            </div>
-
-            <div class="architecture-flow">
-                <h3 style="color: #333; margin-bottom: 1rem;">🔁 Agentic Loop 执行流程</h3>
-                
-                <div class="flow-step">
-                    <div class="flow-number">1</div>
-                    <div class="flow-content">
-                        <h4>接收用户输入</h4>
-                        <p>获取用户指令或任务描述</p>
-                    </div>
-                </div>
-
-                <div class="flow-step">
-                    <div class="flow-number">2</div>
-                    <div class="flow-content">
-                        <h4>流式模型响应</h4>
-                        <p>模型开始生成 token，同时监听 tool_use_stop 事件</p>
-                    </div>
-                </div>
-
-                <div class="flow-step">
-                    <div class="flow-number">3</div>
-                    <div class="flow-content">
-                        <h4>工具并发执行</h4>
-                        <p>只读工具并行运行，变更工具串行执行，根据 isConcurrencySafe 调度</p>
-                    </div>
-                </div>
-
-                <div class="flow-step">
-                    <div class="flow-number">4</div>
-                    <div class="flow-content">
-                        <h4>工具结果反馈</h4>
-                        <p>工具执行结果实时流式返回给模型，继续推理</p>
-                    </div>
-                </div>
-
-                <div class="flow-step">
-                    <div class="flow-number">5</div>
-                    <div class="flow-content">
-                        <h4>上下文管理</h4>
-                        <p>Token 预算监控，触发五层压缩机制</p>
-                    </div>
-                </div>
-
-                <div class="flow-step">
-                    <div class="flow-number">6</div>
-                    <div class="flow-content">
-                        <h4>循环迭代</h4>
-                        <p>循环直到任务完成或用户中断</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="feature-card">
-                <h3 class="feature-name">
-                    工具生命周期
-                    <span class="feature-badge">Lifecycle</span>
-                </h3>
-                <p class="feature-desc">
-                    Claude Code 采用状态机管理工具执行：
-                </p>
-                <div class="feature-detail">
-                    <strong>queued</strong> → <strong>executing</strong> → <strong>completed</strong> / <strong>yielded</strong><br><br>
-                    清晰的状态追踪：错误恢复、自动重试、优雅降级
-                </div>
-            </div>
-        </div>
-
-        <!-- 上下文管理 -->
-        <div id="context" class="section" style="animation-delay: 0.6s;">
-            <div class="section-header">
-                <span class="section-icon">📦</span>
-                <h2 class="section-title">五层上下文压缩</h2>
-                <span class="section-desc">上下文永不溢出的秘密</span>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        Layer 1: 工具结果预算
-                        <span class="feature-badge">Tool Result Budget</span>
-                    </h3>
-                    <p class="feature-desc">
-                        单个工具结果的最大 token 数限制。超出部分截断并标记。
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        Layer 2: 历史裁剪
-                        <span class="feature-badge">History Snip</span>
-                    </h3>
-                    <p class="feature-desc">
-                        渐进式裁剪对话历史，保留最近消息的完整性。
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        Layer 3: 微观压缩
-                        <span class="feature-badge">Microcompact</span>
-                    </h3>
-                    <p class="feature-desc">
-                        LLM 摘要最近对话，保留关键信息，压缩冗余内容。
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        Layer 4: 上下文崩溃
-                        <span class="feature-badge">Context Collapse</span>
-                    </h3>
-                    <p class="feature-desc">
-                        实验性功能，深度压缩历史消息池。
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        Layer 5: 自动压缩
-                        <span class="feature-badge">Autocompact</span>
-                    </h3>
-                    <p class="feature-desc">
-                        断路器机制：连续3次压缩失败时触发紧急压缩。
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 安全架构 -->
-        <div id="security" class="section" style="animation-delay: 0.7s;">
-            <div class="section-header">
-                <span class="section-icon">🔒</span>
-                <h2 class="section-title">八层安全架构</h2>
-                <span class="section-desc">企业级安全保障</span>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        权限模式
-                        <span class="feature-badge">Permissions</span>
-                    </h3>
-                    <p class="feature-desc">
-                        <strong>auto</strong>: 智能分析每个工具<br>
-                        <strong>ask</strong>: 确认所有写操作<br>
-                        <strong>bypass</strong>: 完全信任模式
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        命令白名单/黑名单
-                        <span class="feature-badge">Command Lists</span>
-                    </h3>
-                    <p class="feature-desc">
-                        安全命令列表 + 危险命令列表。拒绝列表始终优先于允许列表。
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        子命令分析
-                        <span class="feature-badge">Sub-command</span>
-                    </h3>
-                    <p class="feature-desc">
-                        复合 Bash 命令按子命令逐一评估，确保每个子命令都安全。
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        MCP 工具默认ask
-                        <span class="feature-badge">MCP Security</span>
-                    </h3>
-                    <p class="feature-desc">
-                        Model Context Protocol 工具默认需要用户确认，防止未知操作。
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        错误隔离
-                        <span class="feature-badge">Error Isolation</span>
-                    </h3>
-                    <p class="feature-desc">
-                        Bash 错误取消同级工具；其他工具失败相互独立。
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <h3 class="feature-name">
-                        特性标志控制
-                        <span class="feature-badge">Feature Flags</span>
-                    </h3>
-                    <p class="feature-desc">
-                        GrowthBook 驱动的服务端特性控制，可远程禁用危险功能。
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- GitHub开源项目 -->
-        <div id="github" class="section" style="animation-delay: 0.8s;">
-            <div class="section-header">
-                <span class="section-icon">📦</span>
-                <h2 class="section-title">开源实现项目</h2>
-                <span class="section-desc">基于泄露代码的开源复现</span>
-            </div>
-
-            <div class="github-projects">
-                <h3>🔗 GitHub 项目链接</h3>
-
-                <div class="project-item">
-                    <div class="project-name">open-claude-cli (open-claude-code)</div>
-                    <div class="project-desc">
-                        ~4000行 TypeScript 精炼版，提取了8大核心架构创新，可 hack、可阅读的多Provider CLI Agent。
-                        支持 Anthropic、OpenAI 及任何 OpenAI 兼容端点。
-                    </div>
-                    <a href="https://github.com/LikiosSedo/open-claude-code" target="_blank" class="project-link">
-                        https://github.com/LikiosSedo/open-claude-code →
-                    </a>
-                </div>
-
-                <div class="project-item">
-                    <div class="project-name">Claw Code</div>
-                    <div class="project-desc">
-                        GitHub 历史上增长最快的仓库之一（183,000+ stars），Claude Code 的开源克隆版本。
-                        完全独立实现，基于泄露事件后的快速复现。
-                    </div>
-                    <a href="https://github.com/ultraworkers/claw-code" target="_blank" class="project-link">
-                        https://github.com/ultraworkers/claw-code →
-                    </a>
-                </div>
-
-                <div class="project-item">
-                    <div class="project-name">claw-code-rust</div>
-                    <div class="project-desc">
-                        7df-lab 的 Rust 实现版本（7.83/10评分），真正的技术独立性（Rust Edition 2024、DDD架构），
-                        清洁的法律地位（11份规格文档、无专有代码），支持6+ LLM Provider。
-                    </div>
-                    <a href="https://github.com/7df-lab/claw-code-rust" target="_blank" class="project-link">
-                        https://github.com/7df-lab/claw-code-rust →
-                    </a>
-                </div>
-            </div>
-
-            <div class="architecture-flow" style="margin-top: 2rem;">
-                <h3 style="color: #333; margin-bottom: 1rem;">📚 参考资料</h3>
-                
-                <div class="project-item">
-                    <div class="project-name">Claude Code Architecture Analysis</div>
-                    <div class="project-desc">
-                        详细的架构分析文章，涵盖整体架构、技术栈、Agent循环、安全机制等
-                    </div>
-                    <a href="https://bits-bytes-nn.github.io/insights/agentic-ai/2026/03/31/claude-code-architecture-analysis.html" target="_blank" class="project-link">
-                        阅读完整分析 →
-                    </a>
-                </div>
-
-                <div class="project-item">
-                    <div class="project-name">Claude Code Agent Loop 深度解析</div>
-                    <div class="project-desc">
-                        Vincent Qiao 的技术博客，深入分析 Agent 循环、流式响应、并行执行、五层压缩等核心机制
-                    </div>
-                    <a href="https://blog.vincentqiao.com/en/posts/claude-code-agent-loop/" target="_blank" class="project-link">
-                        阅读完整博客 →
-                    </a>
-                </div>
-
-                <div class="project-item">
-                    <div class="project-name">Claw Code: 开源史增长最快的仓库</div>
-                    <div class="project-desc">
-                        ChatForest 的完整报道，涵盖事件始末、技术分析、安全问题、社区影响
-                    </div>
-                    <a href="https://chatforest.com/guides/claw-code-open-source-claude-code-clone/" target="_blank" class="project-link">
-                        阅读完整报道 →
-                    </a>
-                </div>
-            </div>
-        </div>
-    </main>
+        <a href="index.html" class="back-link">← 返回首页</a>
+    </div>
 
     <script>
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 30;
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                
-                // 更新导航高亮
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                if (event && event.target) {
-                    event.target.classList.add('active');
+        document.querySelectorAll('.translatable-section').forEach(section => {
+            section.addEventListener('click', () => {
+                const translation = section.querySelector('.translation');
+                if (translation) {
+                    translation.classList.toggle('visible');
                 }
-            }
-        }
-
-        // 监听滚动事件，更新导航高亮
-        window.addEventListener('scroll', function() {
-            const sections = ['overview', 'tech-stack', 'core-innovations', 'agent-loop', 'context', 'security', 'github'];
-            let currentSection = 'overview';
-            
-            for (const sectionId of sections) {
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    const rect = section.getBoundingClientRect();
-                    if (rect.top <= 150) {
-                        currentSection = sectionId;
-                    }
-                }
-            }
-            
-            document.querySelectorAll('.nav-item').forEach((item, index) => {
-                item.classList.toggle('active', sections[index] === currentSection);
             });
         });
-
-        window.onload = function() {
-            createParticles();
-        };
     </script>
 </body>
 </html>
