@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球农业顶刊与顶会 - MindPalace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a472a 0%, #2d5a27 50%, #4a7c59 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInDown 1s ease-out forwards;
+        }
+
+        .icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #90EE90 0%, #98FB98 50%, #F0E68C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.75);
+            letter-spacing: 0.03em;
+            line-height: 1.6;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.7rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3.5rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards;
+        }
+
+        .nav-link {
+            padding: 0.65rem 1.25rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(144, 238, 144, 0.4);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(144, 238, 144, 0.2), rgba(240, 230, 140, 0.2));
+            border-color: rgba(144, 238, 144, 0.5);
+            color: #90EE90;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.6s; }
+        .section:nth-child(2) { animation-delay: 0.9s; }
+        .section:nth-child(3) { animation-delay: 1.2s; }
+
+        .section-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, rgba(144, 238, 144, 0.15), rgba(240, 230, 140, 0.1));
+            border: 2px solid rgba(144, 238, 144, 0.35);
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #90EE90;
+            letter-spacing: 0.05em;
+        }
+
+        .journal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .journal-card {
+            background: rgba(26, 71, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(144, 238, 144, 0.18);
+            border-radius: 14px;
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .journal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #90EE90, #98FB98, #F0E68C);
+        }
+
+        .journal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(144, 238, 144, 0.15);
+            border-color: rgba(144, 238, 144, 0.35);
+        }
+
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #1a472a;
+            margin-right: 0.8rem;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .rank-badge.top3 {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            font-size: 1.05rem;
+        }
+
+        .journal-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .journal-info {
+            flex: 1;
+        }
+
+        .journal-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #E8F5E9;
+            margin-bottom: 0.4rem;
+            line-height: 1.3;
+        }
+
+        .journal-issn {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.55);
+            font-family: 'Courier New', monospace;
+            margin-bottom: 0.6rem;
+        }
+
+        .journal-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .meta-tag {
+            padding: 0.35rem 0.85rem;
+            background: rgba(144, 238, 144, 0.12);
+            border: 1px solid rgba(144, 238, 144, 0.28);
+            border-radius: 20px;
+            font-size: 0.78rem;
+            color: #90EE90;
+            font-weight: 500;
+        }
+
+        .meta-tag.if-tag {
+            background: rgba(240, 230, 140, 0.15);
+            border-color: rgba(240, 230, 140, 0.35);
+            color: #F0E68C;
+            font-weight: 600;
+        }
+
+        .journal-desc {
+            font-size: 0.92rem;
+            line-height: 1.65;
+            color: rgba(255, 255, 255, 0.72);
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .publisher-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 0.9rem;
+            border-top: 1px solid rgba(144, 238, 144, 0.15);
+        }
+
+        .publisher-name {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+
+        .official-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.1rem;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(139, 195, 74, 0.2));
+            border: 1px solid rgba(76, 175, 80, 0.45);
+            border-radius: 22px;
+            color: #81C784;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .official-link:hover {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.35), rgba(139, 195, 74, 0.3));
+            border-color: rgba(76, 175, 80, 0.65);
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
+        }
+
+        .conference-table-wrapper {
+            overflow-x: auto;
+            margin-top: 2rem;
+            border-radius: 14px;
+            border: 1px solid rgba(144, 238, 144, 0.18);
+        }
+
+        .conference-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(26, 71, 42, 0.6);
+            backdrop-filter: blur(20px);
+        }
+
+        .conference-table th {
+            padding: 1.2rem 1rem;
+            background: linear-gradient(135deg, rgba(144, 238, 144, 0.2), rgba(240, 230, 140, 0.15));
+            color: #90EE90;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-align: left;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .conference-table td {
+            padding: 1.2rem 1rem;
+            border-top: 1px solid rgba(144, 238, 144, 0.1);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .conference-table tr:hover td {
+            background: rgba(144, 238, 144, 0.06);
+        }
+
+        .conf-type-badge {
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            background: rgba(240, 230, 140, 0.15);
+            border: 1px solid rgba(240, 230, 140, 0.35);
+            border-radius: 18px;
+            font-size: 0.82rem;
+            color: #F0E68C;
+            font-weight: 500;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem 0.5rem; }
+            .container { padding: 1rem 0.5rem; }
+            .title { font-size: 2rem; letter-spacing: 0.04em; }
+            .subtitle { font-size: 1rem; }
+            .icon { font-size: 3.5rem; }
+            .section-title { font-size: 1.3rem; }
+            .journal-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+            .journal-card { padding: 1.5rem; }
+            .journal-name { font-size: 1.1rem; }
+            .nav-links { flex-direction: column; align-items: center; }
+            .conference-table th,
+            .conference-table td { padding: 0.8rem 0.6rem; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon">🌱</div>
+            <h1 class="title">全球农业顶刊与顶会大全</h1>
+            <p class="subtitle">权威学术资源导航 · 官网链接版 · 持续更新</p>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="companies.html" class="nav-link">公司</a>
+            <a href="palantir.html" class="nav-link">Palantir</a>
+            <a href="ai-basics.html" class="nav-link">AI 基础知识</a>
+            <a href="agriculture.html" class="nav-link active">🌾 农业期刊</a>
+            <a href="vibe-coding.html" class="nav-link">Vibe Coding Tips</a>
+            <a href="skills.html" class="nav-link">Skills</a>
+        </div>
+
+        <!-- 一、英文顶尖农业期刊 -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-icon">📚</span>
+                <h2 class="section-title">一、英文顶尖农业期刊（JCR Top 20）</h2>
+            </div>
+
+            <div class="journal-grid">
+                <!-- 1. Nature Food -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge top3">1</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Nature Food</h3>
+                            <p class="journal-issn">ISSN: 2662-1355</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 30.1</span>
+                                <span class="meta-tag">Agriculture, Multidisciplinary</span>
+                                <span class="meta-tag">Nature</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">跨学科粮食系统、食品安全与可持续农业研究，涵盖从生产到消费的全链条创新。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Nature Publishing Group</span>
+                        <a href="https://www.nature.com/natfood/" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 2. Nature Plants -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge top3">2</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Nature Plants</h3>
+                            <p class="journal-issn">ISSN: 2055-0278</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 28.7</span>
+                                <span class="meta-tag">Plant Sciences / Agriculture</span>
+                                <span class="meta-tag">Nature</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">植物学、作物改良、基因组学及育种领域顶级研究成果。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Nature Publishing Group</span>
+                        <a href="https://www.nature.com/nplants/" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 3. Global Food Security -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge top3">3</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Global Food Security</h3>
+                            <p class="journal-issn">ISSN: 2211-9124</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 12.0</span>
+                                <span class="meta-tag">Agriculture, Multidisciplinary</span>
+                                <span class="meta-tag">Elsevier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">粮食安全与政策研究，涵盖生产、流通、营养等全维度分析。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Elsevier</span>
+                        <a href="https://www.sciencedirect.com/journal/global-food-security" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 4. Computers and Electronics in Agriculture -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">4</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Computers and Electronics in Agriculture</h3>
+                            <p class="journal-issn">ISSN: 0168-1699</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 7.5</span>
+                                <span class="meta-tag">Agricultural Engineering</span>
+                                <span class="meta-tag">Elsevier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">精准农业、农业物联网、无人机及传感器技术前沿研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Elsevier</span>
+                        <a href="https://www.sciencedirect.com/journal/computers-and-electronics-in-agriculture" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 5. Agricultural Systems -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">5</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Agricultural Systems</h3>
+                            <p class="journal-issn">ISSN: 0308-521X</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 6.8</span>
+                                <span class="meta-tag">Agriculture, Multidisciplinary</span>
+                                <span class="meta-tag">Elsevier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">农业系统建模、可持续农业、作物-畜牧系统整合研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Elsevier</span>
+                        <a href="https://www.sciencedirect.com/journal/agricultural-systems" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 6. Agriculture, Ecosystems & Environment -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">6</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Agriculture, Ecosystems & Environment</h3>
+                            <p class="journal-issn">ISSN: 0167-8809</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 6.3</span>
+                                <span class="meta-tag">Agriculture / Ecology</span>
+                                <span class="meta-tag">Elsevier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">农业生态系统、环境影响与可持续农业交叉研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Elsevier</span>
+                        <a href="https://www.sciencedirect.com/journal/agriculture-ecosystems-and-environment" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 7. Field Crops Research -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">7</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Field Crops Research</h3>
+                            <p class="journal-issn">ISSN: 0378-4290</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 6.3</span>
+                                <span class="meta-tag">Crop Science</span>
+                                <span class="meta-tag">Elsevier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">作物栽培、产量优化及抗逆性管理实践研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Elsevier</span>
+                        <a href="https://www.sciencedirect.com/journal/field-crops-research" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 8. Theoretical and Applied Genetics -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">8</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Theoretical and Applied Genetics</h3>
+                            <p class="journal-issn">ISSN: 0040-5752</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 5.6</span>
+                                <span class="meta-tag">Crop Science</span>
+                                <span class="meta-tag">Springer</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">作物遗传学、分子育种及基因组学研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Springer Nature</span>
+                        <a href="https://link.springer.com/journal/122" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 9. Soil Biology and Biochemistry -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">9</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Soil Biology and Biochemistry</h3>
+                            <p class="journal-issn">ISSN: 0038-0717</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 6.0</span>
+                                <span class="meta-tag">Soil Science / Microbiology</span>
+                                <span class="meta-tag">Elsevier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">土壤微生物、养分循环与土壤生态系统研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Elsevier</span>
+                        <a href="https://www.sciencedirect.com/journal/soil-biology-and-biochemistry" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 10. Crop Protection -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">10</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Crop Protection</h3>
+                            <p class="journal-issn">ISSN: 0261-2194</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 4.2</span>
+                                <span class="meta-tag">Plant Protection</span>
+                                <span class="meta-tag">Elsevier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">作物病虫害防治技术及生态安全管理。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Elsevier</span>
+                        <a href="https://www.sciencedirect.com/journal/crop-protection" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 11. Pest Management Science -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">11</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Pest Management Science</h3>
+                            <p class="journal-issn">ISSN: 1526-4998</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 4.0</span>
+                                <span class="meta-tag">Plant Protection</span>
+                                <span class="meta-tag">Wiley</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">农作物害虫及病害综合防控技术。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Wiley</span>
+                        <a href="https://onlinelibrary.wiley.com/journal/15264998" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 12. Food Policy -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">12</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Food Policy</h3>
+                            <p class="journal-issn">ISSN: 0306-9192</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 6.0</span>
+                                <span class="meta-tag">Agricultural Economics</span>
+                                <span class="meta-tag">Elsevier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">粮食系统、政策分析及社会经济影响研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Elsevier</span>
+                        <a href="https://www.sciencedirect.com/journal/food-policy" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 13. Agricultural Economics -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">13</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Agricultural Economics</h3>
+                            <p class="journal-issn">ISSN: 0169-5150</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 3.5</span>
+                                <span class="meta-tag">Agricultural Economics</span>
+                                <span class="meta-tag">Wiley</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">农业市场、政策及农村发展经济学研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Wiley</span>
+                        <a href="https://onlinelibrary.wiley.com/journal/16195150" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 14. Biosystems Engineering -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">14</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Biosystems Engineering</h3>
+                            <p class="journal-issn">ISSN: 1537-5110</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 5.0</span>
+                                <span class="meta-tag">Agricultural Engineering</span>
+                                <span class="meta-tag">Elsevier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">农业机械化、灌溉及农业信息化技术研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Elsevier</span>
+                        <a href="https://www.sciencedirect.com/journal/biosystems-engineering" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 15. Agronomy Journal -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">15</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Agronomy Journal</h3>
+                            <p class="journal-issn">ISSN: 0002-1962</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 3.9</span>
+                                <span class="meta-tag">Crop Science</span>
+                                <span class="meta-tag">ASA/CSSA/SSSA</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">作物栽培、农业生态、农业生产综合研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">ASA, CSSA, SSSA</span>
+                        <a href="https://acsess.onlinelibrary.wiley.com/journal/21527433" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 16. Plant and Soil -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">16</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Plant and Soil</h3>
+                            <p class="journal-issn">ISSN: 0032-079X</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 4.5</span>
+                                <span class="meta-tag">Soil Science / Plant Sciences</span>
+                                <span class="meta-tag">Springer</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">植物与土壤相互作用、养分吸收、土壤管理研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Springer Nature</span>
+                        <a href="https://link.springer.com/journal/11104" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 17. Precision Agriculture -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">17</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Precision Agriculture</h3>
+                            <p class="journal-issn">ISSN: 1385-2256</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 4.2</span>
+                                <span class="meta-tag">Agricultural Engineering</span>
+                                <span class="meta-tag">Springer</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">精准农业技术、遥感、自动化农业应用。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Springer Nature</span>
+                        <a href="https://link.springer.com/journal/11919" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 18. Journal of Agricultural and Food Chemistry -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">18</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Journal of Agricultural and Food Chemistry</h3>
+                            <p class="journal-issn">ISSN: 0021-8561</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 5.1</span>
+                                <span class="meta-tag">Food / Agri-Chemistry</span>
+                                <span class="meta-tag">ACS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">农产品化学分析、食品安全及营养成分研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">American Chemical Society</span>
+                        <a href="https://pubs.acs.org/journal/jafcau" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 19. Environmental Research Letters -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">19</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Environmental Research Letters</h3>
+                            <p class="journal-issn">ISSN: 1748-9326</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 5.4</span>
+                                <span class="meta-tag">Environmental Sciences</span>
+                                <span class="meta-tag">IOP</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">气候变化与农业可持续性研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">IOP Publishing</span>
+                        <a href="https://iopscience.iop.org/journal/1748-9326" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 20. Journal of Cleaner Production -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">20</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">Journal of Cleaner Production</h3>
+                            <p class="journal-issn">ISSN: 0959-6526</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: 10.0</span>
+                                <span class="meta-tag">Sustainable Agriculture</span>
+                                <span class="meta-tag">Elsevier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">可持续农业生产、循环农业及环境友好技术。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">Elsevier</span>
+                        <a href="https://www.sciencedirect.com/journal/journal-of-cleaner-production" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 二、中文核心农业期刊 -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-icon">🇨🇳</span>
+                <h2 class="section-title">二、中文核心农业期刊（Top 5）</h2>
+            </div>
+
+            <div class="journal-grid">
+                <!-- 1. 中国农业科学 -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge top3">1</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">中国农业科学</h3>
+                            <p class="journal-issn">ISSN: 1000-6850</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: ~2.0</span>
+                                <span class="meta-tag">综合农业</span>
+                                <span class="meta-tag">中科院</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">综合农业研究，包括作物、畜牧、土壤等多学科方向。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">中国科学院</span>
+                        <a href="https://www.chinaagrisci.com/" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 2. 作物学报 -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge top3">2</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">作物学报</h3>
+                            <p class="journal-issn">ISSN: 0519-2188</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: ~1.5</span>
+                                <span class="meta-tag">作物科学</span>
+                                <span class="meta-tag">中国作物学会</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">作物栽培、育种、遗传学研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">中国作物学会</span>
+                        <a href="https://zwxb.chinacrops.org/" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 3. 植物保护学报 -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge top3">3</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">植物保护学报</h3>
+                            <p class="journal-issn">ISSN: 0257-8315</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: ~1.8</span>
+                                <span class="meta-tag">植物保护</span>
+                                <span class="meta-tag">中国植保学会</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">农作物病虫害防治技术研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">中国植物保护学会</span>
+                        <a href="https://www.zwbhxb.cn/" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 4. 土壤学报 -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">4</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">土壤学报</h3>
+                            <p class="journal-issn">ISSN: 0564-3928</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: ~1.5</span>
+                                <span class="meta-tag">土壤科学</span>
+                                <span class="meta-tag">中国土壤学会</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">土壤理化性质、养分循环及改良技术研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">中国土壤学会</span>
+                        <a href="https://soils.scichina.com/" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+
+                <!-- 5. 农业工程学报 -->
+                <div class="journal-card">
+                    <div class="journal-header">
+                        <span class="rank-badge">5</span>
+                        <div class="journal-info">
+                            <h3 class="journal-name">农业工程学报</h3>
+                            <p class="journal-issn">ISSN: 1002-6819</p>
+                            <div class="journal-meta">
+                                <span class="meta-tag if-tag">IF: ~1.2</span>
+                                <span class="meta-tag">农业工程</span>
+                                <span class="meta-tag">中国农机学会</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="journal-desc">农业机械化、灌溉、农业信息化技术研究。</p>
+                    <div class="publisher-info">
+                        <span class="publisher-name">中国农业机械学会</span>
+                        <a href="https://www.tcsae.org/" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 三、国际顶尖农业会议 -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-icon">🌐</span>
+                <h2 class="section-title">三、国际顶尖农业会议</h2>
+            </div>
+
+            <div class="conference-table-wrapper">
+                <table class="conference-table">
+                    <thead>
+                        <tr>
+                            <th>会议名称</th>
+                            <th>类型</th>
+                            <th>主办单位</th>
+                            <th>简介</th>
+                            <th>链接</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>International Conference on Precision Agriculture (ICPA)</strong></td>
+                            <td><span class="conf-type-badge">精准农业</span></td>
+                            <td>ISPA</td>
+                            <td>精准农业、遥感、无人机、传感器技术顶会</td>
+                            <td><a href="https://www.ispag.org/" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>International Plant Protection Congress (IPPC)</strong></td>
+                            <td><span class="conf-type-badge">植物保护</span></td>
+                            <td>国际植物保护学会</td>
+                            <td>作物病虫害防控与管理顶级国际会议</td>
+                            <td><a href="https://ippcongress.org/" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Crop Science Society of America Annual Meeting (CSSA)</strong></td>
+                            <td><span class="conf-type-badge">作物科学</span></td>
+                            <td>CSSA</td>
+                            <td>作物遗传、育种、栽培技术的国际顶会</td>
+                            <td><a href="https://www.crops.org/meetings" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>International Conference on Agriculture and Horticulture (ICAH)</strong></td>
+                            <td><span class="conf-type-badge">综合农业</span></td>
+                            <td>WASET</td>
+                            <td>多学科农业研究交流平台</td>
+                            <td><a href="https://waset.org/agriculture-and-horticulture-conference" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>International Soil and Water Conservation Research Conference</strong></td>
+                            <td><span class="conf-type-badge">土壤水保</span></td>
+                            <td>ISWCR</td>
+                            <td>土壤与水资源保护、可持续农业研究</td>
+                            <td><a href="https://www.iswcr.com/" target="_blank" rel="noopener noreferrer" class="official-link">官网 →</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const triggerBottom = window.innerHeight * 0.88;
+
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop < triggerBottom && section.style.opacity === '0') {
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

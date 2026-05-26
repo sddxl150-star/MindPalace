@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USDA & Palantir Partnership - MindPalace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            margin-bottom: 3rem;
+            background: linear-gradient(90deg, #00d4ff, #ff6b9d, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.6s forwards;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #00d4ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .resource-card {
+            background: rgba(40, 40, 45, 0.85);
+            border: 1px solid rgba(80, 80, 90, 0.4);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .resource-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #feca57;
+        }
+
+        .resource-card .link-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-card a {
+            color: #00d4ff;
+            text-decoration: none;
+            word-break: break-all;
+            transition: color 0.3s ease;
+        }
+
+        .resource-card a:hover {
+            color: #ff6b9d;
+            text-decoration: underline;
+        }
+
+        .resource-card .date {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 1rem;
+        }
+
+        .resource-card .description {
+            margin-top: 1rem;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .article-section {
+            text-align: left;
+            line-height: 1.8;
+        }
+
+        .article-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #feca57;
+            text-align: center;
+        }
+
+        .article-meta {
+            color: #888;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .article-content {
+            background: rgba(40, 40, 45, 0.85);
+            border: 1px solid rgba(80, 80, 90, 0.4);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .article-content h2 {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            margin: 2rem 0 1rem;
+            border-bottom: 1px solid rgba(80, 80, 90, 0.4);
+            padding-bottom: 0.5rem;
+        }
+
+        .article-content h3 {
+            font-size: 1.3rem;
+            color: #ff6b9d;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+
+        .translatable-section {
+            margin-bottom: 2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .translatable-section:hover {
+            background-color: rgba(0, 212, 255, 0.05);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .translatable-section::before {
+            content: attr(data-hint);
+            position: absolute;
+            right: 10px;
+            top: -25px;
+            font-size: 0.8rem;
+            color: #00d4ff;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .translatable-section:hover::before {
+            opacity: 0.9;
+        }
+
+        .translatable-section p {
+            margin-bottom: 0.5rem;
+        }
+
+        .translatable-section h2,
+        .translatable-section h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+            color: #ddd;
+        }
+
+        .article-content a {
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        .article-content a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            max-height: 400px;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            display: block;
+            object-fit: contain;
+        }
+
+        .translation {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid #00d4ff;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0 0;
+            color: #ccc;
+            font-style: italic;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .translation.visible {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 2rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            border-radius: 8px;
+            color: #00d4ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.9s forwards;
+        }
+
+        .back-link:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1rem 0.5rem;
+            }
+
+            .title {
+                font-size: 2rem;
+                letter-spacing: 0.1em;
+                margin-bottom: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+
+            .resource-card {
+                padding: 1.5rem;
+            }
+
+            .resource-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .article-title {
+                font-size: 1.5rem;
+            }
+
+            .article-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">USDA & Palantir Partnership</h1>
+
+        <div class="section">
+            <div class="resource-card">
+                <h3>📰 原文链接</h3>
+                <div class="link-label">标题：</div>
+                <p>USDA and Palantir Launch Partnership to Deliver Faster, Modernized Support for Farmers</p>
+                <div class="link-label" style="margin-top: 1rem;">链接：</div>
+                <a href="https://investors.palantir.com/news-details/2026/USDA-and-Palantir-Launch-Partnership-to-Deliver-Faster-Modernized-Support-for-Farmers/" target="_blank">👉 原文链接</a>
+                <p class="date">发布时间：2026年4月22日</p>
+            </div>
+        </div>
+
+        <div class="section article-section">
+            <h2 class="section-title">📖 新闻原文</h2>
+
+            <div class="article-content">
+                <h2 class="article-title">USDA and Palantir Launch Partnership to Deliver Faster, Modernized Support for Farmers</h2>
+                <div class="article-meta">04 / 22 / 2026</div>
+
+                <div class="translatable-section"><p><strong>Palantir enables the ‘One Farmer, One File’ initiative and is a key foundation of USDA’s IT Modernization</strong></p><div class="translation"><strong>Palantir 推动“一位农民，一份档案”计划，是美国农业部 IT 现代化的关键基础</strong></div></div>
+
+                <div class="translatable-section"><p>MIAMI--(BUSINESS WIRE)-- The U.S. Department of Agriculture (USDA) and Palantir Technologies Inc. (NASDAQ: PLTR) announced the signing of a $300 million Blanket Purchase Agreement (BPA) to support the National Farm Security Action Plan (NFSAP) and modernize how USDA delivers services to America’s farmers.</p><div class="translation">迈阿密——（BUSINESS WIRE）——美国农业部（USDA）与 Palantir 技术公司（纳斯达克：PLTR）宣布签署一份价值 3 亿美元的一揽子采购协议（BPA），以支持国家农场安全行动计划（NFSAP），并使美国农业部为美国农民提供服务的方式现代化。</div></div>
+
+                <div class="translatable-section"><p>The agreement advances two priorities: strengthening farm security as a national security imperative and accelerating producer-first program delivery across USDA’s Farm Production and Conservation (FPAC) mission areas.</p><div class="translation">该协议推进了两个优先事项：将农场安全作为国家安全必要事项予以加强，以及在 USDA 的农场生产与保护（FPAC）任务领域加快以生产者为优先的项目交付。</div></div>
+
+                <div class="translatable-section"><p>Building on capabilities already in use at USDA, Palantir will provide operational software to enable USDA to improve service delivery for American farmers and government field staff — and in doing so, secure the nation’s breadbasket.</p><div class="translation">基于 USDA 已在使用的能力，Palantir 将提供运营软件，使 USDA 能够改善为美国农民和政府外勤人员的服务交付——并在此过程中保障国家的粮仓安全。</div></div>
+
+                <div class="translatable-section"><h2>Farm security is national security</h2><div class="translation">农场安全就是国家安全</div></div>
+
+                <div class="translatable-section"><p>Through this partnership, Palantir is empowering USDA with core capabilities that will enable it to secure American farmland, enhance supply chain resilience, and shield agricultural programs from fraud, abuse, and foreign adversary influence.</p><div class="translation">通过此次合作，Palantir 为 USDA 提供核心能力，使其能够保护美国农田、增强供应链韧性，并保护农业项目免受欺诈、滥用和外国对手的影响。</div></div>
+
+                <div class="translatable-section"><p>In doing so, USDA will gain critical visibility into risks that can affect America’s agricultural production and food supply.</p><div class="translation">在此过程中，USDA 将获得对可能影响美国农业生产和食品供应的风险的关键可见性。</div></div>
+
+                <div class="translatable-section"><p>This agreement also supports USDA’s <a href="https://www.fsa.usda.gov/news-events/news/03-02-2026/usda-launches-one-farmer-one-file-initiative-better-support-farmers" target="_blank">'One Farmer, One File'</a> initiative, which is cutting the red tape farmers face when accessing USDA services, delivering digital-first tools they can use from home, reducing time-to-payment, and accelerating post-disaster recovery.</p><div class="translation">该协议还支持 USDA 的 <a href="https://www.fsa.usda.gov/news-events/news/03-02-2026/usda-launches-one-farmer-one-file-initiative-better-support-farmers" target="_blank">"一位农民，一份档案"</a> 计划，该计划正在减少农民在获得 USDA 服务时面临的繁文缛节，提供他们可以在家使用的数字化优先工具，缩短付款时间，并加快灾后恢复。</div></div>
+
+                <div class="translatable-section"><p>This builds on existing work with USDA’s Landmark platform powered by Palantir, which backed the rollout of the $11 billion Farmer Bridge Assistance Program in February.</p><div class="translation">这建立在与 Palantir 提供支持的 USDA Landmark 平台的现有合作基础上，该平台在 2 月份支持了 110 亿美元的农民桥梁援助计划的推出。</div></div>
+
+                <div class="translatable-section"><p>Within 62 minutes of opening, the program broke all prior USDA records for online farmer sign-ups — allowing farmers to enroll without visiting a county office and delivering over $4.4 billion directly to farmers in the program’s first five days.</p><div class="translation">在开放后的 62 分钟内，该计划打破了 USDA 之前所有的农民在线注册记录——允许农民无需访问县级办公室即可注册，并在计划的前五天内直接向农民交付了超过 44 亿美元。</div></div>
+
+                <div class="translatable-section"><p>Landmark is also enabling USDA to transform how farmers report acreage through self-service digital tools.</p><div class="translation">Landmark 还使 USDA 能够通过自助数字化工具改变农民报告种植面积的方式。</div></div>
+
+                <div class="translatable-section"><p>For farmers, every hour of daylight matters — they shouldn't have to spend it sitting in field offices or driving far from their land.</p><div class="translation">对于农民来说，每一小时的日照都很重要——他们不应该把时间花在坐在田间办公室或开车远离他们的土地上。</div></div>
+
+                <div class="translatable-section"><p>Landmark gives farmers more options, enabling them to utilize county offices or self-service online tools according to their preference.</p><div class="translation">Landmark 为农民提供了更多选择，使他们能够根据自己的喜好利用县级办公室或自助在线工具。</div></div>
+
+                <div class="translatable-section"><p>Palantir is similarly empowering USDA's field staff with mobile digital tools that help them work efficiently, reduce administrative burdens, and accelerate services and payments to farmers.</p><div class="translation">Palantir 同样为 USDA 的外勤人员提供移动数字化工具，帮助他们高效工作，减少行政负担，并加快为农民提供服务和付款。</div></div>
+
+                <div class="translatable-section"><p>"America depends on its farmers, and USDA is moving fast to give them the technology they need," said Ali Monfre, Federal Engineering Lead at Palantir.</p><div class="translation">"美国依赖于它的农民，而 USDA 正在迅速为他们提供所需的技术，" Palantir 的联邦工程主管 Ali Monfre 说。</div></div>
+
+                <div class="translatable-section"><p>"They are raising the bar for what government can deliver for farmers, and we are honored to partner in that work."</p><div class="translation">"他们正在为政府能为农民提供什么树立更高的标准，我们很荣幸能参与这项工作。"</div></div>
+
+                <div class="translatable-section"><p>Underpinning these farmer-facing capabilities is a broader transformation of USDA's technology infrastructure.</p><div class="translation">支撑这些面向农民的能力的是 USDA 技术基础设施的更广泛变革。</div></div>
+
+                <div class="translatable-section"><p>The Landmark platform backed by Palantir is consolidating fragmented legacy systems into a secure, unified foundation — reducing maintenance burden, strengthening data security, and enabling USDA to move faster as new programs and priorities emerge.</p><div class="translation">Palantir 支持的 Landmark 平台正在将分散的遗留系统整合为一个安全、统一的基础——减少维护负担，加强数据安全，并使 USDA 能够在新计划和优先事项出现时更快地行动。</div></div>
+
+                <div class="translatable-section"><p>"Protecting America's farmland is protecting America itself, and this work gives USDA the visibility and speed needed to safeguard our food supply," said USDA Chief Information Officer Sam Berry.</p><div class="translation">"保护美国的农田就是保护美国本身，这项工作为 USDA 提供了保障我们食品供应所需的可见性和速度，" USDA 首席信息官 Sam Berry 说。</div></div>
+
+                <div class="translatable-section"><p>"Our farmers sustain this nation, and modern tools help us support them with greater precision.</p><div class="translation">"我们的农民维持着这个国家，现代工具帮助我们更精确地支持他们。</div></div>
+
+                <div class="translatable-section"><p>I look forward to working with Palantir as we continue serving the American farming community, which serves all of us every single day."</p><div class="translation">我期待与 Palantir 合作，继续为美国农业社区服务，而这个社区每天都在为我们所有人服务。"</div></div>
+
+                <div class="translatable-section"><h2>About Palantir</h2><div class="translation">关于 Palantir</div></div>
+
+                <div class="translatable-section"><p>Foundational software of tomorrow. Delivered today. Additional information is available at <a href="http://palantir.com" target="_blank">palantir.com</a>.</p><div class="translation">明日的基础软件。今日交付。更多信息请访问 <a href="http://palantir.com" target="_blank">palantir.com</a>。</div></div>
+
+                <div class="translatable-section"><h2>Forward-Looking Statements</h2><div class="translation">前瞻性陈述</div></div>
+
+                <div class="translatable-section"><p>This press release contains forward-looking statements within the meaning of Section 27A of the Securities Act of 1933, as amended, and Section 21E of the Securities Exchange Act of 1934, as amended.</p><div class="translation">本新闻稿包含经修订的 1933 年《证券法》第 27A 条和经修订的 1934 年《证券交易法》第 21E 条含义内的前瞻性陈述。</div></div>
+
+                <div class="translatable-section"><p>These statements may relate to, but are not limited to, Palantir's expectations regarding the transaction details or structure, the terms of any contracts, and the expected benefits of Palantir's software platforms.</p><div class="translation">这些陈述可能涉及但不限于 Palantir 对交易细节或结构的预期、任何合同的条款，以及 Palantir 软件平台的预期收益。</div></div>
+
+                <div class="translatable-section"><p>Forward-looking statements are inherently subject to risks and uncertainties, some of which cannot be predicted or quantified.</p><div class="translation">前瞻性陈述本质上受风险和不确定性的影响，其中一些风险和不确定性是无法预测或量化的。</div></div>
+
+                <div class="translatable-section"><p>Forward-looking statements are based on information available at the time those statements are made and were based on current expectations as well as the beliefs and assumptions of management as of that time with respect to future events.</p><div class="translation">前瞻性陈述基于这些陈述作出时可获得的信息，以及当时管理层对未来事件的当前预期、信念和假设。</div></div>
+
+                <div class="translatable-section"><p>These statements are subject to risks and uncertainties, many of which involve factors or circumstances that are beyond Palantir's control.</p><div class="translation">这些陈述受风险和不确定性的影响，其中许多风险和不确定性涉及 Palantir 无法控制的因素或情况。</div></div>
+
+                <div class="translatable-section"><p>These risks and uncertainties include the ability to meet the unique needs of customers; the failure of Palantir's platforms to satisfy customers or perform as desired; the frequency or severity of any software and implementation errors; Palantir's platforms' reliability; and customers' ability to modify or terminate the contract.</p><div class="translation">这些风险和不确定性包括满足客户独特需求的能力；Palantir 平台未能使客户满意或按预期运行的情况；任何软件和实施错误的频率或严重程度；Palantir 平台的可靠性；以及客户修改或终止合同的能力。</div></div>
+
+                <div class="translatable-section"><p>Additional information regarding these and other risks and uncertainties is included in the filings Palantir makes with the Securities and Exchange Commission from time to time.</p><div class="translation">关于这些和其他风险与不确定性的更多信息包含在 Palantir 不时向证券交易委员会提交的文件中。</div></div>
+
+                <div class="translatable-section"><p>Except as required by law, Palantir does not undertake any obligation to publicly update or revise any forward-looking statement, whether as a result of new information, future developments, or otherwise.</p><div class="translation">除法律要求外，Palantir 不承担任何公开更新或修订任何前瞻性陈述的义务，无论是由于新信息、未来发展还是其他原因。</div></div>
+
+                <div class="translatable-section"><h2>Media Contact</h2><div class="translation">媒体联系</div></div>
+
+                <div class="translatable-section"><p>Lisa Gordon, <a href="mailto:media@palantir.com">media@palantir.com</a></p><div class="translation">Lisa Gordon, <a href="mailto:media@palantir.com">media@palantir.com</a></div></div>
+
+                <div class="translatable-section"><p>Source: Palantir Technologies Inc.</p><div class="translation">来源：Palantir 技术公司</div></div>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">← 返回首页</a>
+    </div>
+
+    <script>
+        (function() {
+            function setupTranslationToggle() {
+                const sections = document.querySelectorAll('.translatable-section');
+                console.log('Found translatable sections:', sections.length);
+                
+                sections.forEach((section, index) => {
+                    if (!section.getAttribute('data-hint')) {
+                        section.setAttribute('data-hint', '点击查看翻译');
+                    }
+                    
+                    section.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const translation = this.querySelector('.translation');
+                        if (translation) {
+                            const isVisible = translation.classList.toggle('visible');
+                            console.log(`Section ${index}: translation ${isVisible ? 'shown' : 'hidden'}`);
+                            
+                            this.setAttribute('data-hint', isVisible ? '点击隐藏翻译' : '点击查看翻译');
+                        }
+                    });
+                });
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupTranslationToggle);
+            } else {
+                setupTranslationToggle();
+            }
+        })();
+    </script>
+</body>
+</html>

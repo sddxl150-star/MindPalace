@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Coding Tips - MindPalace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, #00d4ff, #7b68ee, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            color: #00d4ff;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.8s forwards;
+        }
+
+        .nav-link {
+            padding: 0.7rem 1.3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .nav-link.active {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.4);
+            color: #00d4ff;
+        }
+
+        .tips-container {
+            display: grid;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .tip-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            box-shadow:
+                0 4px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-card:nth-child(1) { animation-delay: 1s; }
+        .tip-card:nth-child(2) { animation-delay: 1.5s; }
+
+        .tip-number {
+            position: absolute;
+            top: 2rem;
+            right: 2.5rem;
+            font-size: 5rem;
+            font-weight: 700;
+            color: rgba(0, 212, 255, 0.08);
+            line-height: 1;
+        }
+
+        .tip-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .tip-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 70%;
+            background: linear-gradient(180deg, #00d4ff, #7b68ee);
+            border-radius: 2px;
+        }
+
+        .tip-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+            font-size: 1.2em;
+        }
+
+        .tip-content {
+            text-align: left;
+            line-height: 1.9;
+            color: #d0d0d0;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tip-highlight {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 4px solid #00d4ff;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            font-style: italic;
+            color: #f0f0f0;
+        }
+
+        .best-practices {
+            background: rgba(76, 175, 80, 0.08);
+            border: 1px solid rgba(76, 175, 80, 0.25);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .best-practices h4 {
+            color: #4caf50;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .best-practices ul {
+            list-style: none;
+            line-height: 2.2;
+        }
+
+        .best-practices li {
+            position: relative;
+            padding-left: 2rem;
+            color: #c0c0c0;
+        }
+
+        .best-practices li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            justify-content: flex-start;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(123, 104, 238, 0.1);
+            border: 1px solid rgba(123, 104, 238, 0.3);
+            border-radius: 20px;
+            color: #7b68ee;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .future-vision {
+            background: linear-gradient(135deg, rgba(254, 202, 87, 0.12), rgba(233, 69, 96, 0.08));
+            border: 1px solid rgba(254, 202, 87, 0.35);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .future-vision h4 {
+            color: #feca57;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .future-vision p {
+            color: #c0c0c0;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .agent-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .agent-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(254, 202, 87, 0.2);
+            border-radius: 10px;
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .agent-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(254, 202, 87, 0.15);
+            border-color: rgba(254, 202, 87, 0.4);
+        }
+
+        .agent-item strong {
+            color: #feca57;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .agent-item span {
+            color: #a0a0a0;
+            font-size: 0.95rem;
+        }
+
+        @keyframes glow {
+            from {
+                filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.3));
+            }
+            to {
+                filter: drop-shadow(0 0 40px rgba(0, 212, 255, 0.6));
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto;
+                padding: 1rem 0.5rem;
+            }
+
+            .container {
+                padding: 1rem 0.5rem;
+                max-width: 100%;
+            }
+
+            .title {
+                font-size: 2rem;
+                letter-spacing: 0.08em;
+                margin-bottom: 1rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .tip-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .tip-title {
+                font-size: 1.4rem;
+            }
+
+            .tip-content {
+                font-size: 1rem;
+            }
+
+            .tip-number {
+                font-size: 3rem;
+                top: 1rem;
+                right: 1.5rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .agent-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <h1 class="title">Vibe Coding Tips</h1>
+        <p class="subtitle">AI辅助编程的最佳实践与进阶指南</p>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="companies.html" class="nav-link">公司</a>
+            <a href="agentdev.html" class="nav-link">开发</a>
+            <a href="projects.html" class="nav-link">项目</a>
+            <a href="ranking.html" class="nav-link">排名</a>
+            <a href="community.html" class="nav-link">社区</a>
+            <a href="skills.html" class="nav-link">Skills</a>
+            <a href="vibe-coding.html" class="nav-link active">Vibe Coding Tips</a>
+        </div>
+
+        <div class="tips-container">
+            <!-- Tip 01 -->
+            <div class="tip-card">
+                <div class="tip-number">01</div>
+                <h2 class="tip-title"><span class="tip-icon">💡</span>主动引导，智能协作</h2>
+                <div class="tip-content">
+                    <p>在使用 Trae 等 AI 编程助手时，最高效的工作方式是建立<strong>"人机协同"</strong>的伙伴关系。AI 是你的智能副驾驶，而不是自动驾驶系统：</p>
+
+                    <div class="tip-highlight">
+                        🚀 <strong>核心理念：</strong>当你对某个方案有一定了解时，主动引导 AI 的方向。你的专业知识 + AI 的代码生成能力 = 超强生产力
+                    </div>
+
+                    <p><strong>为什么这样做效果更好：</strong></p>
+                    <ul style="margin-left: 2rem; margin-top: 1rem; line-height: 2;">
+                        <li>你的领域知识能帮助 AI 理解真正的业务需求</li>
+                        <li>提前明确约束条件，避免 AI 在错误方向上浪费时间</li>
+                        <li>主动审查和引导，确保生成的代码符合项目架构规范</li>
+                        <li>通过迭代对话，逐步优化方案而非一次性接受</li>
+                    </ul>
+
+                    <div class="best-practices">
+                        <h4>✨ 最佳实践清单</h4>
+                        <ul>
+                            <li><strong>先思考后提问：</strong>在请求 AI 帮助前，先理清自己的需求和目标</li>
+                            <li><strong>提供上下文：</strong>告诉 AI 你的技术栈、项目背景和具体约束</li>
+                            <li><strong>分步迭代：</strong>将大任务拆解为小步骤，每步验证后再继续</li>
+                            <li><strong>审查每一行：</strong>仔细阅读 AI 生成的代码，理解其逻辑</li>
+                            <li><strong>保持批判思维：</strong>对 AI 的建议进行评估，选择最优方案</li>
+                            <li><strong>学习与成长：</strong>通过观察 AI 的实现方式，提升自己的技能</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tip 02 -->
+            <div class="tip-card">
+                <div class="tip-number">02</div>
+                <h2 class="tip-title"><span class="tip-icon">🏗️</span>系统化拆解，模块化构建</h2>
+                <div class="tip-content">
+                    <p>在开发复杂系统时，采用<strong>结构化的工程方法</strong>能显著提升 AI 协作效率。对于前后端 + 中间件的系统工程，合理的任务拆解是成功的关键：</p>
+
+                    <div class="tip-highlight">
+                        📊 <strong>核心策略：</strong>将复杂系统拆解为清晰的模块边界，让每个部分都能被独立理解和实现
+                    </div>
+
+                    <div class="tech-stack">
+                        <span class="tech-tag">Vue.js 前端框架</span>
+                        <span class="tech-tag">FastAPI 后端框架</span>
+                        <span class="tech-tag">OpenViking 本体管理</span>
+                        <span class="tech-tag">SeekDB 实时数据管理</span>
+                    </div>
+
+                    <p style="margin-top: 1.5rem;"><strong>推荐的系统工程方法论：</strong></p>
+                    <ul style="margin-left: 2rem; margin-top: 1rem; line-height: 2;">
+                        <li><strong>架构先行：</strong>先用文字描述整体架构和数据流</li>
+                        <li><strong>接口定义：</strong>明确前后端 API 契约和数据模型</li>
+                        <li><strong>分层实现：</strong>按层次（表现层/业务层/数据层）逐步推进</li>
+                        <li><strong>持续集成：</strong>每完成一个模块就进行集成测试</li>
+                        <li><strong>文档同步：</strong>保持设计文档与实现代码的同步更新</li>
+                    </ul>
+
+                    <div class="future-vision">
+                        <h4>🐝 进阶探索：蜂群多智能体协同开发模式</h4>
+                        <p>为了突破单一 AI 助手的上下文限制，我们正在探索<strong>"蜂群"（Swarm Intelligence）多智能体协同开发</strong>的新范式：</p>
+
+                        <div class="agent-list">
+                            <div class="agent-item">
+                                <strong>🏛️ 架构师 Agent</strong>
+                                <span>负责整体系统设计、技术选型和模块划分</span>
+                            </div>
+                            <div class="agent-item">
+                                <strong>🎨 前端 Agent</strong>
+                                <span>专注 Vue 组件开发、UI/UX 和用户体验优化</span>
+                            </div>
+                            <div class="agent-item">
+                                <strong>⚙️ 后端 Agent</strong>
+                                <span>负责 FastAPI 接口设计、业务逻辑和数据处理</span>
+                            </div>
+                            <div class="agent-item">
+                                <strong>🔗 集成 Agent</strong>
+                                <span>协调中间件对接、系统集成和接口联调</span>
+                            </div>
+                            <div class="agent-item">
+                                <strong>🧪 测试 Agent</strong>
+                                <span>自动化测试、质量保障和性能优化</span>
+                            </div>
+                            <div class="agent-item">
+                                <strong>📝 文档 Agent</strong>
+                                <span>自动生成文档、API 说明和技术报告</span>
+                            </div>
+                        </div>
+
+                        <p style="margin-top: 1.5rem;">通过多智能体分工协作，每个 Agent 专注于特定领域，通过标准化协议通信，能够有效突破当前单一大模型的上下文窗口限制，实现更复杂系统的智能化开发。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        window.onload = createParticles;
+    </script>
+</body>
+</html>

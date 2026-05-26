@@ -1,0 +1,15 @@
+#!/bin/bash
+echo.
+echo 正在推送更改到GitHub...
+echo.
+git push
+if [ $? -ne 0 ]; then
+    echo.
+    echo 推送失败，请检查网络或GitHub认证配置。
+else
+    echo.
+    echo ===== 推送完成！ =====
+    echo.
+    echo 网站地址: https://sddxl150-star.github.io/MindPalace/
+    echo.
+fi
