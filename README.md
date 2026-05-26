@@ -1,48 +1,167 @@
-# MindPalace - AI知识学习笔记
+# MindPalace - 知识宫殿
 
 > 化心为殿，万念不湮
 
 ## 项目简介
-这是一个AI知识学习笔记网站，收集整理人工智能、大模型、Agent开发等相关资源和学习材料。
+
+MindPalace 是一个综合性的知识导航网站，涵盖人工智能、大模型、Agent开发、农业科技等领域的学习资源和资讯汇总。
 
 ## 网站地址
-- 外网: https://sddxl150-star.github.io/MindPalace/
-- 本地: http://localhost:8080/
 
-## 页面列表
+- **外网访问**: https://sddxl150-star.github.io/MindPalace/
+- **本地访问**: http://localhost:8080/
+
+---
+
+## 页面导航
+
+### 核心板块
 
 | 页面 | 文件名 | 功能描述 |
 |------|--------|----------|
-| 首页 | index.html | 网站主页，包含导航链接和精选评论区 |
-| 大模型公司 | companies.html | 介绍主要的大模型公司 |
-| Agent开发 | agentdev.html | Agent开发相关的问答和学习资料 |
-| 项目 | projects.html | AI相关项目展示 |
-| 排名 | ranking.html | AI相关排名信息 |
-| 大模型社区 | community.html | 大模型社区资源汇总 |
-| 本体构建 - Step 1 | dify-workflow.html | 语义测试和本体构建教程 |
-| 本体+AI | ontology-ai.html | 本体与AI结合的内容 |
-| FishTest | fishtest.html | FishTest相关测试内容 |
+| 首页 | index.html | 网站主页，导航中心 |
+| AI基础 | ai-basics.html | AI基础知识导航与技术概念时间轴 |
 | 经典论文 | papers.html | AI领域经典论文汇总 |
-| Openclaw探索 | openclaw.html | Openclaw项目探索 |
+| 项目展示 | projects.html | AI相关开源项目展示 |
+| 大模型公司 | companies.html | 主要大模型公司介绍 |
+| 大模型社区 | community.html | 大模型社区资源汇总 |
+
+### Agent 开发
+
+| 页面 | 文件名 | 功能描述 |
+|------|--------|----------|
+| Agent开发 | agentdev.html | Agent开发问答和学习资料 |
+| Agent Skills | skills.html | Anthropic Claude Agent Skills 文档 |
+
+### 本体与语义
+
+| 页面 | 文件名 | 功能描述 |
+|------|--------|----------|
+| 本体构建 Step 1 | dify-workflow.html | 语义测试和本体构建教程 |
+| 本体+AI | ontology-ai.html | 本体与AI结合应用 |
+| 农业本体 | ontology.html | 农业领域本体论 |
+
+### 行业应用
+
+| 页面 | 文件名 | 功能描述 |
+|------|--------|----------|
 | AI+海洋牧场 | ocean-ranch.html | AI在海洋牧场中的应用 |
-| 流程图 | ocean-ranch-flow.html | AI海洋牧场项目流程图 |
-| Agent Skills | skills.html | Anthropic Agent Skills相关资源和文档 |
+| 流程图 | ocean-ranch-flow.html | 海洋牧场项目流程图 |
+| 农业期刊 | agriculture.html | 全球农业顶刊与顶会大全 |
+| USDA & Palantir | usda-palantir.html | USDA与Palantir合作新闻 |
+| 农业模型算法 | agriculture-models.html | GitHub开源农业AI模型精选 |
+
+### 专题研究
+
+| 页面 | 文件名 | 功能描述 |
+|------|--------|----------|
+| Palantir专题 | palantir.html | Palantir公司专题介绍 |
+| Openclaw探索 | openclaw.html | Openclaw项目探索 |
+| FishTest | fishtest.html | FishTest相关测试 |
+
+### 系统管理
+
+| 页面 | 文件名 | 功能描述 |
+|------|--------|----------|
 | 评论管理 | admin.html | 用户评论审核和管理后台 |
 | 离线页面 | offline.html | 离线状态提示页面 |
 
-## 特色功能
-- ✅ 响应式设计，支持手机访问
-- ✅ 评论系统，用户可提交评论
-- ✅ 评论审核管理
-- ✅ 使用localStorage存储评论数据
+---
+
+## 核心功能
+
+### 📱 响应式设计
+- 完美适配桌面端、平板、手机等多种设备
+- 移动端优化的导航和布局
+
+### 💬 评论系统
+- 用户可提交评论和反馈
+- 评论数据使用 localStorage 本地存储
+- 后台评论审核管理
+
+### 🌐 多语言支持
+- 部分页面支持中英文切换
+- 翻译内容存储于页面中
+
+### 🚀 快速导航
+- 左侧导航栏快速定位
+- 分类清晰，内容结构化
+- 平滑滚动动画效果
+
+---
+
+## 技术栈
+
+- **前端**: HTML5 + CSS3 + JavaScript
+- **样式**: 原生CSS（Flexbox + Grid布局）
+- **存储**: localStorage
+- **部署**: GitHub Pages
+
+---
 
 ## 本地运行
+
 ```bash
+# 进入项目目录
 cd MindPlace
+
+# 启动本地服务器
 python -m http.server 8080
-# 访问 http://localhost:8080/
+
+# 浏览器访问
+http://localhost:8080/
 ```
 
+---
+
 ## 部署说明
-- 使用GitHub Pages自动部署
-- 每次推送到main分支自动更新网站
+
+### GitHub Pages 自动部署
+- 推送代码到 `main` 分支
+- GitHub Actions 自动构建并发布
+- 约 1-2 分钟生效
+
+### 手动推送
+```bash
+git add .
+git commit -m "Update description"
+git push origin main
+```
+
+---
+
+## 农业模型算法特色
+
+新上线的**农业领域模型算法**页面收录了 GitHub 开源社区中的优秀农业AI项目，按四大领域分类：
+
+- 🔬 **植物病害识别**: ResNet、YOLO等深度学习模型
+- 📊 **作物产量预测**: 环境因子分析与建模
+- 📱 **移动端应用**: 面向农户的移动解决方案
+- ⚙️ **部署与工程化**: 生产级部署方案
+
+每个项目包含：
+- ✅ 详细的功能介绍
+- ✅ 技术栈标签（PyTorch/TensorFlow/FastAPI等）
+- ✅ 直达GitHub仓库的链接
+
+---
+
+## 贡献指南
+
+欢迎提交 Issue 和 Pull Request！
+
+1. Fork 本仓库
+2. 创建新分支 (`git checkout -b feature/xxx`)
+3. 提交更改 (`git commit -m 'Add xxx'`)
+4. 推送到分支 (`git push origin feature/xxx`)
+5. 创建 Pull Request
+
+---
+
+## 许可证
+
+本项目仅供学习交流使用。
+
+---
+
+> 🌱 **化心为殿，万念不湮** - 让知识在数字世界中永存
