@@ -8,8 +8,8 @@
 
 | 统计项 | 数值 |
 |--------|------|
-| **网页总数** | 25 |
-| **HTML文件** | 25 |
+| **网页总数** | 27 |
+| **HTML文件** | 27 |
 | **图片资源** | 5 |
 | **Python脚本** | 2 |
 
@@ -52,6 +52,7 @@ MindPalace 是一个综合性的知识导航网站，涵盖 **人工智能、大
 | 7 | Agent开发 | Agent开发问答和学习资料 | [🔗](https://sddxl150-star.github.io/MindPalace/agentdev.html) |
 | 8 | Agent Skills | Anthropic Claude Agent Skills 官方文档 | [🔗](https://sddxl150-star.github.io/MindPalace/skills.html) |
 | 9 | Claude Code架构 | Claude Code泄露框架技术架构解析 | [🔗](https://sddxl150-star.github.io/MindPalace/claude-code-architecture.html) |
+| 10 | Vibe Coding | Vibe Coding 开发技巧与最佳实践 | [🔗](https://sddxl150-star.github.io/MindPalace/vibe-coding.html) |
 
 ---
 
@@ -59,9 +60,9 @@ MindPalace 是一个综合性的知识导航网站，涵盖 **人工智能、大
 
 | 序号 | 页面名称 | 功能描述 | 访问链接 |
 |:---:|---------|---------|---------|
-| 10 | 本体构建 Step 1 | 语义测试和本体构建教程 | [🔗](https://sddxl150-star.github.io/MindPalace/dify-workflow.html) |
-| 11 | 本体+AI | 本体与AI结合应用 | [🔗](https://sddxl150-star.github.io/MindPalace/ontology-ai.html) |
-| 12 | 农业本体 | 农业领域本体论 | [🔗](https://sddxl150-star.github.io/MindPalace/ontology.html) |
+| 11 | 本体构建 Step 1 | 语义测试和本体构建教程 | [🔗](https://sddxl150-star.github.io/MindPalace/dify-workflow.html) |
+| 12 | 本体+AI | 本体与AI结合应用 | [🔗](https://sddxl150-star.github.io/MindPalace/ontology-ai.html) |
+| 13 | 农业本体 | 农业领域本体论 | [🔗](https://sddxl150-star.github.io/MindPalace/ontology.html) |
 
 ---
 
@@ -69,12 +70,12 @@ MindPalace 是一个综合性的知识导航网站，涵盖 **人工智能、大
 
 | 序号 | 页面名称 | 功能描述 | 访问链接 |
 |:---:|---------|---------|---------|
-| 13 | AI+海洋牧场 | AI在海洋牧场中的应用 | [🔗](https://sddxl150-star.github.io/MindPalace/ocean-ranch.html) |
-| 14 | 流程图 | 海洋牧场项目流程图 | [🔗](https://sddxl150-star.github.io/MindPalace/ocean-ranch-flow.html) |
-| 15 | 农业期刊 | 全球农业顶刊与顶会大全 | [🔗](https://sddxl150-star.github.io/MindPalace/agriculture.html) |
-| 16 | USDA & Palantir | USDA与Palantir合作新闻 | [🔗](https://sddxl150-star.github.io/MindPalace/usda-palantir.html) |
-| 17 | 农业模型算法 | GitHub开源农业AI模型精选 | [🔗](https://sddxl150-star.github.io/MindPalace/agriculture-models.html) |
-| 18 | 水稻技术对比 | 全球水稻技术综合对比分析 | [🔗](https://sddxl150-star.github.io/MindPalace/rice-tech-comparison/rice-tech-comparison.html) |
+| 14 | AI+海洋牧场 | AI在海洋牧场中的应用 | [🔗](https://sddxl150-star.github.io/MindPalace/ocean-ranch.html) |
+| 15 | 流程图 | 海洋牧场项目流程图 | [🔗](https://sddxl150-star.github.io/MindPalace/ocean-ranch-flow.html) |
+| 16 | 农业期刊 | 全球农业顶刊与顶会大全 | [🔗](https://sddxl150-star.github.io/MindPalace/agriculture.html) |
+| 17 | USDA & Palantir | USDA与Palantir合作新闻 | [🔗](https://sddxl150-star.github.io/MindPalace/usda-palantir.html) |
+| 18 | 农业模型算法 | GitHub开源农业AI模型精选 | [🔗](https://sddxl150-star.github.io/MindPalace/agriculture-models.html) |
+| 19 | 水稻技术对比 | 全球水稻技术综合对比分析 | [🔗](https://sddxl150-star.github.io/MindPalace/rice-tech-comparison/rice-tech-comparison.html) |
 
 ---
 
@@ -82,9 +83,10 @@ MindPalace 是一个综合性的知识导航网站，涵盖 **人工智能、大
 
 | 序号 | 页面名称 | 功能描述 | 访问链接 |
 |:---:|---------|---------|---------|
-| 19 | Palantir专题 | Palantir公司专题介绍 | [🔗](https://sddxl150-star.github.io/MindPalace/palantir.html) |
-| 20 | Openclaw探索 | Openclaw项目探索 | [🔗](https://sddxl150-star.github.io/MindPalace/openclaw.html) |
-| 21 | FishTest | FishTest相关测试 | [🔗](https://sddxl150-star.github.io/MindPalace/fishtest.html) |
+| 20 | Palantir专题 | Palantir公司专题介绍 | [🔗](https://sddxl150-star.github.io/MindPalace/palantir.html) |
+| 21 | Openclaw探索 | Openclaw项目探索 | [🔗](https://sddxl150-star.github.io/MindPalace/openclaw.html) |
+| 22 | FishTest | FishTest相关测试 | [🔗](https://sddxl150-star.github.io/MindPalace/fishtest.html) |
+| 23 | 排行榜 | 模型、公司、技术排行榜 | [🔗](https://sddxl150-star.github.io/MindPalace/ranking.html) |
 
 ---
 
@@ -92,8 +94,8 @@ MindPalace 是一个综合性的知识导航网站，涵盖 **人工智能、大
 
 | 序号 | 页面名称 | 功能描述 | 访问链接 |
 |:---:|---------|---------|---------|
-| 21 | 评论管理 | 用户评论审核和管理后台 | [🔗](https://sddxl150-star.github.io/MindPalace/admin.html) |
-| 22 | 离线页面 | 离线状态提示页面 | [🔗](https://sddxl150-star.github.io/MindPalace/offline.html) |
+| 24 | 评论管理 | 用户评论审核和管理后台 | [🔗](https://sddxl150-star.github.io/MindPalace/admin.html) |
+| 25 | 离线页面 | 离线状态提示页面 | [🔗](https://sddxl150-star.github.io/MindPalace/offline.html) |
 
 ---
 
