@@ -696,12 +696,110 @@
                 </div>
                 <div class="input-group">
                     <label>描述问题（可选）</label>
-                    <textarea id="questionInput" placeholder="请描述您观察到的问题，例如：&#10;叶片上出现褐色斑点，边缘发黄..."></textarea>
+                    <textarea id="questionInput" placeholder="这是什么问题，怎么办"></textarea>
                 </div>
             </div>
             <button class="demo-btn" id="analyzeBtn" onclick="runAnalysis()">
                 🔍 开始分析
             </button>
+        </div>
+
+        <!-- Analysis Results - Default Display -->
+        <div class="result-section" id="resultSection">
+            <h2 class="section-title">📊 分析结果对比</h2>
+            <div class="result-grid">
+                <div class="result-card route-1">
+                    <h3 class="result-title">
+                        <span style="color: #00d4ff;">●</span>
+                        路线一：本体 + 大模型
+                    </h3>
+                    <div class="result-content" id="result1">
+                        <p><strong>病害诊断：</strong><span class="highlight" id="disease1">稻瘟病</span></p>
+                        <p><strong>置信度：</strong><span id="confidence1">85%</span></p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidenceBar1" style="width: 85%"></div>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>防治方案：</strong></p>
+                        <div id="solution1">
+                            使用75%三环唑可湿性粉剂，20-30g/亩，兑水50kg喷雾。破口期和齐穗期各喷一次。
+                        </div>
+                    </div>
+                </div>
+                <div class="result-card route-2">
+                    <h3 class="result-title">
+                        <span style="color: #feca57;">●</span>
+                        路线二：本体 + 大模型 + 小模型
+                    </h3>
+                    <div class="result-content" id="result2">
+                        <p><strong>病害诊断：</strong><span class="highlight" id="disease2">稻瘟病（叶瘟）</span></p>
+                        <p><strong>置信度：</strong><span id="confidence2">96.8%</span></p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidenceBar2" style="width: 96.8%"></div>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>防治方案：</strong></p>
+                        <div id="solution2">
+                            <strong>诊断确认：</strong>稻瘟病-叶瘟型（由稻瘟病菌Magnaporthe oryzae引起）<br><br>
+                            <strong>针对性药剂：</strong><br>
+                            • 首选：75%三环唑可湿性粉剂 25g/亩<br>
+                            • 备选：40%稻瘟灵乳油 80ml/亩<br>
+                            • 生物制剂：枯草芽孢杆菌 100g/亩<br><br>
+                            <strong>用药时机：</strong>上午10点前或下午4点后，避免高温用药<br>
+                            <strong>安全间隔期：</strong>14天
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Summary -->
+        <div class="comparison-summary">
+            <h3 class="summary-title">📈 技术路线综合对比</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>对比维度</th>
+                        <th>路线一：本体+大模型</th>
+                        <th>路线二：本体+大模型+小模型</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>节点数量</td>
+                        <td>5个（start→llm→template→end）<br>本体可选 tool/knowledge</td>
+                        <td>6个（start→tool→tool→llm→template→end）<br>小模型(Skill)+本体(Skill)</td>
+                    </tr>
+                    <tr>
+                        <td>识别精度</td>
+                        <td>⭐⭐⭐ (约85%)</td>
+                        <td>⭐⭐⭐⭐⭐ (96%+)</td>
+                    </tr>
+                    <tr>
+                        <td>推理速度</td>
+                        <td>⭐⭐⭐ (较慢，大模型视觉推理)</td>
+                        <td>⭐⭐⭐⭐⭐ (快，小模型快速分类)</td>
+                    </tr>
+                    <tr>
+                        <td>部署成本</td>
+                        <td>⭐⭐⭐⭐ (仅需大模型API)</td>
+                        <td>⭐⭐⭐ (需部署小模型)</td>
+                    </tr>
+                    <tr>
+                        <td>泛化能力</td>
+                        <td>⭐⭐⭐⭐⭐ (可处理未见过的病害)</td>
+                        <td>⭐⭐⭐ (限于训练数据)</td>
+                    </tr>
+                    <tr>
+                        <td>专业知识深度</td>
+                        <td>⭐⭐⭐ (依赖Prompt质量)</td>
+                        <td>⭐⭐⭐⭐⭐ (小模型+本体双重保障)</td>
+                    </tr>
+                    <tr>
+                        <td>适用场景</td>
+                        <td>快速原型、无定制需求</td>
+                        <td>生产环境、高精度要求</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <!-- Workflow Comparison -->
@@ -904,104 +1002,6 @@
                     </ul>
                 </div>
             </div>
-        </div>
-
-        <!-- Result Section -->
-        <div class="result-section" id="resultSection">
-            <h2 class="section-title">📊 分析结果对比</h2>
-            <div class="result-grid">
-                <div class="result-card route-1">
-                    <h3 class="result-title">
-                        <span style="color: #00d4ff;">●</span>
-                        路线一：本体 + 大模型
-                    </h3>
-                    <div class="result-content" id="result1">
-                        <p><strong>病害诊断：</strong><span class="highlight" id="disease1">稻瘟病</span></p>
-                        <p><strong>置信度：</strong><span id="confidence1">85%</span></p>
-                        <div class="confidence-bar">
-                            <div class="confidence-fill" id="confidenceBar1" style="width: 85%"></div>
-                        </div>
-                        <p style="margin-top: 1rem;"><strong>防治方案：</strong></p>
-                        <div id="solution1">
-                            使用75%三环唑可湿性粉剂，20-30g/亩，兑水50kg喷雾。破口期和齐穗期各喷一次。
-                        </div>
-                    </div>
-                </div>
-                <div class="result-card route-2">
-                    <h3 class="result-title">
-                        <span style="color: #feca57;">●</span>
-                        路线二：本体 + 大模型 + 小模型
-                    </h3>
-                    <div class="result-content" id="result2">
-                        <p><strong>病害诊断：</strong><span class="highlight" id="disease2">稻瘟病（叶瘟）</span></p>
-                        <p><strong>置信度：</strong><span id="confidence2">96.8%</span></p>
-                        <div class="confidence-bar">
-                            <div class="confidence-fill" id="confidenceBar2" style="width: 96.8%"></div>
-                        </div>
-                        <p style="margin-top: 1rem;"><strong>防治方案：</strong></p>
-                        <div id="solution2">
-                            <strong>诊断确认：</strong>稻瘟病-叶瘟型（由稻瘟病菌Magnaporthe oryzae引起）<br><br>
-                            <strong>针对性药剂：</strong><br>
-                            • 首选：75%三环唑可湿性粉剂 25g/亩<br>
-                            • 备选：40%稻瘟灵乳油 80ml/亩<br>
-                            • 生物制剂：枯草芽孢杆菌 100g/亩<br><br>
-                            <strong>用药时机：</strong>上午10点前或下午4点后，避免高温用药<br>
-                            <strong>安全间隔期：</strong>14天
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Comparison Summary -->
-        <div class="comparison-summary">
-            <h3 class="summary-title">📈 技术路线综合对比</h3>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>对比维度</th>
-                        <th>路线一：本体+大模型</th>
-                        <th>路线二：本体+大模型+小模型</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>节点数量</td>
-                        <td>5个（start→llm→template→end）<br>本体可选 tool/knowledge</td>
-                        <td>6个（start→tool→tool→llm→template→end）<br>小模型(Skill)+本体(Skill)</td>
-                    </tr>
-                    <tr>
-                        <td>识别精度</td>
-                        <td>⭐⭐⭐ (约85%)</td>
-                        <td>⭐⭐⭐⭐⭐ (96%+)</td>
-                    </tr>
-                    <tr>
-                        <td>推理速度</td>
-                        <td>⭐⭐⭐ (较慢，大模型视觉推理)</td>
-                        <td>⭐⭐⭐⭐⭐ (快，小模型快速分类)</td>
-                    </tr>
-                    <tr>
-                        <td>部署成本</td>
-                        <td>⭐⭐⭐⭐ (仅需大模型API)</td>
-                        <td>⭐⭐⭐ (需部署小模型)</td>
-                    </tr>
-                    <tr>
-                        <td>泛化能力</td>
-                        <td>⭐⭐⭐⭐⭐ (可处理未见过的病害)</td>
-                        <td>⭐⭐⭐ (限于训练数据)</td>
-                    </tr>
-                    <tr>
-                        <td>专业知识深度</td>
-                        <td>⭐⭐⭐ (依赖Prompt质量)</td>
-                        <td>⭐⭐⭐⭐⭐ (小模型+本体双重保障)</td>
-                    </tr>
-                    <tr>
-                        <td>适用场景</td>
-                        <td>快速原型、无定制需求</td>
-                        <td>生产环境、高精度要求</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
         <!-- Files Section -->
