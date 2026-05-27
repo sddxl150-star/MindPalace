@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术路线对比 - 本体+大模型 vs 本体+大模型+小模型</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #fff;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #00d4ff, #7b68ee, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #888;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .nav-link {
+            padding: 0.6rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .nav-link.active {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.4);
+            color: #00d4ff;
+        }
+
+        /* Input Section */
+        .input-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #00d4ff;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .input-group textarea {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            color: #fff;
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .upload-area {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px dashed rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(0, 212, 255, 0.6);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .upload-area.has-image {
+            border-style: solid;
+            border-color: rgba(0, 212, 255, 0.6);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .upload-area.has-image .preview-image {
+            display: block;
+        }
+
+        .upload-area.has-image .upload-icon,
+        .upload-area.has-image .upload-text {
+            display: none;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, #00d4ff, #7b68ee);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .demo-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Workflow Comparison */
+        .workflow-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .workflow-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .workflow-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .workflow-card.route-1 {
+            border-top: 4px solid #00d4ff;
+        }
+
+        .workflow-card.route-2 {
+            border-top: 4px solid #feca57;
+        }
+
+        .workflow-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .workflow-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .route-1 .workflow-badge {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+        }
+
+        .route-2 .workflow-badge {
+            background: rgba(254, 202, 87, 0.2);
+            color: #feca57;
+        }
+
+        .workflow-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .workflow-diagram {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .workflow-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .flow-node {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            font-size: 0.8rem;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .flow-node.input {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .flow-node.ontology {
+            background: rgba(123, 104, 238, 0.15);
+            border-color: rgba(123, 104, 238, 0.3);
+        }
+
+        .flow-node.llm {
+            background: rgba(254, 202, 87, 0.15);
+            border-color: rgba(254, 202, 87, 0.3);
+        }
+
+        .flow-node.small-model {
+            background: rgba(76, 175, 80, 0.15);
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+
+        .flow-node.output {
+            background: rgba(233, 69, 96, 0.15);
+            border-color: rgba(233, 69, 96, 0.3);
+        }
+
+        .flow-arrow {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .workflow-desc {
+            font-size: 0.9rem;
+            color: #999;
+            line-height: 1.7;
+        }
+
+        .workflow-desc h4 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .workflow-desc ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .workflow-desc li {
+            margin-bottom: 0.3rem;
+        }
+
+        /* Result Section */
+        .result-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            display: none;
+        }
+
+        .result-section.visible {
+            display: block;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .result-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .result-card.route-1 {
+            border-left: 4px solid #00d4ff;
+        }
+
+        .result-card.route-2 {
+            border-left: 4px solid #feca57;
+        }
+
+        .result-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result-content {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        .result-content strong {
+            color: #fff;
+        }
+
+        .result-content .highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .confidence-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .route-1 .confidence-fill {
+            background: linear-gradient(90deg, #00d4ff, #7b68ee);
+        }
+
+        .route-2 .confidence-fill {
+            background: linear-gradient(90deg, #feca57, #ff6b6b);
+        }
+
+        /* Comparison Summary */
+        .comparison-summary {
+            margin-top: 3rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            color: #888;
+            font-weight: 500;
+        }
+
+        .comparison-table td {
+            color: #ccc;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Files Section */
+        .files-section {
+            margin-top: 3rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .file-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .file-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .file-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .file-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-desc {
+            font-size: 0.85rem;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        .file-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .file-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .input-grid,
+            .workflow-comparison,
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .title {
+                font-size: 1.8rem;
+            }
+
+            .workflow-flow {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">技术路线对比演示</h1>
+            <p class="subtitle">
+                以水稻稻瘟病识别与防治方案生成为例，对比两种 AI 技术路线：<br>
+                <strong>路线一：本体+大模型</strong> vs <strong>路线二：本体+大模型+小模型</strong>
+            </p>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="ontology-ai.html" class="nav-link">本体+AI</a>
+            <a href="dify-workflow.html" class="nav-link">Dify工作流</a>
+            <a href="rice-tech-comparison.html" class="nav-link active">技术对比</a>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <h2 class="section-title">📥 输入信息</h2>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>上传水稻叶片图片</label>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📷</div>
+                        <div class="upload-text">点击或拖拽上传图片<br>支持 JPG、PNG 格式</div>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>描述问题（可选）</label>
+                    <textarea id="questionInput" placeholder="请描述您观察到的问题，例如：&#10;叶片上出现褐色斑点，边缘发黄..."></textarea>
+                </div>
+            </div>
+            <button class="demo-btn" id="analyzeBtn" onclick="runAnalysis()">
+                🔍 开始分析
+            </button>
+        </div>
+
+        <!-- Workflow Comparison -->
+        <div class="workflow-comparison">
+            <!-- Route 1 -->
+            <div class="workflow-card route-1">
+                <div class="workflow-header">
+                    <span class="workflow-badge">路线一</span>
+                    <h3 class="workflow-title">本体 + 大模型</h3>
+                </div>
+                <div class="workflow-diagram">
+                    <div class="workflow-flow">
+                        <div class="flow-node input">📷 图片</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-node ontology">📚 本体</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-node llm">🤖 LLM</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-node output">📋 方案</div>
+                    </div>
+                </div>
+                <div class="workflow-desc">
+                    <h4>技术特点</h4>
+                    <ul>
+                        <li>使用大模型的视觉理解能力直接识别病害</li>
+                        <li>本体知识库提供结构化农业知识支撑</li>
+                        <li>流程简单，部署方便</li>
+                        <li>依赖大模型的视觉推理能力</li>
+                    </ul>
+                    <h4 style="margin-top: 1rem;">优势</h4>
+                    <ul>
+                        <li>无需训练专用小模型</li>
+                        <li>泛化能力强，可处理未见过的病害</li>
+                    </ul>
+                    <h4 style="margin-top: 1rem;">劣势</h4>
+                    <ul>
+                        <li>大模型视觉识别精度有限</li>
+                        <li>推理成本较高</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Route 2 -->
+            <div class="workflow-card route-2">
+                <div class="workflow-header">
+                    <span class="workflow-badge">路线二</span>
+                    <h3 class="workflow-title">本体 + 大模型 + 小模型</h3>
+                </div>
+                <div class="workflow-diagram">
+                    <div class="workflow-flow">
+                        <div class="flow-node input">📷 图片</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-node small-model">🔬 小模型</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-node ontology">📚 本体</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-node llm">🤖 LLM</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-node output">📋 方案</div>
+                    </div>
+                </div>
+                <div class="workflow-desc">
+                    <h4>技术特点</h4>
+                    <ul>
+                        <li>小模型（ResNet50）专注病害图像分类</li>
+                        <li>本体知识库提供专业知识检索</li>
+                        <li>大模型生成自然语言防治方案</li>
+                        <li>三者协同，各发挥所长</li>
+                    </ul>
+                    <h4 style="margin-top: 1rem;">优势</h4>
+                    <ul>
+                        <li>小模型识别精度高（专门训练）</li>
+                        <li>推理速度快，成本低</li>
+                        <li>大模型生成更专业的方案</li>
+                    </ul>
+                    <h4 style="margin-top: 1rem;">劣势</h4>
+                    <ul>
+                        <li>需要训练和维护小模型</li>
+                        <li>系统复杂度更高</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Section -->
+        <div class="result-section" id="resultSection">
+            <h2 class="section-title">📊 分析结果对比</h2>
+            <div class="result-grid">
+                <div class="result-card route-1">
+                    <h3 class="result-title">
+                        <span style="color: #00d4ff;">●</span>
+                        路线一：本体 + 大模型
+                    </h3>
+                    <div class="result-content" id="result1">
+                        <p><strong>病害诊断：</strong><span class="highlight" id="disease1">稻瘟病</span></p>
+                        <p><strong>置信度：</strong><span id="confidence1">85%</span></p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidenceBar1" style="width: 85%"></div>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>防治方案：</strong></p>
+                        <div id="solution1">
+                            使用75%三环唑可湿性粉剂，20-30g/亩，兑水50kg喷雾。破口期和齐穗期各喷一次。
+                        </div>
+                    </div>
+                </div>
+                <div class="result-card route-2">
+                    <h3 class="result-title">
+                        <span style="color: #feca57;">●</span>
+                        路线二：本体 + 大模型 + 小模型
+                    </h3>
+                    <div class="result-content" id="result2">
+                        <p><strong>病害诊断：</strong><span class="highlight" id="disease2">稻瘟病（叶瘟）</span></p>
+                        <p><strong>置信度：</strong><span id="confidence2">96.8%</span></p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidenceBar2" style="width: 96.8%"></div>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>防治方案：</strong></p>
+                        <div id="solution2">
+                            <strong>诊断确认：</strong>稻瘟病-叶瘟型（由稻瘟病菌Magnaporthe oryzae引起）<br><br>
+                            <strong>针对性药剂：</strong><br>
+                            • 首选：75%三环唑可湿性粉剂 25g/亩<br>
+                            • 备选：40%稻瘟灵乳油 80ml/亩<br>
+                            • 生物制剂：枯草芽孢杆菌 100g/亩<br><br>
+                            <strong>用药时机：</strong>上午10点前或下午4点后，避免高温用药<br>
+                            <strong>安全间隔期：</strong>14天
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Summary -->
+        <div class="comparison-summary">
+            <h3 class="summary-title">📈 技术路线综合对比</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>对比维度</th>
+                        <th>路线一：本体+大模型</th>
+                        <th>路线二：本体+大模型+小模型</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>识别精度</td>
+                        <td>⭐⭐⭐ (约85%)</td>
+                        <td>⭐⭐⭐⭐⭐ (96%+)</td>
+                    </tr>
+                    <tr>
+                        <td>推理速度</td>
+                        <td>⭐⭐⭐ (较慢)</td>
+                        <td>⭐⭐⭐⭐⭐ (快)</td>
+                    </tr>
+                    <tr>
+                        <td>部署成本</td>
+                        <td>⭐⭐⭐⭐ (仅需大模型API)</td>
+                        <td>⭐⭐⭐ (需部署小模型)</td>
+                    </tr>
+                    <tr>
+                        <td>泛化能力</td>
+                        <td>⭐⭐⭐⭐⭐ (可处理新病害)</td>
+                        <td>⭐⭐⭐ (限于训练数据)</td>
+                    </tr>
+                    <tr>
+                        <td>专业知识深度</td>
+                        <td>⭐⭐⭐ (依赖Prompt)</td>
+                        <td>⭐⭐⭐⭐⭐ (本体+小模型双重保障)</td>
+                    </tr>
+                    <tr>
+                        <td>适用场景</td>
+                        <td>快速原型、无定制需求</td>
+                        <td>生产环境、高精度要求</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Files Section -->
+        <div class="files-section">
+            <h2 class="section-title">📁 相关文件下载</h2>
+            <div class="files-grid">
+                <div class="file-card">
+                    <div class="file-icon">🔧</div>
+                    <h4 class="file-name">Dify工作流 - 路线一</h4>
+                    <p class="file-desc">
+                        本体+大模型方案的工作流 JSON 配置，可在 Dify 1.14.2 中导入使用。
+                    </p>
+                    <a href="dify-workflow-ontology-llm.json" class="file-link" download>下载 JSON</a>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">🔧</div>
+                    <h4 class="file-name">Dify工作流 - 路线二</h4>
+                    <p class="file-desc">
+                        本体+大模型+小模型方案的工作流 JSON 配置，支持小模型分类器集成。
+                    </p>
+                    <a href="dify-workflow-ontology-llm-small.json" class="file-link" download>下载 JSON</a>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">📚</div>
+                    <h4 class="file-name">水稻病害知识本体</h4>
+                    <p class="file-desc">
+                        包含稻瘟病、白叶枯病、纹枯病等病害的症状、病因、防治方案的结构化知识。
+                    </p>
+                    <a href="rice-disease-ontology.md" class="file-link" download>下载 MD</a>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">🧠</div>
+                    <h4 class="file-name">小模型算法代码</h4>
+                    <p class="file-desc">
+                        基于 ResNet50 的轻量级水稻病害分类器，包含模型定义、训练脚本、推理代码。
+                    </p>
+                    <a href="rice-disease-small-model.py" class="file-link" download>下载 PY</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Image upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+
+        uploadArea.addEventListener('click', () => imageInput.click());
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'rgba(0, 212, 255, 0.6)';
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = 'rgba(0, 212, 255, 0.3)';
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handleImageUpload(file);
+            }
+        });
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleImageUpload(file);
+        });
+
+        function handleImageUpload(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadArea.style.backgroundImage = `url(${e.target.result})`;
+                uploadArea.style.backgroundSize = 'cover';
+                uploadArea.style.backgroundPosition = 'center';
+                uploadArea.classList.add('has-image');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Simulated analysis results
+        const diseaseResults = {
+            1: {
+                name: '稻瘟病',
+                confidence: 85,
+                solution: '使用75%三环唑可湿性粉剂，20-30g/亩，兑水50kg喷雾。破口期和齐穗期各喷一次。注意保持田间通风透光。'
+            },
+            2: {
+                name: '稻瘟病（叶瘟）',
+                confidence: 96.8,
+                solution: '<strong>诊断确认：</strong>稻瘟病-叶瘟型（由稻瘟病菌Magnaporthe oryzae引起）<br><br>' +
+                    '<strong>针对性药剂：</strong><br>' +
+                    '• 首选：75%三环唑可湿性粉剂 25g/亩<br>' +
+                    '• 备选：40%稻瘟灵乳油 80ml/亩<br>' +
+                    '• 生物制剂：枯草芽孢杆菌 100g/亩<br><br>' +
+                    '<strong>用药时机：</strong>上午10点前或下午4点后<br>' +
+                    '<strong>安全间隔期：</strong>14天'
+            }
+        };
+
+        function runAnalysis() {
+            const btn = document.getElementById('analyzeBtn');
+            btn.textContent = '🔄 分析中...';
+            btn.disabled = true;
+
+            // Simulate analysis delay
+            setTimeout(() => {
+                document.getElementById('resultSection').classList.add('visible');
+
+                // Update Route 1 results
+                document.getElementById('disease1').textContent = diseaseResults[1].name;
+                document.getElementById('confidence1').textContent = diseaseResults[1].confidence + '%';
+                document.getElementById('confidenceBar1').style.width = diseaseResults[1].confidence + '%';
+                document.getElementById('solution1').textContent = diseaseResults[1].solution;
+
+                // Update Route 2 results
+                document.getElementById('disease2').textContent = diseaseResults[2].name;
+                document.getElementById('confidence2').textContent = diseaseResults[2].confidence + '%';
+                document.getElementById('confidenceBar2').style.width = diseaseResults[2].confidence + '%';
+                document.getElementById('solution2').innerHTML = diseaseResults[2].solution;
+
+                btn.textContent = '🔍 开始分析';
+                btn.disabled = false;
+
+                // Scroll to results
+                document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

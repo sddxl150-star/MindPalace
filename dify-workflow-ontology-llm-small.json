@@ -1,0 +1,147 @@
+{
+  "version": "1.14.2",
+  "name": "稻瘟病识别-本体增强大小模型协同方案",
+  "description": "技术路线二：本体+大模型+小模型。小模型负责病害识别，大模型负责方案生成，本体提供结构化知识支撑。",
+  "workflow_id": "rice-blast-ontology-llm-small",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "start",
+      "position": {"x": 50, "y": 200},
+      "config": {
+        "inputs": [
+          {
+            "name": "image",
+            "type": "image",
+            "required": true,
+            "description": "水稻叶片图片"
+          },
+          {
+            "name": "question",
+            "type": "text",
+            "required": true,
+            "description": "用户问题"
+          }
+        ]
+      }
+    },
+    {
+      "id": "small_model_classifier",
+      "type": "custom-tool",
+      "position": {"x": 250, "y": 200},
+      "config": {
+        "tool_name": "rice-blast-classifier",
+        "tool_type": "image-classification",
+        "model_path": "models/rice-blast-resnet50.pth",
+        "classes": ["稻瘟病", "白叶枯病", "纹枯病", "胡麻斑病", "正常"],
+        "confidence_threshold": 0.75
+      }
+    },
+    {
+      "id": "ontology_retriever",
+      "type": "knowledge-retrieval",
+      "position": {"x": 450, "y": 200},
+      "config": {
+        "knowledge_base_id": "rice-disease-ontology",
+        "retrieval_strategy": "hybrid",
+        "top_k": 3,
+        "rerank": true
+      }
+    },
+    {
+      "id": "llm_generator",
+      "type": "llm",
+      "position": {"x": 650, "y": 200},
+      "config": {
+        "model": "gpt-4o",
+        "prompt_template": "你是一位水稻种植专家。小模型识别结果显示：{{disease_name}}（置信度：{{confidence}}%。\n\n请根据以下知识库信息和用户问题，生成专业的防治方案。\n\n知识库信息：\n{{context}}\n\n用户问题：{{question}}\n\n请按照以下格式输出：\n1. 病害诊断确认：{{disease_name}}\n2. 病害严重程度评估\n3. 针对性防治方案（结合小模型识别结果）\n4. 用药建议（具体药剂名称和稀释比例）\n5. 预防措施",
+        "temperature": 0.5
+      }
+    },
+    {
+      "id": "output_result",
+      "type": "answer",
+      "position": {"x": 850, "y": 200},
+      "config": {
+        "response_mode": "blocking"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "start",
+      "target": "small_model_classifier",
+      "data": {
+        "source_handle": "image_output",
+        "target_handle": "image_input"
+      }
+    },
+    {
+      "source": "small_model_classifier",
+      "target": "ontology_retriever",
+      "data": {
+        "source_handle": "disease_name_output",
+        "target_handle": "query_input"
+      }
+    },
+    {
+      "source": "small_model_classifier",
+      "target": "llm_generator",
+      "data": {
+        "source_handle": "disease_name_output",
+        "target_handle": "disease_name_input"
+      }
+    },
+    {
+      "source": "small_model_classifier",
+      "target": "llm_generator",
+      "data": {
+        "source_handle": "confidence_output",
+        "target_handle": "confidence_input"
+      }
+    },
+    {
+      "source": "start",
+      "target": "llm_generator",
+      "data": {
+        "source_handle": "question_output",
+        "target_handle": "question_input"
+      }
+    },
+    {
+      "source": "ontology_retriever",
+      "target": "llm_generator",
+      "data": {
+        "source_handle": "context_output",
+        "target_handle": "context_input"
+      }
+    },
+    {
+      "source": "llm_generator",
+      "target": "output_result",
+      "data": {
+        "source_handle": "output",
+        "target_handle": "input"
+      }
+    }
+  ],
+  "features": {
+    "type": "chat"
+  },
+  "graph": {
+    "nodes": {
+      "start": {"position": {"x": 50, "y": 200}},
+      "small_model_classifier": {"position": {"x": 250, "y": 200}},
+      "ontology_retriever": {"position": {"x": 450, "y": 200}},
+      "llm_generator": {"position": {"x": 650, "y": 200}},
+      "output_result": {"position": {"x": 850, "y": 200}}
+    },
+    "edges": [
+      {"source": "start", "target": "small_model_classifier"},
+      {"source": "small_model_classifier", "target": "ontology_retriever"},
+      {"source": "small_model_classifier", "target": "llm_generator"},
+      {"source": "ontology_retriever", "target": "llm_generator"},
+      {"source": "llm_generator", "target": "output_result"}
+    ]
+  }
+}
