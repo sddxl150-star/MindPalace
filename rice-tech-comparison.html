@@ -751,57 +751,6 @@
             </div>
         </div>
 
-        <!-- Comparison Summary -->
-        <div class="comparison-summary">
-            <h3 class="summary-title">📈 技术路线综合对比</h3>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>对比维度</th>
-                        <th>路线一：本体+大模型</th>
-                        <th>路线二：本体+大模型+小模型</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>节点数量</td>
-                        <td>5个（start→llm→template→end）<br>本体可选 tool/knowledge</td>
-                        <td>6个（start→tool→tool→llm→template→end）<br>小模型(Skill)+本体(Skill)</td>
-                    </tr>
-                    <tr>
-                        <td>识别精度</td>
-                        <td>⭐⭐⭐ (约85%)</td>
-                        <td>⭐⭐⭐⭐⭐ (96%+)</td>
-                    </tr>
-                    <tr>
-                        <td>推理速度</td>
-                        <td>⭐⭐⭐ (较慢，大模型视觉推理)</td>
-                        <td>⭐⭐⭐⭐⭐ (快，小模型快速分类)</td>
-                    </tr>
-                    <tr>
-                        <td>部署成本</td>
-                        <td>⭐⭐⭐⭐ (仅需大模型API)</td>
-                        <td>⭐⭐⭐ (需部署小模型)</td>
-                    </tr>
-                    <tr>
-                        <td>泛化能力</td>
-                        <td>⭐⭐⭐⭐⭐ (可处理未见过的病害)</td>
-                        <td>⭐⭐⭐ (限于训练数据)</td>
-                    </tr>
-                    <tr>
-                        <td>专业知识深度</td>
-                        <td>⭐⭐⭐ (依赖Prompt质量)</td>
-                        <td>⭐⭐⭐⭐⭐ (小模型+本体双重保障)</td>
-                    </tr>
-                    <tr>
-                        <td>适用场景</td>
-                        <td>快速原型、无定制需求</td>
-                        <td>生产环境、高精度要求</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
         <!-- Workflow Comparison -->
         <div class="workflow-comparison">
             <!-- Route 1: Ontology + LLM -->
