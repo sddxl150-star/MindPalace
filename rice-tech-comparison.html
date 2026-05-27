@@ -458,11 +458,11 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
             padding: 2rem;
-            display: none;
+            display: block;
         }
 
-        .result-section.visible {
-            display: block;
+        .result-section.hidden {
+            display: none;
         }
 
         .result-grid {
@@ -688,15 +688,15 @@
             <div class="input-grid">
                 <div class="input-group">
                     <label>上传水稻叶片图片</label>
-                    <div class="upload-area" id="uploadArea">
-                        <div class="upload-icon">📷</div>
-                        <div class="upload-text">点击或拖拽上传图片<br>支持 JPG、PNG 格式</div>
+                    <div class="upload-area has-image" id="uploadArea" style="background-image: url('https://www.ars.usda.gov/ARSUserFiles/oc/graphics/photos/jul06/d542-1.jpg'); background-size: cover; background-position: center;">
+                        <div class="upload-icon" style="display: none;">📷</div>
+                        <div class="upload-text" style="display: none;">点击或拖拽上传图片<br>支持 JPG、PNG 格式</div>
                         <input type="file" id="imageInput" accept="image/*" style="display: none;">
                     </div>
                 </div>
                 <div class="input-group">
                     <label>描述问题（可选）</label>
-                    <textarea id="questionInput" placeholder="这是什么问题，怎么办"></textarea>
+                    <textarea id="questionInput">这是什么问题，怎么办</textarea>
                 </div>
             </div>
             <button class="demo-btn" id="analyzeBtn" onclick="runAnalysis()">
