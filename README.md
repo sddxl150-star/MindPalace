@@ -4,7 +4,18 @@
 
 ---
 
-## 📋 项目简介
+## � 项目统计
+
+| 统计项 | 数值 |
+|--------|------|
+| **网页总数** | 25 |
+| **HTML文件** | 25 |
+| **图片资源** | 5 |
+| **Python脚本** | 2 |
+
+---
+
+## � 项目简介
 
 MindPalace 是一个综合性的知识导航网站，涵盖 **人工智能、大模型、Agent开发、农业科技** 等领域的学习资源和资讯汇总。
 
@@ -63,6 +74,7 @@ MindPalace 是一个综合性的知识导航网站，涵盖 **人工智能、大
 | 15 | 农业期刊 | 全球农业顶刊与顶会大全 | [🔗](https://sddxl150-star.github.io/MindPalace/agriculture.html) |
 | 16 | USDA & Palantir | USDA与Palantir合作新闻 | [🔗](https://sddxl150-star.github.io/MindPalace/usda-palantir.html) |
 | 17 | 农业模型算法 | GitHub开源农业AI模型精选 | [🔗](https://sddxl150-star.github.io/MindPalace/agriculture-models.html) |
+| 18 | 水稻技术对比 | 全球水稻技术综合对比分析 | [🔗](https://sddxl150-star.github.io/MindPalace/rice-tech-comparison/rice-tech-comparison.html) |
 
 ---
 
@@ -70,9 +82,9 @@ MindPalace 是一个综合性的知识导航网站，涵盖 **人工智能、大
 
 | 序号 | 页面名称 | 功能描述 | 访问链接 |
 |:---:|---------|---------|---------|
-| 18 | Palantir专题 | Palantir公司专题介绍 | [🔗](https://sddxl150-star.github.io/MindPalace/palantir.html) |
-| 19 | Openclaw探索 | Openclaw项目探索 | [🔗](https://sddxl150-star.github.io/MindPalace/openclaw.html) |
-| 20 | FishTest | FishTest相关测试 | [🔗](https://sddxl150-star.github.io/MindPalace/fishtest.html) |
+| 19 | Palantir专题 | Palantir公司专题介绍 | [🔗](https://sddxl150-star.github.io/MindPalace/palantir.html) |
+| 20 | Openclaw探索 | Openclaw项目探索 | [🔗](https://sddxl150-star.github.io/MindPalace/openclaw.html) |
+| 21 | FishTest | FishTest相关测试 | [🔗](https://sddxl150-star.github.io/MindPalace/fishtest.html) |
 
 ---
 

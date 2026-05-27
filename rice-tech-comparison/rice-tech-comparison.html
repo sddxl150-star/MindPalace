@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术路线对比 - MindPalace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* 左侧导航栏 */
+        .sidebar {
+            width: 280px;
+            background: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .sidebar-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2d7a5f;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .nav-menu {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.5rem;
+            background: #f5f5f5;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            color: #555;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            color: #2d7a5f;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+        }
+
+        .nav-text {
+            font-weight: 500;
+        }
+
+        .sidebar-footer {
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1rem;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: #2d7a5f;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            transform: translateY(-2px);
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem 4rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #2d7a5f, #4caf50, #81c784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.6s forwards;
+        }
+
+        /* Input Section */
+        .input-section {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.4s forwards;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #2d7a5f;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .upload-area {
+            background: #f8f9fa;
+            border: 2px dashed #c8e6c9;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-area:hover {
+            border-color: #4caf50;
+            background: #e8f5e9;
+        }
+
+        .upload-area.has-image {
+            border-style: solid;
+            border-color: #4caf50;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .upload-area.has-image .upload-icon,
+        .upload-area.has-image .upload-text {
+            display: none;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, #4caf50, #2d7a5f);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .demo-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Result Section */
+        .result-section {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.5s forwards;
+        }
+
+        .result-section.hidden {
+            display: none;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid #e0e0e0;
+        }
+
+        .result-card.route-1 {
+            border-left: 4px solid #00d4ff;
+        }
+
+        .result-card.route-2 {
+            border-left: 4px solid #4caf50;
+        }
+
+        .result-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .result-content {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .result-content strong {
+            color: #333;
+        }
+
+        .result-content .highlight {
+            color: #2d7a5f;
+            font-weight: 600;
+        }
+
+        .confidence-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .route-1 .confidence-fill {
+            background: linear-gradient(90deg, #00d4ff, #7b68ee);
+        }
+
+        .route-2 .confidence-fill {
+            background: linear-gradient(90deg, #4caf50, #2d7a5f);
+        }
+
+        /* Workflow Comparison */
+        .workflow-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .workflow-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .workflow-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .workflow-card.route-1 {
+            border-top: 4px solid #00d4ff;
+        }
+
+        .workflow-card.route-2 {
+            border-top: 4px solid #4caf50;
+        }
+
+        .workflow-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .workflow-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .route-1 .workflow-badge {
+            background: rgba(0, 212, 255, 0.15);
+            color: #00d4ff;
+        }
+
+        .route-2 .workflow-badge {
+            background: #e8f5e9;
+            color: #2d7a5f;
+        }
+
+        .workflow-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Dify Workflow Canvas */
+        .dify-canvas {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            min-height: 320px;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .dify-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 1rem;
+        }
+
+        .dify-title {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .dify-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            background: #e8f5e9;
+            color: #4caf50;
+            border-radius: 4px;
+        }
+
+        /* Workflow Nodes */
+        .workflow-nodes {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 0.5rem;
+        }
+
+        .workflow-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            position: relative;
+        }
+
+        /* Node Base Styles */
+        .node {
+            background: #ffffff;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            min-width: 140px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .node-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .node-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .node-type {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            background: #f0f0f0;
+            border-radius: 4px;
+            color: #666;
+            display: inline-block;
+        }
+
+        .node-desc {
+            font-size: 0.65rem;
+            color: #888;
+            margin-top: 0.3rem;
+            line-height: 1.3;
+        }
+
+        /* Node Types */
+        .node.start {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.4);
+        }
+        .node.start .node-type { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
+
+        .node.llm {
+            background: rgba(254, 202, 87, 0.1);
+            border-color: rgba(254, 202, 87, 0.4);
+        }
+        .node.llm .node-type { background: rgba(254, 202, 87, 0.2); color: #d4a574; }
+
+        .node.knowledge {
+            background: rgba(123, 104, 238, 0.1);
+            border-color: rgba(123, 104, 238, 0.4);
+        }
+        .node.knowledge .node-type { background: rgba(123, 104, 238, 0.2); color: #7b68ee; }
+
+        .node.tool {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: rgba(76, 175, 80, 0.4);
+        }
+        .node.tool .node-type { background: rgba(76, 175, 80, 0.2); color: #4caf50; }
+
+        .node.template {
+            background: rgba(233, 69, 96, 0.1);
+            border-color: rgba(233, 69, 96, 0.4);
+        }
+        .node.template .node-type { background: rgba(233, 69, 96, 0.2); color: #e94560; }
+
+        .node.end {
+            background: rgba(255, 107, 107, 0.1);
+            border-color: rgba(255, 107, 107, 0.4);
+        }
+        .node.end .node-type { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+
+        /* Connector Lines */
+        .connector {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #e0e0e0, #c0c0c0, #e0e0e0);
+            position: relative;
+        }
+
+        .connector::after {
+            content: '→';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .connector-branch {
+            width: 2px;
+            height: 30px;
+            background: #e0e0e0;
+            margin: 0 auto;
+        }
+
+        /* Workflow Description */
+        .workflow-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.7;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .workflow-desc h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .workflow-desc ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .workflow-desc li {
+            margin-bottom: 0.3rem;
+        }
+
+        /* Files Section */
+        .files-section {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.8s forwards;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .file-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .file-card:hover {
+            transform: translateY(-3px);
+            border-color: #4caf50;
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.15);
+        }
+
+        .file-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .file-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .file-desc {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .file-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #2d7a5f;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            background: #e8f5e9;
+            border-radius: 6px;
+            border: 1px solid #c8e6c9;
+            transition: all 0.3s ease;
+        }
+
+        .file-link:hover {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            transform: translateX(4px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0a0a0;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-content {
+                margin-left: 240px;
+                padding: 2rem 2rem;
+            }
+            
+            .workflow-comparison,
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 2px solid rgba(74, 175, 80, 0.2);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 2rem 1rem;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .nav-item {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧导航栏 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">
+                🔬 水稻技术对比
+            </h2>
+            <p class="sidebar-subtitle">本体+大模型 vs 本体+大模型+小模型</p>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">返回首页</span>
+            </a>
+            <a href="agriculture-models.html" class="nav-item">
+                <span class="nav-icon">🌱</span>
+                <span class="nav-text">农业模型</span>
+            </a>
+            <a href="ai-basics.html" class="nav-item">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-text">AI基础</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="index.html" class="back-link">
+                ← 返回首页
+            </a>
+        </div>
+    </aside>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="title">🔬 技术路线对比演示</h1>
+            <p class="subtitle">
+                以水稻稻瘟病识别与防治方案生成为例，对比两种 AI 技术路线<br>
+                <strong>路线一：本体+大模型</strong> vs <strong>路线二：本体+大模型+小模型</strong>
+            </p>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <h2 class="section-title">📥 输入信息</h2>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>上传水稻叶片图片</label>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📷</div>
+                        <div class="upload-text">点击或拖拽上传图片<br>支持 JPG、PNG 格式</div>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>描述问题（可选）</label>
+                    <textarea id="questionInput" style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1rem; font-size: 1rem; min-height: 100px; resize: vertical; color: #333;">这是什么问题，怎么办</textarea>
+                </div>
+            </div>
+            <button class="demo-btn" id="analyzeBtn" onclick="runAnalysis()">
+                🔍 开始分析
+            </button>
+        </div>
+
+        <!-- Analysis Results -->
+        <div class="result-section hidden" id="resultSection">
+            <h2 class="section-title">📊 分析结果对比</h2>
+            <div class="result-grid">
+                <div class="result-card route-1">
+                    <h3 class="result-title">
+                        <span style="color: #00d4ff;">●</span>
+                        路线一：本体 + 大模型
+                    </h3>
+                    <div class="result-content" id="result1">
+                        <p><strong>病害诊断：</strong><span class="highlight" id="disease1">稻瘟病</span></p>
+                        <p><strong>置信度：</strong><span id="confidence1">85%</span></p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidenceBar1" style="width: 85%"></div>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>防治方案：</strong></p>
+                        <div id="solution1">
+                            使用75%三环唑可湿性粉剂，20-30g/亩，兑水50kg喷雾。破口期和齐穗期各喷一次。
+                        </div>
+                    </div>
+                </div>
+                <div class="result-card route-2">
+                    <h3 class="result-title">
+                        <span style="color: #4caf50;">●</span>
+                        路线二：本体 + 大模型 + 小模型
+                    </h3>
+                    <div class="result-content" id="result2">
+                        <p><strong>病害诊断：</strong><span class="highlight" id="disease2">稻瘟病（叶瘟）</span></p>
+                        <p><strong>置信度：</strong><span id="confidence2">96.8%</span></p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidenceBar2" style="width: 96.8%"></div>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>防治方案：</strong></p>
+                        <div id="solution2">
+                            <strong>诊断确认：</strong>稻瘟病-叶瘟型（由稻瘟病菌Magnaporthe oryzae引起）<br><br>
+                            <strong>针对性药剂：</strong><br>
+                            • 首选：75%三环唑可湿性粉剂 25g/亩<br>
+                            • 备选：40%稻瘟灵乳油 80ml/亩<br>
+                            • 生物制剂：枯草芽孢杆菌 100g/亩<br><br>
+                            <strong>用药时机：</strong>上午10点前或下午4点后，避免高温用药<br>
+                            <strong>安全间隔期：</strong>14天
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workflow Comparison -->
+        <div class="workflow-comparison">
+            <!-- Route 1 -->
+            <div class="workflow-card route-1">
+                <div class="workflow-header">
+                    <span class="workflow-badge">路线一</span>
+                    <h3 class="workflow-title">本体 + 大模型</h3>
+                </div>
+
+                <div class="dify-canvas">
+                    <div class="dify-toolbar">
+                        <span class="dify-title">Dify 工作流编辑器</span>
+                        <span class="dify-status">● 草稿</span>
+                    </div>
+
+                    <div class="workflow-nodes">
+                        <div class="workflow-row">
+                            <div class="node start">
+                                <div class="node-icon">🚀</div>
+                                <div class="node-name">开始</div>
+                                <span class="node-type">start</span>
+                                <div class="node-desc">接收图片和问题输入</div>
+                            </div>
+                        </div>
+                        <div class="connector-branch"></div>
+                        <div class="workflow-row">
+                            <div class="node knowledge">
+                                <div class="node-icon">📚</div>
+                                <div class="node-name">知识检索</div>
+                                <span class="node-type">knowledge</span>
+                                <div class="node-desc">从水稻病害本体检索相关知识</div>
+                            </div>
+                            <div class="connector"></div>
+                            <div class="node llm">
+                                <div class="node-icon">🤖</div>
+                                <div class="node-name">LLM</div>
+                                <span class="node-type">llm</span>
+                                <div class="node-desc">GPT-4o 根据图片和知识生成诊断方案</div>
+                            </div>
+                        </div>
+                        <div class="connector-branch"></div>
+                        <div class="workflow-row">
+                            <div class="node template">
+                                <div class="node-icon">📝</div>
+                                <div class="node-name">模板</div>
+                                <span class="node-type">template</span>
+                                <div class="node-desc">格式化输出结果</div>
+                            </div>
+                            <div class="connector"></div>
+                            <div class="node end">
+                                <div class="node-icon">✅</div>
+                                <div class="node-name">结束</div>
+                                <span class="node-type">end</span>
+                                <div class="node-desc">返回诊断结果和防治方案</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workflow-desc">
+                    <h4>🔧 节点说明</h4>
+                    <ul>
+                        <li><strong>start:</strong> 输入节点，接收用户上传的水稻叶片图片和文字问题</li>
+                        <li><strong>llm:</strong> LLM节点，调用大模型API进行病害诊断</li>
+                        <li><strong>knowledge:</strong> 知识检索节点，从 Dify 原生知识库检索</li>
+                        <li><strong>template:</strong> 模板节点，将结果按固定格式输出</li>
+                        <li><strong>end:</strong> 结束节点，返回最终诊断结果</li>
+                    </ul>
+                    <h4 style="margin-top: 1rem;">⚡ 特点</h4>
+                    <ul>
+                        <li>依赖大模型的视觉理解能力直接识别病害</li>
+                        <li>本体知识库提供农业专业知识支撑</li>
+                        <li>流程简单，4个节点即可完成</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Route 2 -->
+            <div class="workflow-card route-2">
+                <div class="workflow-header">
+                    <span class="workflow-badge">路线二</span>
+                    <h3 class="workflow-title">本体 + 大模型 + 小模型</h3>
+                </div>
+
+                <div class="dify-canvas">
+                    <div class="dify-toolbar">
+                        <span class="dify-title">Dify 工作流编辑器</span>
+                        <span class="dify-status">● 草稿</span>
+                    </div>
+
+                    <div class="workflow-nodes">
+                        <div class="workflow-row">
+                            <div class="node start">
+                                <div class="node-icon">🚀</div>
+                                <div class="node-name">开始</div>
+                                <span class="node-type">start</span>
+                                <div class="node-desc">接收图片和问题输入</div>
+                            </div>
+                        </div>
+                        <div class="connector-branch"></div>
+                        <div class="workflow-row">
+                            <div class="node tool">
+                                <div class="node-icon">🔬</div>
+                                <div class="node-name">小模型分类</div>
+                                <span class="node-type">tool</span>
+                                <div class="node-desc">ResNet50 识别水稻病害类型</div>
+                            </div>
+                            <div class="connector"></div>
+                            <div class="node knowledge">
+                                <div class="node-icon">📚</div>
+                                <div class="node-name">知识检索</div>
+                                <span class="node-type">knowledge</span>
+                                <div class="node-desc">根据识别结果精准检索本体</div>
+                            </div>
+                        </div>
+                        <div class="connector-branch"></div>
+                        <div class="workflow-row">
+                            <div class="node llm">
+                                <div class="node-icon">🤖</div>
+                                <div class="node-name">LLM</div>
+                                <span class="node-type">llm</span>
+                                <div class="node-desc">结合小模型结果+知识生成方案</div>
+                            </div>
+                            <div class="connector"></div>
+                            <div class="node template">
+                                <div class="node-icon">📝</div>
+                                <div class="node-name">模板</div>
+                                <span class="node-type">template</span>
+                                <div class="node-desc">格式化输出结果</div>
+                            </div>
+                        </div>
+                        <div class="connector-branch"></div>
+                        <div class="workflow-row">
+                            <div class="node end">
+                                <div class="node-icon">✅</div>
+                                <div class="node-name">结束</div>
+                                <span class="node-type">end</span>
+                                <div class="node-desc">返回诊断结果+置信度+防治方案</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workflow-desc">
+                    <h4>🔧 节点说明</h4>
+                    <ul>
+                        <li><strong>start:</strong> 输入节点，接收用户上传的水稻叶片图片</li>
+                        <li><strong>tool (小模型):</strong> 调用 ResNet50 小模型进行图像分类</li>
+                        <li><strong>tool (本体/Skill):</strong> 调用水稻病害本体 MD 文档作为 Skill</li>
+                        <li><strong>llm:</strong> LLM节点，结合小模型结果+本体知识生成方案</li>
+                        <li><strong>template:</strong> 模板节点，格式化输出诊断结果、置信度、防治方案</li>
+                        <li><strong>end:</strong> 结束节点，返回完整诊断报告</li>
+                    </ul>
+                    <h4 style="margin-top: 1rem;">⚡ 特点</h4>
+                    <ul>
+                        <li>小模型（ResNet50）专门训练，识别精度高（96%+）</li>
+                        <li>本体以 Skill/MD 文档形式通过 Tool 节点调用</li>
+                        <li>大模型生成专业、自然的防治方案</li>
+                        <li>三者协同，各发挥所长</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Files Section -->
+        <div class="files-section">
+            <h2 class="section-title">📁 相关文件下载</h2>
+            <div class="files-grid">
+                <div class="file-card">
+                    <div class="file-icon">🔧</div>
+                    <h4 class="file-name">Dify工作流 - 路线一</h4>
+                    <p class="file-desc">
+                        本体+大模型方案的工作流 JSON 配置，可在 Dify 1.14.2 中导入使用。
+                    </p>
+                    <a href="dify-workflow-ontology-llm.json" class="file-link" download>下载 JSON</a>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">🔧</div>
+                    <h4 class="file-name">Dify工作流 - 路线二</h4>
+                    <p class="file-desc">
+                        本体+大模型+小模型方案的工作流 JSON 配置，支持小模型分类器集成。
+                    </p>
+                    <a href="dify-workflow-ontology-llm-small.json" class="file-link" download>下载 JSON</a>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">📚</div>
+                    <h4 class="file-name">水稻病害知识本体</h4>
+                    <p class="file-desc">
+                        包含稻瘟病、白叶枯病、纹枯病等病害的症状、病因、防治方案的结构化知识。
+                    </p>
+                    <a href="rice-disease-ontology.md" class="file-link" download>下载 MD</a>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">🧠</div>
+                    <h4 class="file-name">小模型算法代码</h4>
+                    <p class="file-desc">
+                        基于 ResNet50 的轻量级水稻病害分类器，包含模型定义、训练脚本、推理代码。
+                    </p>
+                    <a href="rice-disease-small-model.py" class="file-link" download>下载 PY</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Image upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+
+        uploadArea.addEventListener('click', () => imageInput.click());
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#4caf50';
+            uploadArea.style.background = '#e8f5e9';
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#c8e6c9';
+            uploadArea.style.background = '#f8f9fa';
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#c8e6c9';
+            uploadArea.style.background = '#f8f9fa';
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handleImageUpload(file);
+            }
+        });
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleImageUpload(file);
+        });
+
+        function handleImageUpload(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadArea.style.backgroundImage = `url(${e.target.result})`;
+                uploadArea.style.backgroundSize = 'cover';
+                uploadArea.style.backgroundPosition = 'center';
+                uploadArea.classList.add('has-image');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Simulated analysis results
+        const diseaseResults = {
+            1: {
+                name: '稻瘟病',
+                confidence: 85,
+                solution: '使用75%三环唑可湿性粉剂，20-30g/亩，兑水50kg喷雾。破口期和齐穗期各喷一次。注意保持田间通风透光。'
+            },
+            2: {
+                name: '稻瘟病（叶瘟）',
+                confidence: 96.8,
+                solution: '<strong>诊断确认：</strong>稻瘟病-叶瘟型（由稻瘟病菌Magnaporthe oryzae引起）<br><br>' +
+                    '<strong>针对性药剂：</strong><br>' +
+                    '• 首选：75%三环唑可湿性粉剂 25g/亩<br>' +
+                    '• 备选：40%稻瘟灵乳油 80ml/亩<br>' +
+                    '• 生物制剂：枯草芽孢杆菌 100g/亩<br><br>' +
+                    '<strong>用药时机：</strong>上午10点前或下午4点后<br>' +
+                    '<strong>安全间隔期：</strong>14天'
+            }
+        };
+
+        function runAnalysis() {
+            const btn = document.getElementById('analyzeBtn');
+            btn.textContent = '🔄 分析中...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                document.getElementById('resultSection').classList.remove('hidden');
+
+                document.getElementById('disease1').textContent = diseaseResults[1].name;
+                document.getElementById('confidence1').textContent = diseaseResults[1].confidence + '%';
+                document.getElementById('confidenceBar1').style.width = diseaseResults[1].confidence + '%';
+                document.getElementById('solution1').textContent = diseaseResults[1].solution;
+
+                document.getElementById('disease2').textContent = diseaseResults[2].name;
+                document.getElementById('confidence2').textContent = diseaseResults[2].confidence + '%';
+                document.getElementById('confidenceBar2').style.width = diseaseResults[2].confidence + '%';
+                document.getElementById('solution2').innerHTML = diseaseResults[2].solution;
+
+                btn.textContent = '🔍 开始分析';
+                btn.disabled = false;
+
+                document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
