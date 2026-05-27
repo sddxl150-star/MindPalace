@@ -777,8 +777,8 @@
                     <h4>🔧 节点说明</h4>
                     <ul>
                         <li><strong>start:</strong> 输入节点，接收用户上传的水稻叶片图片和文字问题</li>
-                        <li><strong>knowledge:</strong> 知识检索节点，从水稻病害知识本体检索病害特征、防治方法</li>
-                        <li><strong>llm:</strong> LLM节点，调用大模型API结合图片+知识库进行病害诊断</li>
+                        <li><strong>llm:</strong> LLM节点，调用大模型API进行病害诊断</li>
+                        <li><strong>knowledge (可选):</strong> 知识检索节点，从 Dify 原生知识库检索（上传文档方式）</li>
                         <li><strong>template:</strong> 模板节点，将结果按固定格式输出</li>
                         <li><strong>end:</strong> 结束节点，返回最终诊断结果</li>
                     </ul>
@@ -787,6 +787,11 @@
                         <li>依赖大模型的视觉理解能力直接识别病害</li>
                         <li>本体知识库提供农业专业知识支撑</li>
                         <li>流程简单，4个节点即可完成</li>
+                    </ul>
+                    <h4 style="margin-top: 1rem;">📌 注：本体调用方式</h4>
+                    <ul>
+                        <li><strong>方式A - Skill/Tool节点：</strong>本体以 MD 文档形式作为 Skill 调用，使用 <code>tool</code> 节点</li>
+                        <li><strong>方式B - 知识库节点：</strong>本体上传到 Dify 知识库，使用 <code>knowledge</code> 节点</li>
                     </ul>
                 </div>
             </div>
@@ -875,18 +880,27 @@
                     <h4>🔧 节点说明</h4>
                     <ul>
                         <li><strong>start:</strong> 输入节点，接收用户上传的水稻叶片图片</li>
-                        <li><strong>tool:</strong> 自定义工具节点，调用本地部署的 ResNet50 小模型进行图像分类</li>
-                        <li><strong>knowledge:</strong> 知识检索节点，根据小模型识别结果精准检索对应病害的本体知识</li>
-                        <li><strong>llm:</strong> LLM节点，接收小模型输出的病害类型+置信度，结合知识库生成专业方案</li>
+                        <li><strong>tool (小模型):</strong> 调用 ResNet50 小模型进行图像分类</li>
+                        <li><strong>tool (本体/Skill):</strong> 调用水稻病害本体 MD 文档作为 Skill</li>
+                        <li><strong>llm:</strong> LLM节点，结合小模型结果+本体知识生成方案</li>
                         <li><strong>template:</strong> 模板节点，格式化输出诊断结果、置信度、防治方案</li>
                         <li><strong>end:</strong> 结束节点，返回完整诊断报告</li>
                     </ul>
                     <h4 style="margin-top: 1rem;">⚡ 特点</h4>
                     <ul>
                         <li>小模型（ResNet50）专门训练，识别精度高（96%+）</li>
-                        <li>本体知识库提供精准的病害特征和防治方法</li>
+                        <li>本体以 Skill/MD 文档形式通过 Tool 节点调用</li>
                         <li>大模型生成专业、自然的防治方案</li>
                         <li>三者协同，各发挥所长</li>
+                    </ul>
+                    <h4 style="margin-top: 1rem;">📌 Dify 节点类型对照</h4>
+                    <ul>
+                        <li><code>start</code>：开始节点，输入变量</li>
+                        <li><code>tool</code>：工具节点，调用小模型或 Skills</li>
+                        <li><code>llm</code>：大语言模型节点</li>
+                        <li><code>template</code>：模板节点，格式化输出</li>
+                        <li><code>end</code>：结束节点，返回结果</li>
+                        <li><code>knowledge</code>：知识库节点，Dify 原生知识库检索</li>
                     </ul>
                 </div>
             </div>
@@ -953,8 +967,8 @@
                 <tbody>
                     <tr>
                         <td>节点数量</td>
-                        <td>5个（start→knowledge→llm→template→end）</td>
-                        <td>6个（start→tool→knowledge→llm→template→end）</td>
+                        <td>5个（start→llm→template→end）<br>本体可选 tool/knowledge</td>
+                        <td>6个（start→tool→tool→llm→template→end）<br>小模型(Skill)+本体(Skill)</td>
                     </tr>
                     <tr>
                         <td>识别精度</td>

@@ -1,7 +1,7 @@
 {
   "version": "1.14.2",
   "name": "稻瘟病识别-本体增强大模型方案",
-  "description": "技术路线一：本体+大模型。使用大模型直接进行病害识别和方案生成，本体提供结构化知识支撑。",
+  "description": "技术路线一：本体+大模型。使用大模型直接进行病害识别和方案生成。\n本体调用方式可选：\n- 方式A: Tool节点调用Skill/MD文档\n- 方式B: Knowledge节点调用Dify原生知识库",
   "workflow_id": "rice-blast-ontology-llm",
   "nodes": [
     {
@@ -26,13 +26,17 @@
       }
     },
     {
-      "id": "ontology_retriever",
-      "type": "knowledge-retrieval",
+      "id": "ontology_tool",
+      "type": "tool",
       "position": {"x": 300, "y": 200},
       "config": {
-        "knowledge_base_id": "rice-disease-ontology",
+        "tool_name": "rice-disease-ontology",
+        "tool_type": "document-retrieval",
+        "tool_source": "skill",
+        "skill_path": "rice-disease-ontology.md",
         "retrieval_strategy": "semantic",
-        "top_k": 5
+        "top_k": 5,
+        "description": "本体Skill调用（Tool节点）"
       }
     },
     {
@@ -41,13 +45,13 @@
       "position": {"x": 500, "y": 200},
       "config": {
         "model": "gpt-4o",
-        "prompt_template": "你是一位水稻种植专家。请根据用户提供的图片和以下知识库信息，诊断水稻病害并提供解决方案。\n\n知识库信息：\n{{context}}\n\n用户问题：{{question}}\n\n请按照以下格式输出：\n1. 病害诊断结果\n2. 病害成因分析\n3. 防治方案\n4. 后续管理建议",
+        "prompt_template": "你是一位水稻种植专家。请根据用户提供的图片和以下本体知识信息，诊断水稻病害并提供解决方案。\n\n本体知识：\n{{ontology_context}}\n\n用户问题：{{question}}\n\n请按照以下格式输出：\n1. 病害诊断结果\n2. 病害成因分析\n3. 防治方案\n4. 后续管理建议",
         "temperature": 0.7
       }
     },
     {
       "id": "output_result",
-      "type": "answer",
+      "type": "end",
       "position": {"x": 700, "y": 200},
       "config": {
         "response_mode": "blocking"
@@ -57,26 +61,18 @@
   "edges": [
     {
       "source": "start",
-      "target": "ontology_retriever",
-      "data": {
-        "source_handle": "image_output",
-        "target_handle": "image_input"
-      }
-    },
-    {
-      "source": "start",
-      "target": "ontology_retriever",
+      "target": "ontology_tool",
       "data": {
         "source_handle": "question_output",
-        "target_handle": "question_input"
+        "target_handle": "query_input"
       }
     },
     {
-      "source": "ontology_retriever",
+      "source": "ontology_tool",
       "target": "llm_diagnosis",
       "data": {
         "source_handle": "context_output",
-        "target_handle": "context_input"
+        "target_handle": "ontology_context_input"
       }
     },
     {
@@ -94,13 +90,13 @@
   "graph": {
     "nodes": {
       "start": {"position": {"x": 100, "y": 200}},
-      "ontology_retriever": {"position": {"x": 300, "y": 200}},
+      "ontology_tool": {"position": {"x": 300, "y": 200}},
       "llm_diagnosis": {"position": {"x": 500, "y": 200}},
       "output_result": {"position": {"x": 700, "y": 200}}
     },
     "edges": [
-      {"source": "start", "target": "ontology_retriever"},
-      {"source": "ontology_retriever", "target": "llm_diagnosis"},
+      {"source": "start", "target": "ontology_tool"},
+      {"source": "ontology_tool", "target": "llm_diagnosis"},
       {"source": "llm_diagnosis", "target": "output_result"}
     ]
   }
