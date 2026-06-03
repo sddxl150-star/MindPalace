@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>农业领域模型算法 - MindPalace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            background: linear-gradient(180deg, #f0f5ff 0%, #e6f0ff 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            color: #1f2329;
+            overflow-x: hidden;
+        }
+
+        /* 左侧筛选栏 */
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e8eef3;
+            padding: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .sidebar-header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e8eef3;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0066ff;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 12px;
+            color: #8f959e;
+        }
+
+        .filter-section {
+            margin-bottom: 16px;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4e5969;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-tag {
+            padding: 6px 12px;
+            background: #f5f7fa;
+            border: 1px solid #e8eef3;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #4e5969;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-tag:hover {
+            background: #e6f0ff;
+            border-color: #0066ff;
+            color: #0066ff;
+        }
+
+        .filter-tag.active {
+            background: linear-gradient(135deg, #0066ff, #0052cc);
+            border-color: #0066ff;
+            color: white;
+        }
+
+        .clear-filter {
+            margin-top: 12px;
+            padding: 8px 16px;
+            background: #f5f7fa;
+            border: 1px solid #e8eef3;
+            border-radius: 4px;
+            color: #6a737d;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .clear-filter:hover {
+            background: #fff2f0;
+            border-color: #ff7875;
+            color: #d93026;
+        }
+
+        
+
+        /* 设置按钮 */
+        .settings-btn {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            z-index: 1000;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #0066ff, #0052cc);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0, 102, 255, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        .settings-btn:hover {
+            background: linear-gradient(135deg, #0077ff, #0066ff);
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.35);
+        }
+
+        .settings-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 32px 0;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #0066ff, #0088ff, #00aaff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.2s forwards;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #8f959e;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.4s forwards;
+        }
+
+        .category-section {
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e8eef3;
+        }
+
+        
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2329;
+            letter-spacing: 1px;
+        }
+
+        .category-desc {
+            font-size: 13px;
+            color: #8f959e;
+            margin-left: auto;
+            max-width: 300px;
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
+        }
+
+        .model-card {
+            background: #ffffff;
+            border: 1px solid #e8eef3;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .model-card:hover {
+            transform: translateY(-2px);
+            border-color: #0066ff;
+            box-shadow: 0 4px 16px rgba(0, 102, 255, 0.15);
+        }
+
+        .model-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2329;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .model-badge {
+            font-size: 12px;
+            padding: 3px 10px;
+            background: linear-gradient(135deg, #0066ff, #0052cc);
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .model-desc {
+            font-size: 13px;
+            color: #6a737d;
+            line-height: 1.6;
+            margin-bottom: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .model-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .meta-tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            background: #f0f5ff;
+            border: 1px solid #d4e4ff;
+            border-radius: 4px;
+            color: #0066ff;
+        }
+
+        .model-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #0066ff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            padding: 8px 16px;
+            background: #f0f5ff;
+            border-radius: 4px;
+            border: 1px solid #d4e4ff;
+        }
+
+        .model-link:hover {
+            background: #e6f0ff;
+            border-color: #0066ff;
+        }
+
+        .model-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e8eef3;
+            font-size: 12px;
+            color: #8f959e;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(0, 102, 255, 0.15);
+            border-radius: 50%;
+            animation: float 12s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f5f7fa;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c0c4cc;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8adb5;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .main-content {
+                margin-left: 220px;
+                padding: 20px;
+            }
+            
+            .model-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #e8eef3;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            
+            .title {
+                font-size: 24px;
+            }
+            
+            .model-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <!-- 左侧筛选栏 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">
+                🌱 农业AI模型库
+            </h2>
+            <p class="sidebar-subtitle">GitHub开源项目&高校非开源项目精选</p>
+        </div>
+
+        <div class="filter-container">
+            <div class="filter-section">
+                <label class="filter-label">🌾 作物</label>
+                <div class="filter-tags">
+                    <span class="filter-tag" data-category="crop" data-value="大豆" onclick="toggleFilter(this)">大豆</span>
+                    <span class="filter-tag" data-category="crop" data-value="水稻" onclick="toggleFilter(this)">水稻</span>
+                    <span class="filter-tag" data-category="crop" data-value="玉米" onclick="toggleFilter(this)">玉米</span>
+                    <span class="filter-tag" data-category="crop" data-value="马铃薯" onclick="toggleFilter(this)">马铃薯</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">� 生育周期</label>
+                <div class="filter-tags">
+                    <span class="filter-tag" data-category="cycle" data-value="品种选择" onclick="toggleFilter(this)">品种选择</span>
+                    <span class="filter-tag" data-category="cycle" data-value="耕作" onclick="toggleFilter(this)">耕作</span>
+                    <span class="filter-tag" data-category="cycle" data-value="播种" onclick="toggleFilter(this)">播种</span>
+                    <span class="filter-tag" data-category="cycle" data-value="植保" onclick="toggleFilter(this)">植保</span>
+                    <span class="filter-tag" data-category="cycle" data-value="收获" onclick="toggleFilter(this)">收获</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">🏛️ 来源</label>
+                <div class="filter-tags">
+                    <span class="filter-tag" data-category="source" data-value="开源平台" onclick="toggleFilter(this)">开源平台</span>
+                    <span class="filter-tag" data-category="source" data-value="东北农业大学" onclick="toggleFilter(this)">东北农业大学</span>
+                    <span class="filter-tag" data-category="source" data-value="华南农业大学" onclick="toggleFilter(this)">华南农业大学</span>
+                </div>
+            </div>
+
+            <div class="clear-filter" onclick="clearAllFilters()">清除筛选</div>
+        </div>
+    </aside>
+
+    <!-- 设置按钮 -->
+    <button class="settings-btn" onclick="window.location.href='settings.html'">
+        ⚙️ 设置管理
+    </button>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="title">🌱 农业领域模型算法</h1>
+            <p class="subtitle">
+                汇集GitHub开源社区和高校非开源的农业AI模型与算法<br>
+                涵盖作物病害检测、产量预测、精准农业等核心场景
+            </p>
+        </div>
+
+        <div id="model-list" class="category-section" style="animation-delay: 0.2s;">
+            <div class="category-header">
+                <h2 class="category-title">全部模型</h2>
+                <span class="category-desc">共 <span id="model-count">14</span> 个模型</span>
+            </div>
+            
+            <div class="model-grid">
+                <div class="model-card" data-crop="大豆" data-cycle="植保" data-source="开源平台">
+                    <h3 class="model-name">
+                        PlantAi
+                        <span class="model-badge">ResNet</span>
+                    </h3>
+                    <p class="model-desc">
+                        基于 ResNet 的 CNN 模型，在 PlantVillage 数据集上训练，用于分类植物叶片图像为健康或患病状态。
+                        包含 PyTorch 训练代码和 TensorFlow Lite 转换工具，支持 Android 端实时推理。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 大豆</span>
+                        <span class="meta-tag cycle-tag">📅 植保</span>
+                        <span class="meta-tag source-tag">🏛️ 开源平台</span>
+                    </div>
+                    <a href="https://github.com/Nishant1998/PlantAi" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="水稻" data-cycle="植保" data-source="东北农业大学">
+                    <h3 class="model-name">
+                        TomatoGuard-YOLO
+                        <span class="model-badge">YOLOv10</span>
+                    </h3>
+                    <p class="model-desc">
+                        基于 YOLOv10 的轻量化番茄病害检测框架，引入多路径倒残差单元（MPIRU）和动态聚焦注意力机制（DFAF），
+                        实现 mAP50=94.23%，推理速度 129.64 FPS，模型仅 2.65MB。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 水稻</span>
+                        <span class="meta-tag cycle-tag">📅 植保</span>
+                        <span class="meta-tag source-tag">🏛️ 东北农业大学</span>
+                    </div>
+                    <a href="https://doi.org/10.3389/fpls.2024.1499278" target="_blank" class="model-link">
+                        📄 论文链接 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="玉米" data-cycle="植保" data-source="华南农业大学">
+                    <h3 class="model-name">
+                        AgriFusionNet
+                        <span class="model-badge">多模态</span>
+                    </h3>
+                    <p class="model-desc">
+                        轻量级深度学习模型，融合 RGB 图像、多光谱无人机影像和 IoT 环境传感器数据（温湿度、土壤水分）进行多源植物病害诊断。
+                        基于 EfficientNetV2-B4 骨干网络，准确率 94.3%，参数量减少 30%。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 玉米</span>
+                        <span class="meta-tag cycle-tag">📅 植保</span>
+                        <span class="meta-tag source-tag">🏛️ 华南农业大学</span>
+                    </div>
+                    <a href="https://doi.org/10.3390/agriculture15141523" target="_blank" class="model-link">
+                        📄 论文链接 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="马铃薯" data-cycle="品种选择" data-source="开源平台">
+                    <h3 class="model-name">
+                        MangoMedix
+                        <span class="model-badge">ResNet50</span>
+                    </h3>
+                    <p class="model-desc">
+                        AI 驱动的芒果叶病害预测系统，使用 ResNet50 + Flask 架构构建 Web 界面，
+                        可检测 8 种芒果叶部疾病，准确率达 92%，并提供治疗建议。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 马铃薯</span>
+                        <span class="meta-tag cycle-tag">📅 品种选择</span>
+                        <span class="meta-tag source-tag">🏛️ 开源平台</span>
+                    </div>
+                    <a href="https://github.com/vignesh-p3007/MangoMedix" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="大豆" data-cycle="收获" data-source="东北农业大学">
+                    <h3 class="model-name">
+                        SugarcaneLeafDisease
+                        <span class="model-badge">Xception</span>
+                    </h3>
+                    <p class="model-desc">
+                        基于深度学习的甘蔗病害预测与分类系统，采用 Xception 架构结合 CBAM 注意力机制，
+                        实现全卷积网络架构的端到端训练与推理流程。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 大豆</span>
+                        <span class="meta-tag cycle-tag">📅 收获</span>
+                        <span class="meta-tag source-tag">🏛️ 东北农业大学</span>
+                    </div>
+                    <a href="https://github.com/NeoGreenCode/SugarcaneLeafDisease" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="水稻" data-cycle="播种" data-source="华南农业大学">
+                    <h3 class="model-name">
+                        Apple Leaf Classifier
+                        <span class="model-badge">CNN</span>
+                    </h3>
+                    <p class="model-desc">
+                        苹果叶部病害深度学习解决方案，使用 CNN 架构在 PlantVillage 数据集上训练，
+                        可分类 4 种苹果叶部状态，支持实时图像分析功能。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 水稻</span>
+                        <span class="meta-tag cycle-tag">📅 播种</span>
+                        <span class="meta-tag source-tag">🏛️ 华南农业大学</span>
+                    </div>
+                    <a href="https://github.com/boluwatife-py/apple-leaf-classifier" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="玉米" data-cycle="品种选择" data-source="开源平台">
+                    <h3 class="model-name">
+                        SmartFarm AI Optimizer
+                        <span class="model-badge">综合平台</span>
+                    </h3>
+                    <p class="model-desc">
+                        AI 驱动的智能农场系统，集成作物产量预测、价格预测、营养优化与 What-if 分析功能，
+                        结合计算机视觉技术实现营养缺乏检测，提供端到端的农业生产决策支持。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 玉米</span>
+                        <span class="meta-tag cycle-tag">📅 品种选择</span>
+                        <span class="meta-tag source-tag">🏛️ 开源平台</span>
+                    </div>
+                    <a href="https://github.com/iam-salma/smartfarm-ai-crop-yield-nutrient-optimizer" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="马铃薯" data-cycle="耕作" data-source="东北农业大学">
+                    <h3 class="model-name">
+                        GreenFund Platform
+                        <span class="model-badge">Web 应用</span>
+                    </h3>
+                    <p class="model-desc">
+                        AI 驱动的 Web 应用平台，赋能农民做出数据驱动、气候智能的农业决策。
+                        聚焦土壤健康分析，追踪农事活动，测量碳排放，提供 AI 驱动的作物推荐，促进可持续和气候韧性农业。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 马铃薯</span>
+                        <span class="meta-tag cycle-tag">📅 耕作</span>
+                        <span class="meta-tag source-tag">🏛️ 东北农业大学</span>
+                    </div>
+                    <a href="https://github.com/edwin3v3/greenfund-frontend" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="大豆" data-cycle="植保" data-source="华南农业大学">
+                    <h3 class="model-name">
+                        Crop Pulse MobileApp
+                        <span class="model-badge">React Native</span>
+                    </h3>
+                    <p class="model-desc">
+                        AI 驱动的作物病害检测移动应用，帮助农民识别植物病害、获取治疗建议，
+                        并通过 React Native + Expo 连接农业社区，支持离线使用。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 大豆</span>
+                        <span class="meta-tag cycle-tag">📅 植保</span>
+                        <span class="meta-tag source-tag">🏛️ 华南农业大学</span>
+                    </div>
+                    <a href="https://github.com/cd011/Crop_Pulse_MobileApp" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="水稻" data-cycle="收获" data-source="开源平台">
+                    <h3 class="model-name">
+                        KisanManch
+                        <span class="model-badge">离线优先</span>
+                    </h3>
+                    <p class="model-desc">
+                        "Aapka Awaaz, Aapka Vikas" —— 离线优先的多语言应用，赋能印度小农户。
+                        支持语音报告、无互联网工作、连接农民与政府计划及社区，涵盖 AgriTech 和碳信用功能。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 水稻</span>
+                        <span class="meta-tag cycle-tag">📅 收获</span>
+                        <span class="meta-tag source-tag">🏛️ 开源平台</span>
+                    </div>
+                    <a href="https://github.com/DataWithDeepa/KisanManch" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="玉米" data-cycle="播种" data-source="东北农业大学">
+                    <h3 class="model-name">
+                        Nepal Crop Disease App
+                        <span class="model-badge">区域定制</span>
+                    </h3>
+                    <p class="model-desc">
+                        尼泊尔特定农业 AI 数据集与模型的首次开源项目，针对尼泊尔本地农作物品种和病害特征进行定制化训练，
+                        为发展中国家农业 AI 提供可复制的解决方案。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 玉米</span>
+                        <span class="meta-tag cycle-tag">📅 播种</span>
+                        <span class="meta-tag source-tag">🏛️ 东北农业大学</span>
+                    </div>
+                    <a href="https://github.com/aistudioorg/nepal-crop-disease-app" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="马铃薯" data-cycle="植保" data-source="华南农业大学">
+                    <h3 class="model-name">
+                        Sugarcane Detection API
+                        <span class="model-badge">FastAPI</span>
+                    </h3>
+                    <p class="model-desc">
+                        端到端的甘蔗叶部病害检测深度学习系统，使用 PyTorch + ResNet-50 进行模型训练，
+                        FastAPI 构建 RESTful API 服务，Docker 容器化部署，适合生产环境使用。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 马铃薯</span>
+                        <span class="meta-tag cycle-tag">📅 植保</span>
+                        <span class="meta-tag source-tag">🏛️ 华南农业大学</span>
+                    </div>
+                    <a href="https://github.com/Neill-Erasmus/sugarcane-leaf-disease-detection" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="大豆" data-cycle="耕作" data-source="开源平台">
+                    <h3 class="model-name">
+                        Dr-Leaf Web App
+                        <span class="model-badge">Streamlit</span>
+                    </h3>
+                    <p class="model-desc">
+                        AI 驱动的 Web 应用，通过叶片图像分析检测植物病害，使用深度学习（CNN）模型，
+                        基于 Streamlit 快速搭建交互界面，适合快速原型验证和演示。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 大豆</span>
+                        <span class="meta-tag cycle-tag">📅 耕作</span>
+                        <span class="meta-tag source-tag">🏛️ 开源平台</span>
+                    </div>
+                    <a href="https://github.com/Manish9211Ram/Dr-Leaf" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+
+                <div class="model-card" data-crop="水稻" data-cycle="品种选择" data-source="东北农业大学">
+                    <h3 class="model-name">
+                        Plant Disease Detection
+                        <span class="model-badge">Custom CNN</span>
+                    </h3>
+                    <p class="model-desc">
+                        自定义 CNN 深度学习模型，在 30K+ 平衡叶片图像上训练以分类健康与患病植物。
+                        使用 TensorFlow/Keras + OpenCV + Streamlit 技术栈，支持 Google Colab T4 GPU 训练。
+                    </p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 水稻</span>
+                        <span class="meta-tag cycle-tag">📅 品种选择</span>
+                        <span class="meta-tag source-tag">🏛️ 东北农业大学</span>
+                    </div>
+                    <a href="https://github.com/youssefemad131/Plant-Disease-Detection" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const STORAGE_KEY_TAGS = 'agri_tags';
+        const STORAGE_KEY_CARDS = 'agri_cards';
+        const STORAGE_KEY_VERSION = 'agri_data_version';
+        const CURRENT_VERSION = 'v20260603.1';
+
+        const defaultTags = {
+            crop: ['通用', '大豆', '水稻', '玉米', '马铃薯'],
+            cycle: ['通用', '品种选择', '耕作', '播种', '植保', '收获'],
+            source: ['开源平台', '东北农业大学', '华南农业大学']
+        };
+
+        function checkAndUpdateData() {
+            const storedVersion = localStorage.getItem(STORAGE_KEY_VERSION);
+            if (storedVersion !== CURRENT_VERSION) {
+                localStorage.setItem(STORAGE_KEY_TAGS, JSON.stringify(defaultTags));
+                localStorage.setItem(STORAGE_KEY_CARDS, JSON.stringify(defaultCards));
+                localStorage.setItem(STORAGE_KEY_VERSION, CURRENT_VERSION);
+            }
+        }
+
+        const defaultCards = [
+            { id: 1, name: 'PlantAi', badge: 'ResNet', desc: '基于 ResNet 的 CNN 模型，在 PlantVillage 数据集上训练，用于分类植物叶片图像为健康或患病状态。包含 PyTorch 训练代码和 TensorFlow Lite 转换工具，支持 Android 端实时推理。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://github.com/Nishant1998/PlantAi' },
+            { id: 2, name: 'TomatoGuard-YOLO', badge: 'YOLOv10', desc: '基于 YOLOv10 的轻量化番茄病害检测框架，引入多路径倒残差单元（MPIRU）和动态聚焦注意力机制（DFAF），实现 mAP50=94.23%，推理速度 129.64 FPS，模型仅 2.65MB。', crop: '番茄', cycle: '植保', source: '开源平台', link: 'https://doi.org/10.3389/fpls.2024.1499278' },
+            { id: 3, name: 'AgriFusionNet', badge: '多模态', desc: '轻量级深度学习模型，融合 RGB 图像、多光谱无人机影像和 IoT 环境传感器数据（温湿度、土壤水分）进行多源植物病害诊断。基于 EfficientNetV2-B4 骨干网络，准确率 94.3%，参数量减少 30%。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://doi.org/10.3390/agriculture15141523' },
+            { id: 4, name: 'MangoMedix', badge: 'ResNet50', desc: 'AI 驱动的芒果叶病害预测系统，使用 ResNet50 + Flask 架构构建 Web 界面，可检测 8 种芒果叶部疾病，准确率达 92%，并提供治疗建议。', crop: '芒果', cycle: '植保', source: '开源平台', link: 'https://github.com/vignesh-p3007/MangoMedix' },
+            { id: 5, name: 'SugarcaneLeafDisease', badge: 'Xception', desc: '基于深度学习的甘蔗病害预测与分类系统，采用 Xception 架构结合 CBAM 注意力机制，实现全卷积网络架构的端到端训练与推理流程。', crop: '甘蔗', cycle: '植保', source: '开源平台', link: 'https://github.com/NeoGreenCode/SugarcaneLeafDisease' },
+            { id: 6, name: 'Apple Leaf Classifier', badge: 'CNN', desc: '苹果叶部病害深度学习解决方案，使用 CNN 架构在 PlantVillage 数据集上训练，可分类 4 种苹果叶部状态，支持实时图像分析功能。', crop: '苹果', cycle: '植保', source: '开源平台', link: 'https://github.com/boluwatife-py/apple-leaf-classifier' },
+            { id: 7, name: 'SmartFarm AI Optimizer', badge: '综合平台', desc: 'AI 驱动的智能农场系统，集成作物产量预测、价格预测、营养优化与 What-if 分析功能，结合计算机视觉技术实现营养缺乏检测，提供端到端的农业生产决策支持。', crop: '通用', cycle: '品种选择', source: '开源平台', link: 'https://github.com/iam-salma/smartfarm-ai-crop-yield-nutrient-optimizer' },
+            { id: 8, name: 'GreenFund Platform', badge: 'Web 应用', desc: 'AI 驱动的 Web 应用平台，赋能农民做出数据驱动、气候智能的农业决策。聚焦土壤健康分析，追踪农事活动，测量碳排放，提供 AI 驱动的作物推荐，促进可持续和气候韧性农业。', crop: '通用', cycle: '耕作', source: '开源平台', link: 'https://github.com/edwin3v3/greenfund-frontend' },
+            { id: 9, name: 'Crop Pulse MobileApp', badge: 'React Native', desc: 'AI 驱动的作物病害检测移动应用，帮助农民识别植物病害、获取治疗建议，并通过 React Native + Expo 连接农业社区，支持离线使用。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://github.com/cd011/Crop_Pulse_MobileApp' },
+            { id: 10, name: 'KisanManch', badge: '离线优先', desc: '"Aapka Awaaz, Aapka Vikas" —— 离线优先的多语言应用，赋能印度小农户。支持语音报告、无互联网工作、连接农民与政府计划及社区，涵盖 AgriTech 和碳信用功能。', crop: '通用', cycle: '通用', source: '开源平台', link: 'https://github.com/DataWithDeepa/KisanManch' },
+            { id: 11, name: 'Nepal Crop Disease App', badge: '区域定制', desc: '尼泊尔特定农业 AI 数据集与模型的首次开源项目，针对尼泊尔本地农作物品种和病害特征进行定制化训练，为发展中国家农业 AI 提供可复制的解决方案。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://github.com/aistudioorg/nepal-crop-disease-app' },
+            { id: 12, name: 'Sugarcane Detection API', badge: 'FastAPI', desc: '端到端的甘蔗叶部病害检测深度学习系统，使用 PyTorch + ResNet-50 进行模型训练，FastAPI 构建 RESTful API 服务，Docker 容器化部署，适合生产环境使用。', crop: '甘蔗', cycle: '植保', source: '开源平台', link: 'https://github.com/Neill-Erasmus/sugarcane-leaf-disease-detection' },
+            { id: 13, name: 'Dr-Leaf Web App', badge: 'Streamlit', desc: 'AI 驱动的 Web 应用，通过叶片图像分析检测植物病害，使用深度学习（CNN）模型，基于 Streamlit 快速搭建交互界面，适合快速原型验证和演示。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://github.com/Manish9211Ram/Dr-Leaf' },
+            { id: 14, name: 'Plant Disease Detection', badge: 'Custom CNN', desc: '自定义 CNN 深度学习模型，在 30K+ 平衡叶片图像上训练以分类健康与患病植物。使用 TensorFlow/Keras + OpenCV + Streamlit 技术栈，支持 Google Colab T4 GPU 训练。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://github.com/youssefemad131/Plant-Disease-Detection' },
+            { id: 15, name: '大豆病害识别模型', badge: 'CNN', desc: '专门针对大豆作物的病害识别模型，基于深度学习技术，可准确识别大豆常见病害类型，为大豆种植提供精准的病害诊断支持。', crop: '大豆', cycle: '植保', source: '开源平台', link: '#' },
+            { id: 16, name: '水稻产量预测系统', badge: 'LSTM', desc: '基于时序深度学习的水稻产量预测模型，结合气象数据和历史产量数据，实现精准的水稻产量预测。', crop: '水稻', cycle: '收获', source: '开源平台', link: '#' },
+            { id: 17, name: '玉米品种选择助手', badge: 'ML', desc: '基于机器学习的玉米品种推荐系统，根据土壤条件、气候特征和种植目标，为农户推荐最适合的玉米品种。', crop: '玉米', cycle: '品种选择', source: '开源平台', link: '#' },
+            { id: 18, name: '马铃薯播种规划工具', badge: 'GIS', desc: '集成 GIS 技术的马铃薯播种规划系统，根据土壤肥力、地块条件和气候预测，优化播种时间和密度。', crop: '马铃薯', cycle: '播种', source: '开源平台', link: '#' },
+            { id: 19, name: '智能耕作决策系统', badge: 'AI', desc: '综合型智能耕作决策支持系统，覆盖多种作物的耕作方案制定、施肥建议和灌溉优化。', crop: '通用', cycle: '耕作', source: '开源平台', link: '#' },
+            { id: 20, name: '大豆收获时机预测', badge: 'ML', desc: '基于机器学习的大豆最佳收获时机预测模型，综合考虑成熟度、天气条件和市场价格因素。', crop: '大豆', cycle: '收获', source: '开源平台', link: '#' },
+            { id: 21, name: '大豆品种推荐系统', badge: 'ML', desc: '基于机器学习的大豆品种推荐系统，根据土壤条件和气候特征，为农户推荐最适合的大豆品种。', crop: '大豆', cycle: '品种选择', source: '开源平台', link: '#' },
+            { id: 22, name: '水稻病虫害监测系统', badge: 'AI', desc: '基于图像识别的水稻病虫害智能监测系统，实时监测水稻生长状况，及时预警病虫害风险。', crop: '水稻', cycle: '植保', source: '开源平台', link: '#' },
+            { id: 23, name: '玉米产量估算模型', badge: 'CNN', desc: '基于遥感图像的玉米产量估算模型，利用深度学习技术实现精准的产量预测。', crop: '玉米', cycle: '收获', source: '开源平台', link: '#' },
+            { id: 24, name: '马铃薯病虫害防治系统', badge: 'AI', desc: '集成多种传感器的马铃薯病虫害智能防治系统，实现精准施药和病虫害预警。', crop: '马铃薯', cycle: '植保', source: '开源平台', link: '#' }
+        ];
+
+        function getTags() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY_TAGS) || JSON.stringify(defaultTags));
+        }
+
+        function getCards() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY_CARDS) || JSON.stringify(defaultCards));
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        function renderTags() {
+            const tags = getTags();
+            const filterContainer = document.querySelector('.filter-container');
+            
+            filterContainer.innerHTML = `
+                <div class="filter-section">
+                    <label class="filter-label">🌾 作物</label>
+                    <div class="filter-tags">
+                        ${tags.crop.map(tag => `<span class="filter-tag" data-category="crop" data-value="${tag}" onclick="toggleFilter(this)">${tag}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <label class="filter-label">📅 农事环节</label>
+                    <div class="filter-tags">
+                        ${tags.cycle.map(tag => `<span class="filter-tag" data-category="cycle" data-value="${tag}" onclick="toggleFilter(this)">${tag}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <label class="filter-label">🏛️ 来源</label>
+                    <div class="filter-tags">
+                        ${tags.source.map(tag => `<span class="filter-tag" data-category="source" data-value="${tag}" onclick="toggleFilter(this)">${tag}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="clear-filter" onclick="clearAllFilters()">清除筛选</div>
+            `;
+        }
+
+        function renderCards() {
+            const cards = getCards();
+            const modelGrid = document.querySelector('.model-grid');
+            
+            modelGrid.innerHTML = cards.map(card => `
+                <div class="model-card" data-crop="${card.crop}" data-cycle="${card.cycle}" data-source="${card.source}">
+                    <h3 class="model-name">
+                        ${card.name}
+                        <span class="model-badge">${card.badge}</span>
+                    </h3>
+                    <p class="model-desc">${card.desc}</p>
+                    <div class="model-meta">
+                        <span class="meta-tag crop-tag">🌾 ${card.crop}</span>
+                        <span class="meta-tag cycle-tag">📅 ${card.cycle}</span>
+                        <span class="meta-tag source-tag">🏛️ ${card.source}</span>
+                    </div>
+                    <a href="${card.link || '#'}" target="_blank" class="model-link">
+                        📦 查看项目 →
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        const selectedFilters = {
+            crop: [],
+            cycle: [],
+            source: []
+        };
+
+        function toggleFilter(element) {
+            const category = element.dataset.category;
+            const value = element.dataset.value;
+
+            element.classList.toggle('active');
+            
+            const index = selectedFilters[category].indexOf(value);
+            if (index > -1) {
+                selectedFilters[category].splice(index, 1);
+            } else {
+                selectedFilters[category].push(value);
+            }
+
+            filterModels();
+        }
+
+        function clearAllFilters() {
+            document.querySelectorAll('.filter-tag').forEach(tag => {
+                tag.classList.remove('active');
+            });
+            
+            selectedFilters.crop = [];
+            selectedFilters.cycle = [];
+            selectedFilters.source = [];
+            
+            filterModels();
+        }
+
+        function filterModels() {
+            const cards = document.querySelectorAll('.model-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const crop = card.dataset.crop;
+                const cycle = card.dataset.cycle;
+                const source = card.dataset.source;
+
+                const cropMatch = selectedFilters.crop.length === 0 || selectedFilters.crop.includes(crop);
+                const cycleMatch = selectedFilters.cycle.length === 0 || selectedFilters.cycle.includes(cycle);
+                const sourceMatch = selectedFilters.source.length === 0 || selectedFilters.source.includes(source);
+
+                if (cropMatch && cycleMatch && sourceMatch) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('model-count').textContent = visibleCount;
+        }
+
+        window.onload = function() {
+            checkAndUpdateData();
+            createParticles();
+            renderTags();
+            renderCards();
+        };
+    </script>
+</body>
+</html>
