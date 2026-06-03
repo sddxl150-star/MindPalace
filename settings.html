@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置管理 - 农业AI模型库</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #f0f5ff 0%, #e6f0ff 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            color: #1f2329;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0066ff, #0052cc);
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-2px);
+        }
+
+        .back-btn:active {
+            transform: translateX(0);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 24px;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e8eef3;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            border-radius: 4px 4px 0 0;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6a737d;
+        }
+
+        .tab:hover {
+            color: #0066ff;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid #0066ff;
+            color: #0066ff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e8eef3;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e8eef3;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2329;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #0066ff, #0052cc);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .add-btn:hover {
+            background: linear-gradient(135deg, #0077ff, #0066ff);
+            box-shadow: 0 2px 8px rgba(0, 102, 255, 0.25);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e8eef3;
+            font-size: 13px;
+        }
+
+        .table th {
+            background: #f5f7fa;
+            font-weight: 600;
+            color: #4e5969;
+            font-size: 13px;
+        }
+
+        .table tr:hover {
+            background: #fafbfc;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-right: 6px;
+        }
+
+        .edit-btn {
+            background: #0066ff;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #0077ff;
+        }
+
+        .delete-btn {
+            background: #ff7875;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #ff5252;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e8eef3;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2329;
+        }
+
+        .close-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: #f5f7fa;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6a737d;
+        }
+
+        .close-btn:hover {
+            background: #e8eef3;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4e5969;
+            font-size: 13px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e8eef3;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #0066ff;
+            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e8eef3;
+        }
+
+        .cancel-btn {
+            padding: 8px 16px;
+            background: #f5f7fa;
+            border: 1px solid #e8eef3;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6a737d;
+        }
+
+        .cancel-btn:hover {
+            background: #e8eef3;
+        }
+
+        .save-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #0066ff, #0052cc);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .save-btn:hover {
+            background: linear-gradient(135deg, #0077ff, #0066ff);
+            box-shadow: 0 2px 8px rgba(0, 102, 255, 0.25);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px;
+            color: #8f959e;
+        }
+
+        .empty-state svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 12px;
+            opacity: 0.4;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #e8eef3;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #4e5969;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #0066ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <a href="agriculture-models.html" class="back-btn">
+                ← 返回
+            </a>
+            <h1>⚙️ 设置管理</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tab-container">
+            <div class="tab active" onclick="showTab('tags')">🏷️ 标签管理</div>
+            <div class="tab" onclick="showTab('cards')">📋 卡片管理</div>
+        </div>
+
+        <!-- 标签管理 -->
+        <div id="tags" class="tab-content active">
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">🌾 作物标签</h2>
+                    <button class="add-btn" onclick="openTagModal('crop')">
+                        + 添加作物
+                    </button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>标签名称</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="crop-tags-body">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">📅 农事环节标签</h2>
+                    <button class="add-btn" onclick="openTagModal('cycle')">
+                        + 添加农事环节
+                    </button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>标签名称</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cycle-tags-body">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">🏛️ 来源标签</h2>
+                    <button class="add-btn" onclick="openTagModal('source')">
+                        + 添加来源
+                    </button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>标签名称</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="source-tags-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 卡片管理 -->
+        <div id="cards" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">📋 模型卡片列表</h2>
+                <button class="add-btn" onclick="openCardModal()">
+                    + 添加卡片
+                </button>
+            </div>
+            <div class="filter-row">
+                <select class="filter-select" id="card-crop-filter" onchange="filterCards()">
+                    <option value="">全部作物</option>
+                </select>
+                <select class="filter-select" id="card-cycle-filter" onchange="filterCards()">
+                    <option value="">全部周期</option>
+                </select>
+                <select class="filter-select" id="card-source-filter" onchange="filterCards()">
+                    <option value="">全部来源</option>
+                </select>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>模型名称</th>
+                        <th>作物</th>
+                        <th>农事环节</th>
+                        <th>来源</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="cards-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 标签编辑模态框 -->
+    <div class="modal-overlay" id="tag-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="tag-modal-title">添加标签</h3>
+                <button class="close-btn" onclick="closeTagModal()">×</button>
+            </div>
+            <div class="form-group">
+                <label for="tag-name">标签名称</label>
+                <input type="text" id="tag-name" placeholder="请输入标签名称">
+            </div>
+            <div class="form-actions">
+                <button class="cancel-btn" onclick="closeTagModal()">取消</button>
+                <button class="save-btn" onclick="saveTag()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 卡片编辑模态框 -->
+    <div class="modal-overlay" id="card-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="card-modal-title">添加卡片</h3>
+                <button class="close-btn" onclick="closeCardModal()">×</button>
+            </div>
+            <input type="hidden" id="card-id">
+            <div class="form-group">
+                <label for="card-name">模型名称</label>
+                <input type="text" id="card-name" placeholder="请输入模型名称">
+            </div>
+            <div class="form-group">
+                <label for="card-badge">模型标签</label>
+                <input type="text" id="card-badge" placeholder="如：ResNet, YOLOv10">
+            </div>
+            <div class="form-group">
+                <label for="card-desc">模型描述</label>
+                <textarea id="card-desc" placeholder="请输入模型描述"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="card-crop">作物</label>
+                <select id="card-crop">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="card-cycle">农事环节</label>
+                <select id="card-cycle">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="card-source">来源</label>
+                <select id="card-source">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="card-link">项目链接</label>
+                <input type="text" id="card-link" placeholder="请输入项目链接">
+            </div>
+            <div class="form-actions">
+                <button class="cancel-btn" onclick="closeCardModal()">取消</button>
+                <button class="save-btn" onclick="saveCard()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY_TAGS = 'agri_tags';
+        const STORAGE_KEY_CARDS = 'agri_cards';
+        const STORAGE_KEY_VERSION = 'agri_data_version';
+        const CURRENT_VERSION = 'v20260603.1';
+
+        let currentTagCategory = '';
+        let editingTag = null;
+        let editingCard = null;
+
+        const defaultTags = {
+            crop: ['通用', '大豆', '水稻', '玉米', '马铃薯'],
+            cycle: ['通用', '品种选择', '耕作', '播种', '植保', '收获'],
+            source: ['开源平台', '东北农业大学', '华南农业大学']
+        };
+
+        function checkAndUpdateData() {
+            const storedVersion = localStorage.getItem(STORAGE_KEY_VERSION);
+            if (storedVersion !== CURRENT_VERSION) {
+                localStorage.setItem(STORAGE_KEY_TAGS, JSON.stringify(defaultTags));
+                localStorage.setItem(STORAGE_KEY_CARDS, JSON.stringify(defaultCards));
+                localStorage.setItem(STORAGE_KEY_VERSION, CURRENT_VERSION);
+            }
+        }
+
+        const defaultCards = [
+            { id: 1, name: 'PlantAi', badge: 'ResNet', desc: '基于 ResNet 的 CNN 模型，在 PlantVillage 数据集上训练，用于分类植物叶片图像为健康或患病状态。包含 PyTorch 训练代码和 TensorFlow Lite 转换工具，支持 Android 端实时推理。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://github.com/Nishant1998/PlantAi' },
+            { id: 2, name: 'TomatoGuard-YOLO', badge: 'YOLOv10', desc: '基于 YOLOv10 的轻量化番茄病害检测框架，引入多路径倒残差单元（MPIRU）和动态聚焦注意力机制（DFAF），实现 mAP50=94.23%，推理速度 129.64 FPS，模型仅 2.65MB。', crop: '番茄', cycle: '植保', source: '开源平台', link: 'https://doi.org/10.3389/fpls.2024.1499278' },
+            { id: 3, name: 'AgriFusionNet', badge: '多模态', desc: '轻量级深度学习模型，融合 RGB 图像、多光谱无人机影像和 IoT 环境传感器数据（温湿度、土壤水分）进行多源植物病害诊断。基于 EfficientNetV2-B4 骨干网络，准确率 94.3%，参数量减少 30%。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://doi.org/10.3390/agriculture15141523' },
+            { id: 4, name: 'MangoMedix', badge: 'ResNet50', desc: 'AI 驱动的芒果叶病害预测系统，使用 ResNet50 + Flask 架构构建 Web 界面，可检测 8 种芒果叶部疾病，准确率达 92%，并提供治疗建议。', crop: '芒果', cycle: '植保', source: '开源平台', link: 'https://github.com/vignesh-p3007/MangoMedix' },
+            { id: 5, name: 'SugarcaneLeafDisease', badge: 'Xception', desc: '基于深度学习的甘蔗病害预测与分类系统，采用 Xception 架构结合 CBAM 注意力机制，实现全卷积网络架构的端到端训练与推理流程。', crop: '甘蔗', cycle: '植保', source: '开源平台', link: 'https://github.com/NeoGreenCode/SugarcaneLeafDisease' },
+            { id: 6, name: 'Apple Leaf Classifier', badge: 'CNN', desc: '苹果叶部病害深度学习解决方案，使用 CNN 架构在 PlantVillage 数据集上训练，可分类 4 种苹果叶部状态，支持实时图像分析功能。', crop: '苹果', cycle: '植保', source: '开源平台', link: 'https://github.com/boluwatife-py/apple-leaf-classifier' },
+            { id: 7, name: 'SmartFarm AI Optimizer', badge: '综合平台', desc: 'AI 驱动的智能农场系统，集成作物产量预测、价格预测、营养优化与 What-if 分析功能，结合计算机视觉技术实现营养缺乏检测，提供端到端的农业生产决策支持。', crop: '通用', cycle: '品种选择', source: '开源平台', link: 'https://github.com/iam-salma/smartfarm-ai-crop-yield-nutrient-optimizer' },
+            { id: 8, name: 'GreenFund Platform', badge: 'Web 应用', desc: 'AI 驱动的 Web 应用平台，赋能农民做出数据驱动、气候智能的农业决策。聚焦土壤健康分析，追踪农事活动，测量碳排放，提供 AI 驱动的作物推荐，促进可持续和气候韧性农业。', crop: '通用', cycle: '耕作', source: '开源平台', link: 'https://github.com/edwin3v3/greenfund-frontend' },
+            { id: 9, name: 'Crop Pulse MobileApp', badge: 'React Native', desc: 'AI 驱动的作物病害检测移动应用，帮助农民识别植物病害、获取治疗建议，并通过 React Native + Expo 连接农业社区，支持离线使用。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://github.com/cd011/Crop_Pulse_MobileApp' },
+            { id: 10, name: 'KisanManch', badge: '离线优先', desc: '"Aapka Awaaz, Aapka Vikas" —— 离线优先的多语言应用，赋能印度小农户。支持语音报告、无互联网工作、连接农民与政府计划及社区，涵盖 AgriTech 和碳信用功能。', crop: '通用', cycle: '通用', source: '开源平台', link: 'https://github.com/DataWithDeepa/KisanManch' },
+            { id: 11, name: 'Nepal Crop Disease App', badge: '区域定制', desc: '尼泊尔特定农业 AI 数据集与模型的首次开源项目，针对尼泊尔本地农作物品种和病害特征进行定制化训练，为发展中国家农业 AI 提供可复制的解决方案。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://github.com/aistudioorg/nepal-crop-disease-app' },
+            { id: 12, name: 'Sugarcane Detection API', badge: 'FastAPI', desc: '端到端的甘蔗叶部病害检测深度学习系统，使用 PyTorch + ResNet-50 进行模型训练，FastAPI 构建 RESTful API 服务，Docker 容器化部署，适合生产环境使用。', crop: '甘蔗', cycle: '植保', source: '开源平台', link: 'https://github.com/Neill-Erasmus/sugarcane-leaf-disease-detection' },
+            { id: 13, name: 'Dr-Leaf Web App', badge: 'Streamlit', desc: 'AI 驱动的 Web 应用，通过叶片图像分析检测植物病害，使用深度学习（CNN）模型，基于 Streamlit 快速搭建交互界面，适合快速原型验证和演示。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://github.com/Manish9211Ram/Dr-Leaf' },
+            { id: 14, name: 'Plant Disease Detection', badge: 'Custom CNN', desc: '自定义 CNN 深度学习模型，在 30K+ 平衡叶片图像上训练以分类健康与患病植物。使用 TensorFlow/Keras + OpenCV + Streamlit 技术栈，支持 Google Colab T4 GPU 训练。', crop: '通用', cycle: '植保', source: '开源平台', link: 'https://github.com/youssefemad131/Plant-Disease-Detection' },
+            { id: 15, name: '大豆病害识别模型', badge: 'CNN', desc: '专门针对大豆作物的病害识别模型，基于深度学习技术，可准确识别大豆常见病害类型，为大豆种植提供精准的病害诊断支持。', crop: '大豆', cycle: '植保', source: '开源平台', link: '#' },
+            { id: 16, name: '水稻产量预测系统', badge: 'LSTM', desc: '基于时序深度学习的水稻产量预测模型，结合气象数据和历史产量数据，实现精准的水稻产量预测。', crop: '水稻', cycle: '收获', source: '开源平台', link: '#' },
+            { id: 17, name: '玉米品种选择助手', badge: 'ML', desc: '基于机器学习的玉米品种推荐系统，根据土壤条件、气候特征和种植目标，为农户推荐最适合的玉米品种。', crop: '玉米', cycle: '品种选择', source: '开源平台', link: '#' },
+            { id: 18, name: '马铃薯播种规划工具', badge: 'GIS', desc: '集成 GIS 技术的马铃薯播种规划系统，根据土壤肥力、地块条件和气候预测，优化播种时间和密度。', crop: '马铃薯', cycle: '播种', source: '开源平台', link: '#' },
+            { id: 19, name: '智能耕作决策系统', badge: 'AI', desc: '综合型智能耕作决策支持系统，覆盖多种作物的耕作方案制定、施肥建议和灌溉优化。', crop: '通用', cycle: '耕作', source: '开源平台', link: '#' },
+            { id: 20, name: '大豆收获时机预测', badge: 'ML', desc: '基于机器学习的大豆最佳收获时机预测模型，综合考虑成熟度、天气条件和市场价格因素。', crop: '大豆', cycle: '收获', source: '开源平台', link: '#' },
+            { id: 21, name: '大豆品种推荐系统', badge: 'ML', desc: '基于机器学习的大豆品种推荐系统，根据土壤条件和气候特征，为农户推荐最适合的大豆品种。', crop: '大豆', cycle: '品种选择', source: '开源平台', link: '#' },
+            { id: 22, name: '水稻病虫害监测系统', badge: 'AI', desc: '基于图像识别的水稻病虫害智能监测系统，实时监测水稻生长状况，及时预警病虫害风险。', crop: '水稻', cycle: '植保', source: '开源平台', link: '#' },
+            { id: 23, name: '玉米产量估算模型', badge: 'CNN', desc: '基于遥感图像的玉米产量估算模型，利用深度学习技术实现精准的产量预测。', crop: '玉米', cycle: '收获', source: '开源平台', link: '#' },
+            { id: 24, name: '马铃薯病虫害防治系统', badge: 'AI', desc: '集成多种传感器的马铃薯病虫害智能防治系统，实现精准施药和病虫害预警。', crop: '马铃薯', cycle: '植保', source: '开源平台', link: '#' }
+        ];
+
+        function getTags() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY_TAGS) || JSON.stringify(defaultTags));
+        }
+
+        function saveTags(tags) {
+            localStorage.setItem(STORAGE_KEY_TAGS, JSON.stringify(tags));
+        }
+
+        function getCards() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY_CARDS) || JSON.stringify(defaultCards));
+        }
+
+        function saveCards(cards) {
+            localStorage.setItem(STORAGE_KEY_CARDS, JSON.stringify(cards));
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelector(`.tab:nth-child(${tabId === 'tags' ? 1 : 2})`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+            
+            if (tabId === 'cards') {
+                loadFilterOptions();
+            }
+        }
+
+        function loadTags() {
+            const tags = getTags();
+            
+            ['crop', 'cycle', 'source'].forEach(category => {
+                const tbody = document.getElementById(`${category}-tags-body`);
+                tbody.innerHTML = '';
+                
+                tags[category].forEach((tag, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${tag}</td>
+                        <td>
+                            <button class="action-btn edit-btn" onclick="editTag('${category}', ${index})">编辑</button>
+                            <button class="action-btn delete-btn" onclick="deleteTag('${category}', ${index})">删除</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            });
+        }
+
+        function openTagModal(category) {
+            currentTagCategory = category;
+            editingTag = null;
+            document.getElementById('tag-modal-title').textContent = '添加标签';
+            document.getElementById('tag-name').value = '';
+            document.getElementById('tag-modal').classList.add('active');
+        }
+
+        function editTag(category, index) {
+            const tags = getTags();
+            currentTagCategory = category;
+            editingTag = { index, value: tags[category][index] };
+            document.getElementById('tag-modal-title').textContent = '编辑标签';
+            document.getElementById('tag-name').value = tags[category][index];
+            document.getElementById('tag-modal').classList.add('active');
+        }
+
+        function closeTagModal() {
+            document.getElementById('tag-modal').classList.remove('active');
+            currentTagCategory = '';
+            editingTag = null;
+        }
+
+        function saveTag() {
+            const name = document.getElementById('tag-name').value.trim();
+            if (!name) {
+                alert('请输入标签名称');
+                return;
+            }
+
+            const tags = getTags();
+            
+            if (editingTag) {
+                tags[currentTagCategory][editingTag.index] = name;
+            } else {
+                tags[currentTagCategory].push(name);
+            }
+            
+            saveTags(tags);
+            loadTags();
+            closeTagModal();
+            
+            if (document.getElementById('cards').classList.contains('active')) {
+                loadFilterOptions();
+                loadCards();
+            }
+        }
+
+        function deleteTag(category, index) {
+            if (!confirm('确定要删除这个标签吗？')) {
+                return;
+            }
+
+            const tags = getTags();
+            const deletedTag = tags[category][index];
+            tags[category].splice(index, 1);
+            saveTags(tags);
+            loadTags();
+
+            const cards = getCards();
+            cards.forEach(card => {
+                if (card[category] === deletedTag) {
+                    card[category] = tags[category][0] || '';
+                }
+            });
+            saveCards(cards);
+            
+            if (document.getElementById('cards').classList.contains('active')) {
+                loadFilterOptions();
+                loadCards();
+            }
+        }
+
+        function loadFilterOptions() {
+            const tags = getTags();
+            const cropFilter = document.getElementById('card-crop-filter');
+            const cycleFilter = document.getElementById('card-cycle-filter');
+            const sourceFilter = document.getElementById('card-source-filter');
+
+            cropFilter.innerHTML = '<option value="">全部作物</option>' + 
+                tags.crop.map(tag => `<option value="${tag}">${tag}</option>`).join('');
+            cycleFilter.innerHTML = '<option value="">全部周期</option>' + 
+                tags.cycle.map(tag => `<option value="${tag}">${tag}</option>`).join('');
+            sourceFilter.innerHTML = '<option value="">全部来源</option>' + 
+                tags.source.map(tag => `<option value="${tag}">${tag}</option>`).join('');
+
+            loadCardSelects();
+        }
+
+        function loadCardSelects() {
+            const tags = getTags();
+            const cropSelect = document.getElementById('card-crop');
+            const cycleSelect = document.getElementById('card-cycle');
+            const sourceSelect = document.getElementById('card-source');
+
+            cropSelect.innerHTML = tags.crop.map(tag => `<option value="${tag}">${tag}</option>`).join('');
+            cycleSelect.innerHTML = tags.cycle.map(tag => `<option value="${tag}">${tag}</option>`).join('');
+            sourceSelect.innerHTML = tags.source.map(tag => `<option value="${tag}">${tag}</option>`).join('');
+        }
+
+        function filterCards() {
+            const crop = document.getElementById('card-crop-filter').value;
+            const cycle = document.getElementById('card-cycle-filter').value;
+            const source = document.getElementById('card-source-filter').value;
+            
+            const cards = getCards();
+            const filtered = cards.filter(card => 
+                (!crop || card.crop === crop) &&
+                (!cycle || card.cycle === cycle) &&
+                (!source || card.source === source)
+            );
+            
+            renderCards(filtered);
+        }
+
+        function loadCards() {
+            filterCards();
+        }
+
+        function renderCards(cards) {
+            const tbody = document.getElementById('cards-body');
+            tbody.innerHTML = '';
+            
+            if (cards.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty-state">暂无卡片</td></tr>';
+                return;
+            }
+            
+            cards.forEach(card => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${card.name}</td>
+                    <td>${card.crop}</td>
+                    <td>${card.cycle}</td>
+                    <td>${card.source}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editCard(${card.id})">编辑</button>
+                        <button class="action-btn delete-btn" onclick="deleteCard(${card.id})">删除</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function openCardModal() {
+            editingCard = null;
+            document.getElementById('card-modal-title').textContent = '添加卡片';
+            document.getElementById('card-id').value = '';
+            document.getElementById('card-name').value = '';
+            document.getElementById('card-badge').value = '';
+            document.getElementById('card-desc').value = '';
+            document.getElementById('card-link').value = '';
+            loadCardSelects();
+            document.getElementById('card-modal').classList.add('active');
+        }
+
+        function editCard(id) {
+            const cards = getCards();
+            const card = cards.find(c => c.id === id);
+            if (!card) return;
+
+            editingCard = card;
+            document.getElementById('card-modal-title').textContent = '编辑卡片';
+            document.getElementById('card-id').value = card.id;
+            document.getElementById('card-name').value = card.name;
+            document.getElementById('card-badge').value = card.badge;
+            document.getElementById('card-desc').value = card.desc;
+            document.getElementById('card-link').value = card.link;
+            loadCardSelects();
+            document.getElementById('card-crop').value = card.crop;
+            document.getElementById('card-cycle').value = card.cycle;
+            document.getElementById('card-source').value = card.source;
+            document.getElementById('card-modal').classList.add('active');
+        }
+
+        function closeCardModal() {
+            document.getElementById('card-modal').classList.remove('active');
+            editingCard = null;
+        }
+
+        function saveCard() {
+            const id = document.getElementById('card-id').value;
+            const name = document.getElementById('card-name').value.trim();
+            const badge = document.getElementById('card-badge').value.trim();
+            const desc = document.getElementById('card-desc').value.trim();
+            const crop = document.getElementById('card-crop').value;
+            const cycle = document.getElementById('card-cycle').value;
+            const source = document.getElementById('card-source').value;
+            const link = document.getElementById('card-link').value.trim();
+
+            if (!name || !desc) {
+                alert('请填写模型名称和描述');
+                return;
+            }
+
+            const cards = getCards();
+            let newId = parseInt(id) || Date.now();
+            
+            if (editingCard) {
+                const index = cards.findIndex(c => c.id === parseInt(id));
+                if (index > -1) {
+                    cards[index] = { id: parseInt(id), name, badge, desc, crop, cycle, source, link };
+                }
+            } else {
+                cards.push({ id: newId, name, badge, desc, crop, cycle, source, link });
+            }
+            
+            saveCards(cards);
+            loadCards();
+            closeCardModal();
+        }
+
+        function deleteCard(id) {
+            if (!confirm('确定要删除这个卡片吗？')) {
+                return;
+            }
+
+            const cards = getCards();
+            const filtered = cards.filter(c => c.id !== id);
+            saveCards(filtered);
+            loadCards();
+        }
+
+        window.onload = function() {
+            checkAndUpdateData();
+            loadTags();
+            loadFilterOptions();
+            loadCards();
+        };
+    </script>
+</body>
+</html>
